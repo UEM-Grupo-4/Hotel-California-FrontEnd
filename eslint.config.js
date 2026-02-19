@@ -12,7 +12,11 @@ export default defineConfig([
 
   {
     files: ["**/*.{ts,tsx}"],
-
+    settings: {
+      "import/resolver": {
+        typescript: true,
+      },
+    },
     extends: [
       js.configs.recommended,
       ...tseslint.configs.recommended,
@@ -39,10 +43,7 @@ export default defineConfig([
       ],
 
       "no-unused-vars": "off",
-      "@typescript-eslint/no-unused-vars": [
-        "error",
-        { argsIgnorePattern: "^_" },
-      ],
+      "@typescript-eslint/no-unused-vars": ["error", { argsIgnorePattern: "^_" }],
     },
   },
 ]);
