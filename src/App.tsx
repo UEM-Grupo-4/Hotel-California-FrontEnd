@@ -1,6 +1,12 @@
 import "./App.css";
+import { Button } from "@mui/material";
+
 function App() {
-  return <h1>Hotel California</h1>;
+  return (
+    <Button color="error" variant="contained">
+      Hotel California
+    </Button>
+  );
 }
 
 export default App;
