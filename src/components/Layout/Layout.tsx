@@ -4,9 +4,9 @@ import NavBar from "../NavBar/NavBar";
 
 const Layout = () => {
   return (
-    <Grid width="100%">
+    <Grid container flexDirection="column" width="100%">
       <Container maxWidth="md">
-        <Grid container justifyContent={"space-between"}>
+        <Grid container justifyContent={"space-between"} alignItems={"center"}>
           <Grid size="auto">
             <Typography variant="h1" fontSize={24}>
               Hotel California
