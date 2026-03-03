@@ -1,10 +1,12 @@
 import { Box, Button, Card, Container, Grid, MenuItem, styled, TextField } from "@mui/material";
 import NumberField from "../../../components/NumberField/NumberField";
 import DatePickerFilter from "../../../components/DatePickerFilter/DatePickerFilter";
-import type { PickerValue } from "@mui/x-date-pickers/internals";
 import FiltersTitle from "./FiltersTitle";
+import { useRoomsFilters } from "../../../hooks/useRoomsFilters";
 
 function Filters() {
+  const { roomsFilters, onChangeFilters } = useRoomsFilters();
+
   return (
     <HomeBackground>
       <Container maxWidth="md" sx={{ height: "100%" }}>
@@ -15,23 +17,44 @@ function Filters() {
               <Box flex={1}>
                 <DatePickerFilter
                   label="Entrada"
-                  onChange={(value: PickerValue) => console.log(value)}
+                  value={roomsFilters.startDate}
+                  onChange={(value) => onChangeFilters("startDate", value)}
                   width={180}
                 />
               </Box>
 
               <Box flex={1}>
-                <DatePickerFilter label="Salida" width={180} />
+                <DatePickerFilter
+                  value={roomsFilters.endDate}
+                  label="Salida"
+                  onChange={(value) => onChangeFilters("endDate", value)}
+                  width={180}
+                />
               </Box>
 
               <Box flex={2}>
-                <TextField select label="Tipo" fullWidth size="small">
+                <TextField
+                  select
+                  label="Tipo"
+                  name="type"
+                  value={roomsFilters.type}
+                  onChange={(event) => onChangeFilters("type", event.target.value)}
+                  fullWidth
+                  size="small"
+                >
                   <MenuItem value={"suit"}>Suite</MenuItem>
                 </TextField>
               </Box>
 
               <Box flex={2}>
-                <NumberField label="Personas" size="small" max={5} min={1} value={1} />
+                <NumberField
+                  label="Personas"
+                  size="small"
+                  max={5}
+                  min={1}
+                  onValueChange={(value) => onChangeFilters("people", value!)}
+                  value={roomsFilters.people}
+                />
               </Box>
 
               <Button variant="contained">Buscar</Button>
