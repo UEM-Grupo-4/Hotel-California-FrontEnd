@@ -1,6 +1,6 @@
-import type { Rooms } from "../types/rooms";
+import type { Room } from "../types/rooms";
 
-export const dataMockRooms: Rooms[] = [
+export const dataMockRooms: Room[] = [
   {
     id: 1,
     name: "Suite Deluxe con Vista al Mar",
