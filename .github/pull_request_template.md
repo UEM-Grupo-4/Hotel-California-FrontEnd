@@ -10,6 +10,6 @@ Agrega las screenshots, es mejor si hay ejemplos visuales.
 
 ## ✅ De que tipo es esta tarea?
 
-- [ ] Feature
-- [ ] Bug
-- [ ] Documentacion
+- [] Feature
+- [] Bug
+- [] Documentacion
