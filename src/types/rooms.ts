@@ -1,4 +1,5 @@
 export interface Rooms {
+  id: number;
   name: string;
   price: number;
   squareMeters: number;

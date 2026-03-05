@@ -6,6 +6,8 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { AuthProvider } from "./auth/AuthProvider";
 import { LocalizationProvider } from "@mui/x-date-pickers";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
+import { ThemeProvider } from "@mui/material";
+import { theme } from "./theme";
 
 const queryClient = new QueryClient();
 
@@ -13,9 +15,11 @@ createRoot(document.getElementById("root")!).render(
   <StrictMode>
     <LocalizationProvider dateAdapter={AdapterDayjs}>
       <QueryClientProvider client={queryClient}>
-        <AuthProvider>
-          <AppRouter />
-        </AuthProvider>
+        <ThemeProvider theme={theme}>
+          <AuthProvider>
+            <AppRouter />
+          </AuthProvider>
+        </ThemeProvider>
       </QueryClientProvider>
     </LocalizationProvider>
   </StrictMode>,

@@ -15,6 +15,6 @@ const getRoomsRequest = async (): Promise<Rooms[]> => {
 export const useRooms = () => {
   return useQuery({
     queryKey: ["rooms"],
-    queryFn: getRoomsRequest
+    queryFn: getRoomsRequest,
   });
 };
