@@ -11,13 +11,14 @@ export const AppRouter = () => (
   <BrowserRouter>
     <Routes>
       <Route element={<Layout />}>
+        <Route path="/" element={<Home />} />
         <Route path="/login" element={<Login />} />
         <Route path="/mi-reserva" element={<Booking />} />
         <Route path="/contacto" element={<Contact />} />
         <Route element={<RequireAuth />}>
           <Route path="/admin" element={<Admin />} />
         </Route>
-        <Route path="*" element={<Home />} />
+        <Route path="*" element={<h6>404 Not found</h6>} />
       </Route>
     </Routes>
   </BrowserRouter>
