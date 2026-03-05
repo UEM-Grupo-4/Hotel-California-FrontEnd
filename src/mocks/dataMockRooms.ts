@@ -56,12 +56,3 @@ export const dataMockRooms: Rooms[] = [
     image: "https://placehold.co/600x350?text=Habitación_Doble",
   },
 ];
-
-/*
-name: string;
-  price: number;
-  squareMeters: number;
-  maxGuests: number;
-  bedType: string;
-  sight: string;
-  image: string;*/

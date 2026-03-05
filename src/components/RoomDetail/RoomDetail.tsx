@@ -1,4 +1,13 @@
-import { Box, Button, Card, CardContent, CardMedia, Divider, Grid, Typography } from "@mui/material";
+import {
+  Box,
+  Button,
+  Card,
+  CardContent,
+  CardMedia,
+  Divider,
+  Grid,
+  Typography,
+} from "@mui/material";
 import { useRooms } from "../../api/rooms";
 
 function RoomDetail() {
@@ -17,11 +26,23 @@ function RoomDetail() {
             image={room.image}
             alt={`Image of ${room.name}`}
           />
-          <CardContent sx={{ display: "flex", flexDirection: "column", gap: 1, width: "100%" , pb: "16px !important"}}>
+          <CardContent
+            sx={{
+              display: "flex",
+              flexDirection: "column",
+              gap: 1,
+              width: "100%",
+              pb: "16px !important",
+            }}
+          >
             <Typography variant="h4">{room.name}</Typography>
+
             <Grid container gap={1} alignItems={"center"}>
-              <Typography variant="h6">{`${room.squareMeters} m`}<sup>2</sup></Typography> •
-              <Typography variant="h6">{room.bedType}</Typography> •
+              <Typography variant="h6">
+                {`${room.squareMeters} m`}
+                <sup>2</sup>
+              </Typography>{" "}
+              •<Typography variant="h6">{room.bedType}</Typography> •
               <Typography variant="h6">Máx {room.maxGuests} Huéspedes</Typography> •
               <Typography variant="h6">Vista {room.sight}</Typography>
             </Grid>
