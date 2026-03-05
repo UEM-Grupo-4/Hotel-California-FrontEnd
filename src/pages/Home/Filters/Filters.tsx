@@ -3,6 +3,7 @@ import NumberField from "../../../components/NumberField/NumberField";
 import DatePickerFilter from "../../../components/DatePickerFilter/DatePickerFilter";
 import FiltersTitle from "./FiltersTitle";
 import { useRoomsFilters } from "../../../hooks/useRoomsFilters";
+import BackgroundImage from "../../../assets/background.jpeg";
 
 function Filters() {
   const { roomsFilters, onChangeFilters } = useRoomsFilters();
@@ -71,7 +72,7 @@ export default Filters;
 const HomeBackground = styled("section")({
   width: "100%",
   height: "600px",
-  backgroundImage: 'url("https://placehold.co/600x350?text=.")',
+  backgroundImage: `url(${BackgroundImage})`,
   backgroundRepeat: "no-repeat",
   backgroundPosition: "center",
   backgroundSize: "cover",
