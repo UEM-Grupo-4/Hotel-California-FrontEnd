@@ -6,6 +6,7 @@ import {
   CardMedia,
   Divider,
   Grid,
+  styled,
   Typography,
 } from "@mui/material";
 import { useRooms } from "../../api/rooms";
@@ -19,47 +20,64 @@ function RoomDetail() {
   return (
     <Box>
       {rooms.map((room, index) => (
-        <Card key={index} sx={{ display: "flex", marginTop: 3 }}>
+        <RoomCard key={index}>
           <CardMedia
-            component="img"
-            sx={{ width: 300 }}
+            component={"img"}
             image={room.image}
             alt={`Image of ${room.name}`}
+            sx={{ width: 300 }}
           />
-          <CardContent
-            sx={{
-              display: "flex",
-              flexDirection: "column",
-              gap: 1,
-              width: "100%",
-              pb: "16px !important",
-            }}
-          >
+
+          <RoomContent>
             <Typography variant="h4">{room.name}</Typography>
 
-            <Grid container gap={1} alignItems={"center"}>
+            <RoomInfoRow container>
               <Typography variant="h6">
-                {`${room.squareMeters} m`}
-                <sup>2</sup>
-              </Typography>{" "}
-              •<Typography variant="h6">{room.bedType}</Typography> •
-              <Typography variant="h6">Máx {room.maxGuests} Huéspedes</Typography> •
+                {room.squareMeters} m<sup>2</sup>
+              </Typography>
+              •<Typography variant="h6">{room.bedType}</Typography>•
+              <Typography variant="h6">Máx {room.maxGuests} huéspedes</Typography>•
               <Typography variant="h6">Vista {room.sight}</Typography>
-            </Grid>
+            </RoomInfoRow>
+
             <Divider />
-            <Grid container justifyContent={"space-between"} mt={1}>
+
+            <RoomFooter container>
               <Typography variant="h6">
                 $ {room.price} <span>por noche</span>
               </Typography>
-              <Button variant="contained" color="primary">
-                Ver detalle
-              </Button>
-            </Grid>
-          </CardContent>
-        </Card>
+
+              <Button variant="contained">Ver detalle</Button>
+            </RoomFooter>
+          </RoomContent>
+        </RoomCard>
       ))}
     </Box>
   );
 }
 
 export default RoomDetail;
+
+const RoomCard = styled(Card)`
+  display: flex;
+  margin-top: 24px;
+`;
+
+const RoomContent = styled(CardContent)`
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  width: 100%;
+`;
+
+const RoomInfoRow = styled(Grid)`
+  display: flex;
+  align-items: center;
+  gap: 8px;
+`;
+
+const RoomFooter = styled(Grid)`
+  display: flex;
+  justify-content: space-between;
+  margin-top: 8px;
+`;
