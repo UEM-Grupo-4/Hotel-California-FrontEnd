@@ -12,11 +12,12 @@ type LoginPayload = {
 
 type LoginResponse = {
   access: string;
+  refresh: string;
   user: User;
 };
 
 export const loginRequest = async (payload: LoginPayload): Promise<LoginResponse> => {
-  const { data } = await api.post(apiRoutes.login, payload);
+  const { data } = await api.post<LoginResponse>(apiRoutes.login, payload);
 
   return data;
 };
@@ -27,12 +28,12 @@ export const useLogin = () => {
 
   return useMutation<LoginResponse, Error, LoginPayload>({
     mutationFn: loginRequest,
-    onSuccess: ({ access, user }) => {
+    onSuccess: ({ access, refresh, user }) => {
 
-      login(access, user);
+      login(access, refresh, user);
 
-      if (user) navigate("/admin");
-      else navigate("/home");
+      navigate("/admin");
     },
+
   });
 };

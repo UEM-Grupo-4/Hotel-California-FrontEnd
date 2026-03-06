@@ -7,6 +7,7 @@ export const api = axios.create({
 api.interceptors.request.use(config => {
   const token = localStorage.getItem("token");
   if (token) {
+    config.headers = config.headers ?? {};
     config.headers.Authorization = `Bearer ${token}`;
   }
 
@@ -18,6 +19,8 @@ api.interceptors.response.use(
   err => {
     if (globalThis.location.pathname !== "/login" && err.response?.status === 401) {
       localStorage.removeItem("token");
+      localStorage.removeItem("user");
+      localStorage.removeItem("refresh");
       globalThis.location.href = "/login";
     }
 
