@@ -46,11 +46,11 @@ const Login = () => {
           <Button
             fullWidth
             variant="contained"
-            loading={isPending}
+            disabled={isPending}
             sx={{ mt: 2 }}
             onClick={handleSubmit}
           >
-            Login
+            {isPending ? "Entrando..." : "Login"}
           </Button>
         </Paper>
       </Box>

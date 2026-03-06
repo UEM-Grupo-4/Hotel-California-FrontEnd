@@ -5,8 +5,14 @@ import type { User } from "../types/user";
 export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const [user, setUser] = useState<User | null>(() => {
     const storedUser = localStorage.getItem("user");
+    if (!storedUser) return null;
+    try {
+      return JSON.parse(storedUser) as User;
+    } catch {
+      localStorage.removeItem("user");
 
-    return storedUser ? JSON.parse(storedUser) : null;
+      return null;
+    }
   });
 
   const [token, setToken] = useState<string | null>(() => localStorage.getItem("token"));

@@ -1,19 +1,22 @@
 import { apiRoutes } from "./apiRoutes";
 import { api } from "./axios";
 import { useMutation } from "@tanstack/react-query";
-import { useAuth } from "../auth/AuthContext";
+import { useAuth } from "../hooks/useAuth";
 import { useNavigate } from "react-router-dom";
+import type { User } from "../types/user";
 
 type LoginPayload = {
   email: string;
   password: string;
 };
 
-export const loginRequest = async ({ email, password }: LoginPayload) => {
-  const { data } = await api.post(apiRoutes.login, {
-    email,
-    password,
-  });
+type LoginResponse = {
+  access: string;
+  user: User;
+};
+
+export const loginRequest = async (payload: LoginPayload): Promise<LoginResponse> => {
+  const { data } = await api.post(apiRoutes.login, payload);
 
   return data;
 };
@@ -22,16 +25,14 @@ export const useLogin = () => {
   const { login } = useAuth();
   const navigate = useNavigate();
 
-  return useMutation({
+  return useMutation<LoginResponse, Error, LoginPayload>({
     mutationFn: loginRequest,
-    onSuccess: data => {
-      const { access, user } = data;
+    onSuccess: ({ access, user }) => {
 
       login(access, user);
 
-      if (user.is_admin) navigate("/admin");
-      else if (user.is_club_owner) navigate("/my-courts");
-      else navigate("/matches");
+      if (user) navigate("/admin");
+      else navigate("/home");
     },
   });
 };
