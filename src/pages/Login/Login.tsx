@@ -9,7 +9,7 @@ const Login = () => {
 
   const handleChangeInputs = (
     value: string,
-    callback: React.Dispatch<React.SetStateAction<string>>
+    callback: React.Dispatch<React.SetStateAction<string>>,
   ) => {
     callback(value);
   };
@@ -19,7 +19,7 @@ const Login = () => {
   };
 
   return (
-    <Container maxWidth='md'>
+    <Container maxWidth="md" sx={{ height: "100%" }}>
       <Box display="flex" justifyContent="center" alignItems="center" height="100vh">
         <Paper sx={{ p: 4, width: 400 }}>
           <Typography variant="h5" mb={2}>
@@ -30,7 +30,7 @@ const Login = () => {
             fullWidth
             label="Email"
             value={email}
-            onChange={e => handleChangeInputs(e.target.value, setEmail)}
+            onChange={(e) => handleChangeInputs(e.target.value, setEmail)}
             margin="normal"
           />
 
@@ -39,7 +39,7 @@ const Login = () => {
             label="Password"
             type="password"
             value={password}
-            onChange={e => handleChangeInputs(e.target.value, setPassword)}
+            onChange={(e) => handleChangeInputs(e.target.value, setPassword)}
             margin="normal"
           />
 
@@ -55,10 +55,7 @@ const Login = () => {
         </Paper>
       </Box>
     </Container>
-
   );
-
 };
 
 export default Login;
-
