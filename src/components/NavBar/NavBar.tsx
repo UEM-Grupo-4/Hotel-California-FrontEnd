@@ -1,6 +1,7 @@
-import { Grid, styled, Tab, Tabs } from "@mui/material";
+import { Box, Grid, styled, Tab, Tabs, Typography } from "@mui/material";
 import { useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
+import HotelCaliforniaLogo from "../../assets/favicon.png";
 
 const NAVBAR_BUTTONS = [
   {
@@ -32,12 +33,37 @@ function NavBar() {
   };
 
   return (
-    <Grid container gap={3} size="auto">
-      <Tabs value={selectedTab} textColor="inherit" indicatorColor="primary" onChange={onClickTab}>
-        {NAVBAR_BUTTONS.map(({ displayName, url }, index) => {
-          return <NavTab key={index} label={displayName} value={url} />;
-        })}
-      </Tabs>
+    <Grid container justifyContent={"space-between"} alignItems={"center"}>
+      <Grid
+        container
+        size="auto"
+        alignItems={"center"}
+        gap={1}
+        onClick={(event) => onClickTab(event, "/")}
+        sx={{ cursor: "pointer" }}
+      >
+        <Box
+          component={"img"}
+          src={HotelCaliforniaLogo}
+          alt="Hotel California logo"
+          sx={{ width: 35, height: 35 }}
+        />
+        <Typography variant="h1" fontSize={24}>
+          Hotel California
+        </Typography>
+      </Grid>
+      <Grid container gap={3} size="auto">
+        <Tabs
+          value={selectedTab}
+          textColor="inherit"
+          indicatorColor="primary"
+          onChange={onClickTab}
+        >
+          {NAVBAR_BUTTONS.map(({ displayName, url }, index) => {
+            return <NavTab key={index} label={displayName} value={url} />;
+          })}
+        </Tabs>
+      </Grid>
     </Grid>
   );
 }
