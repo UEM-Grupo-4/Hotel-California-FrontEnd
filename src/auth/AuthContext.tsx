@@ -4,8 +4,10 @@ import type { User } from "../types/user";
 export type AuthContextType = {
   user: User | null;
   token: string | null;
-  login: (token: string, user: User) => void;
+  refresh: string | null;
+  login: (token: string, refresh: string, user: User) => void;
   logout: () => void;
 };
 
 export const AuthContext = createContext<AuthContextType | undefined>(undefined);
+

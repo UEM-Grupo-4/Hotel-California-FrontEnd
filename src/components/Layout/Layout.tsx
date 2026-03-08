@@ -4,7 +4,7 @@ import NavBar from "../NavBar/NavBar";
 
 const Layout = () => {
   return (
-    <Grid container flexDirection="column" width="100%">
+    <Grid container flexDirection="column" width="100%" height={"100vh"} wrap="nowrap">
       <Container maxWidth="md">
         <NavBar />
       </Container>
