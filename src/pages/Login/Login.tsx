@@ -20,7 +20,7 @@ const Login = () => {
 
   return (
     <Container maxWidth="md" sx={{ height: "100%" }}>
-      <Box display="flex" justifyContent="center" alignItems="center" height="100vh">
+      <Box display="flex" justifyContent="center" alignItems="center" height="100%">
         <Paper sx={{ p: 4, width: 400 }}>
           <Typography variant="h5" mb={2}>
             Login
