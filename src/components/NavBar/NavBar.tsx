@@ -1,7 +1,8 @@
 import { Box, Grid, styled, Tab, Tabs, Typography } from "@mui/material";
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import HotelCaliforniaLogo from "../../assets/favicon.png";
+import { useAuth } from "../../hooks/useAuth";
 
 const NAVBAR_BUTTONS = [
   {
@@ -25,12 +26,21 @@ const NAVBAR_BUTTONS = [
 function NavBar() {
   const navigate = useNavigate();
   const location = useLocation();
+  const { isLogged } = useAuth();
   const [selectedTab, setSelectedTab] = useState(location.pathname);
 
   const onClickTab = (_: React.SyntheticEvent, url: string) => {
     setSelectedTab(url);
     navigate(url);
   };
+
+  const ALL_TABS = useMemo(() => {
+    if (isLogged) {
+      return [...NAVBAR_BUTTONS, { displayName: "Admin", url: "/admin" }];
+    }
+
+    return NAVBAR_BUTTONS;
+  }, [isLogged]);
 
   return (
     <Grid container justifyContent={"space-between"} alignItems={"center"}>
@@ -59,7 +69,7 @@ function NavBar() {
           indicatorColor="primary"
           onChange={onClickTab}
         >
-          {NAVBAR_BUTTONS.map(({ displayName, url }, index) => {
+          {ALL_TABS.map(({ displayName, url }, index) => {
             return <NavTab key={index} label={displayName} value={url} />;
           })}
         </Tabs>

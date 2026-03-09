@@ -1,22 +1,25 @@
 import { useQuery } from "@tanstack/react-query";
 import { dataMockRooms } from "../mocks/dataMockRooms";
-import type { Room } from "../types/rooms";
+import type { Amenity, Room, RoomType } from "../types/rooms";
+import { api } from "./axios";
+import { apiRoutes } from "./apiRoutes";
 
 const getRoomsRequest = async (): Promise<Room[]> => {
-  // TODO: Cambiar a la llamada al backend
-  return await Promise.resolve(dataMockRooms);
-  /*
-    const { data } = await api.get(apiRoutes.rooms);
+  const { data } = await api.get(apiRoutes.rooms);
 
-    return data;
-  */
+  return data;
 };
 
-const getRoomByIdRequest = async (roomId: number): Promise<Room> => {
-  const room = await Promise.resolve(dataMockRooms.find((room) => room.id === roomId));
-  if (!room) return dataMockRooms[0];
+const getRoomsAmenities = async (): Promise<Amenity[]> => {
+  const { data } = await api.get(apiRoutes.roomsAmenities);
 
-  return room;
+  return data;
+};
+
+const getRoomsTypes = async (): Promise<RoomType[]> => {
+  const { data } = await api.get(apiRoutes.roomsType);
+
+  return data;
 };
 
 export const useRooms = () => {
@@ -26,9 +29,46 @@ export const useRooms = () => {
   });
 };
 
+export const useRoomsTypes = () => {
+  return useQuery({
+    queryKey: ["rooms-types"],
+    queryFn: () => getRoomsTypes(),
+  });
+};
+
+export const useRoomsAmenities = () => {
+  return useQuery({
+    queryKey: ["amenities"],
+    queryFn: () => getRoomsAmenities(),
+  });
+};
+
+// GET BY ID
+
+const getRoomByIdRequest = async (roomId: number): Promise<Room> => {
+  const room = await Promise.resolve(dataMockRooms.find((room) => room.id === roomId));
+  if (!room) return dataMockRooms[0];
+
+  return room;
+};
+
+// TODO: Fix this
+const getAmenitiesForRoomType = async (roomType: number): Promise<Amenity[]> => {
+  const { data } = await api.get(`${apiRoutes.roomsAmenities}/${roomType}`);
+
+  return data;
+};
+
 export const useGetRoom = (roomId: number) => {
   return useQuery({
     queryKey: ["room", roomId],
     queryFn: () => getRoomByIdRequest(roomId),
+  });
+};
+
+export const useGetAmenitiesByRoomType = (roomTypeId: number) => {
+  return useQuery({
+    queryKey: ["room-type", roomTypeId],
+    queryFn: () => getAmenitiesForRoomType(roomTypeId),
   });
 };
