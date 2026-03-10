@@ -1,4 +1,7 @@
 export const apiRoutes = {
-  room: "/rooms/",
   login: "/auth/login/",
+
+  rooms: "/rooms/",
+  roomsType: "/rooms/types/",
+  roomsAmenities: "/rooms/amenities/",
 };

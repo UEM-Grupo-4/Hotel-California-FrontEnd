@@ -1,59 +1,106 @@
 import {
   Dialog,
-  DialogContent,
   DialogTitle,
+  DialogContent,
+  TextField,
+  Button,
+  DialogActions,
+  MenuItem,
   Typography,
-  CardMedia,
-  Grid,
-  Divider,
-  CircularProgress,
 } from "@mui/material";
-import { useGetRoom } from "../../api/rooms";
+import { useState } from "react";
+import type { Room, RoomRequest } from "../../types/rooms";
+import { useCreateRoom, useUpdateRoom, useRoomsTypes } from "../../api/rooms";
 
 type Props = {
   open: boolean;
-  roomId: number;
+  room: Room | null;
   onClose: () => void;
 };
 
-export function RoomModal({ open, roomId, onClose }: Readonly<Props>) {
-  const { data: room, isLoading } = useGetRoom(roomId);
+export function RoomCreateModal({ open, onClose, room: originalRoom }: Readonly<Props>) {
+  const { data: roomTypes = [] } = useRoomsTypes();
+
+  const { mutate: createRoom } = useCreateRoom();
+  const { mutate: updateRoom } = useUpdateRoom();
+
+  const isEdit = !!originalRoom;
+
+  const [form, setForm] = useState<RoomRequest>({
+    number: originalRoom?.number ?? "",
+    description: originalRoom?.description ?? "",
+    type: originalRoom?.type ?? undefined,
+    image: undefined,
+  });
+
+  const handleChange =
+    (field: keyof RoomRequest) => (event: React.ChangeEvent<HTMLInputElement>) => {
+      const value = field === "type" ? Number(event.target.value) : event.target.value;
+
+      setForm((prev) => ({
+        ...prev,
+        [field]: value,
+      }));
+    };
+  const handleImageChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0];
+
+    setForm((prev) => ({
+      ...prev,
+      image: file ?? undefined,
+    }));
+  };
+
+  const handleSubmit = () => {
+    if (isEdit && originalRoom) {
+      updateRoom({
+        id: originalRoom.id,
+        ...form,
+      });
+    } else {
+      createRoom(form);
+    }
+
+    onClose();
+  };
 
   return (
-    <Dialog open={open} onClose={onClose} maxWidth="md" fullWidth>
-      {isLoading && <CircularProgress sx={{ m: 4 }} />}
+    <Dialog open={open} onClose={onClose} maxWidth="sm" fullWidth>
+      <DialogTitle>{isEdit ? "Editar Room" : "Nueva Room"}</DialogTitle>
 
-      {room && (
-        <>
-          <DialogTitle>{room.name}</DialogTitle>
+      <DialogContent
+        sx={{ display: "flex", flexDirection: "column", gap: 2, paddingTop: "12px !important" }}
+      >
+        <TextField label="Número" value={form.number} onChange={handleChange("number")} />
 
-          <DialogContent>
-            <CardMedia component="img" image={room.image} sx={{ borderRadius: 2, mb: 2 }} />
+        <TextField
+          label="Descripción"
+          value={form.description}
+          onChange={handleChange("description")}
+        />
 
-            <Grid container spacing={2}>
-              <Grid size={6}>
-                <Typography variant="body1">Tamaño: {room.squareMeters} m²</Typography>
-              </Grid>
+        <TextField select label="Room Type" value={form.type} onChange={handleChange("type")}>
+          {roomTypes.map((type) => (
+            <MenuItem key={type.id} value={type.id}>
+              {type.name}
+            </MenuItem>
+          ))}
+        </TextField>
 
-              <Grid size={6}>
-                <Typography variant="body1">Huéspedes: {room.maxGuests}</Typography>
-              </Grid>
+        <Typography>{form.image?.name}</Typography>
+        <Button variant="outlined" component="label">
+          Subir imagen
+          <input hidden type="file" accept="image/*" onChange={handleImageChange} />
+        </Button>
+      </DialogContent>
 
-              <Grid size={6}>
-                <Typography variant="body1">Cama: {room.bedType}</Typography>
-              </Grid>
+      <DialogActions>
+        <Button onClick={onClose}>Cancelar</Button>
 
-              <Grid size={6}>
-                <Typography variant="body1">Vista: {room.sight}</Typography>
-              </Grid>
-            </Grid>
-
-            <Divider sx={{ my: 2 }} />
-
-            <Typography variant="h5">${room.price} / noche</Typography>
-          </DialogContent>
-        </>
-      )}
+        <Button variant="contained" onClick={handleSubmit} disabled={!form.number.trim()}>
+          {isEdit ? "Guardar" : "Crear"}
+        </Button>
+      </DialogActions>
     </Dialog>
   );
 }

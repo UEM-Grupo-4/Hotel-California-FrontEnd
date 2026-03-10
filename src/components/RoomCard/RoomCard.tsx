@@ -1,5 +1,5 @@
 import {
-  Button,
+  Box,
   Card,
   CardContent,
   CardMedia,
@@ -12,36 +12,25 @@ import type { Room } from "../../types/rooms";
 
 type Props = {
   room: Room;
-  onViewDetails: (id: number) => void;
+  onEdit?: (room: Room) => void;
 };
 
-export function RoomCard({ room, onViewDetails }: Readonly<Props>) {
+export function RoomCard({ room }: Readonly<Props>) {
   return (
     <StyledCard>
-      <CardMedia component="img" image={room.image} alt={room.name} sx={{ width: 300 }} />
+      <Box sx={{ width: 200 }}>
+        <CardMedia component="img" image={room?.image} alt={room.description} />
+      </Box>
 
       <RoomContent>
-        <Typography variant="h4">{room.name}</Typography>
-
-        <RoomInfoRow container>
-          <Typography variant="h6">
-            {room.squareMeters} m<sup>2</sup>
-          </Typography>
-          •<Typography variant="h6">{room.bedType}</Typography>•
-          <Typography variant="h6">Máx {room.maxGuests} huéspedes</Typography>•
-          <Typography variant="h6">Vista {room.sight}</Typography>
-        </RoomInfoRow>
+        <Typography variant="h4">{room?.type?.name}</Typography>
 
         <Divider />
 
         <RoomFooter container>
           <Typography variant="h6">
-            $ {room.price} <span>por noche</span>
+            $ {room?.type?.price_per_night} <span>por noche</span>
           </Typography>
-
-          <Button variant="outlined" color="primary" onClick={() => onViewDetails(room.id)}>
-            Ver detalle
-          </Button>
         </RoomFooter>
       </RoomContent>
     </StyledCard>
@@ -50,7 +39,6 @@ export function RoomCard({ room, onViewDetails }: Readonly<Props>) {
 
 const StyledCard = styled(Card)`
   display: flex;
-  margin-top: 24px;
 `;
 
 const RoomContent = styled(CardContent)`
@@ -58,12 +46,6 @@ const RoomContent = styled(CardContent)`
   flex-direction: column;
   gap: 8px;
   width: 100%;
-`;
-
-const RoomInfoRow = styled(Grid)`
-  display: flex;
-  align-items: center;
-  gap: 8px;
 `;
 
 const RoomFooter = styled(Grid)`
