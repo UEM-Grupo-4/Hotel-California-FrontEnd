@@ -1,6 +1,6 @@
-import { useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { dataMockRooms } from "../mocks/dataMockRooms";
-import type { Amenity, Room, RoomType } from "../types/rooms";
+import type { Amenity, AmenityRequest, Room, RoomType } from "../types/rooms";
 import { api } from "./axios";
 import { apiRoutes } from "./apiRoutes";
 
@@ -10,13 +10,13 @@ const getRoomsRequest = async (): Promise<Room[]> => {
   return data;
 };
 
-const getRoomsAmenities = async (): Promise<Amenity[]> => {
+const getRoomsAmenitiesRequest = async (): Promise<Amenity[]> => {
   const { data } = await api.get(apiRoutes.roomsAmenities);
 
   return data;
 };
 
-const getRoomsTypes = async (): Promise<RoomType[]> => {
+const getRoomsTypesRequest = async (): Promise<RoomType[]> => {
   const { data } = await api.get(apiRoutes.roomsType);
 
   return data;
@@ -32,14 +32,14 @@ export const useRooms = () => {
 export const useRoomsTypes = () => {
   return useQuery({
     queryKey: ["rooms-types"],
-    queryFn: () => getRoomsTypes(),
+    queryFn: () => getRoomsTypesRequest(),
   });
 };
 
 export const useRoomsAmenities = () => {
   return useQuery({
     queryKey: ["amenities"],
-    queryFn: () => getRoomsAmenities(),
+    queryFn: () => getRoomsAmenitiesRequest(),
   });
 };
 
@@ -70,5 +70,37 @@ export const useGetAmenitiesByRoomType = (roomTypeId: number) => {
   return useQuery({
     queryKey: ["room-type", roomTypeId],
     queryFn: () => getAmenitiesForRoomType(roomTypeId),
+  });
+};
+
+// Create
+
+const createAmenityRequest = async (amenity: AmenityRequest) => {
+  return await api.post(apiRoutes.roomsAmenities, amenity);
+};
+
+const updateAmenityRequest = async (amenity: Amenity) => {
+  return await api.patch(`${apiRoutes.roomsAmenities}/${amenity.id}/`, amenity);
+};
+
+export const useCreateAmenity = () => {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: (amenity: AmenityRequest) => createAmenityRequest(amenity),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["amenities"] });
+    },
+  });
+};
+
+export const useUpdateAmenity = () => {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: (amenity: Amenity) => updateAmenityRequest(amenity),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["amenities"] });
+    },
   });
 };

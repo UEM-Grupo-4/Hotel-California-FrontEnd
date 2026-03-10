@@ -7,25 +7,39 @@ import {
   DialogActions,
 } from "@mui/material";
 import { useState } from "react";
+import { useCreateAmenity, useUpdateAmenity } from "../../api/rooms";
+import type { Amenity } from "../../types/rooms";
 
 type Props = {
   open: boolean;
   onClose: () => void;
-  onCreate: (name: string) => void;
+  amenity: Amenity | null;
 };
 
-export function AmenityCreateModal({ open, onClose, onCreate }: Readonly<Props>) {
-  const [name, setName] = useState("");
+export function AmenityModal({ open, onClose, amenity }: Readonly<Props>) {
+  const { mutate: createAmenity } = useCreateAmenity();
+  const { mutate: updateAmenity } = useUpdateAmenity();
 
-  const handleCreate = () => {
-    onCreate(name);
-    setName("");
+  const isEdit = !!amenity;
+
+  const [name, setName] = useState(amenity?.name ?? "");
+
+  const handleSubmit = () => {
+    if (isEdit && amenity) {
+      updateAmenity({
+        id: amenity.id,
+        name,
+      });
+    } else {
+      createAmenity({ name });
+    }
+
     onClose();
   };
 
   return (
     <Dialog open={open} onClose={onClose}>
-      <DialogTitle>Nueva Amenity</DialogTitle>
+      <DialogTitle>{isEdit ? "Editar Amenity" : "Nueva Amenity"}</DialogTitle>
 
       <DialogContent>
         <TextField
@@ -39,8 +53,9 @@ export function AmenityCreateModal({ open, onClose, onCreate }: Readonly<Props>)
 
       <DialogActions>
         <Button onClick={onClose}>Cancelar</Button>
-        <Button variant="contained" onClick={handleCreate}>
-          Crear
+
+        <Button variant="contained" onClick={handleSubmit} disabled={!name.trim()}>
+          {isEdit ? "Guardar" : "Crear"}
         </Button>
       </DialogActions>
     </Dialog>

@@ -1,9 +1,11 @@
-import { Card, CardContent, Typography, Button } from "@mui/material";
+import { Card, CardContent, Typography, IconButton, Grid } from "@mui/material";
 import type { Amenity } from "../../types/rooms";
+import EditIcon from "@mui/icons-material/Edit";
+import DeleteIcon from "@mui/icons-material/Delete";
 
 type Props = {
   amenity: Amenity;
-  onEdit?: (amenity: Amenity) => void;
+  onEdit: (amenity: Amenity) => void;
 };
 
 export function AmenityCard({ amenity, onEdit }: Readonly<Props>) {
@@ -14,16 +16,23 @@ export function AmenityCard({ amenity, onEdit }: Readonly<Props>) {
           display: "flex",
           justifyContent: "space-between",
           alignItems: "center",
+          pb: "12px !important",
           p: 1.5,
         }}
       >
-        <Typography variant="body2">{amenity.name}</Typography>
+        <Typography variant="body1" fontWeight={"bold"}>
+          {amenity.name}
+        </Typography>
 
-        {onEdit && (
-          <Button size="small" onClick={() => onEdit(amenity)}>
-            Editar
-          </Button>
-        )}
+        <Grid container gap={1}>
+          <IconButton size="small" onClick={() => onEdit(amenity)}>
+            <EditIcon />
+          </IconButton>
+
+          <IconButton size="small" color="error">
+            <DeleteIcon />
+          </IconButton>
+        </Grid>
       </CardContent>
     </Card>
   );
