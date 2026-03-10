@@ -1,31 +1,32 @@
 import { useState } from "react";
 import { useRooms } from "../api/rooms";
+import type { Room } from "../types/rooms";
 
 export const useAdminRooms = () => {
   const { data: rooms = [] } = useRooms();
 
-  const [selectedRoomId, setSelectedRoomId] = useState<number | null>(null);
+  const [selectedRoom, setSelectedRoom] = useState<Room | null>(null);
   const [isCreating, setIsCreating] = useState(false);
 
   const openCreate = () => {
-    setSelectedRoomId(null);
+    setSelectedRoom(null);
     setIsCreating(true);
   };
 
-  const openEdit = (roomId: number) => {
-    setSelectedRoomId(roomId);
+  const openEdit = (room: Room) => {
+    setSelectedRoom(room);
     setIsCreating(false);
   };
 
   const closeModal = () => {
-    setSelectedRoomId(null);
+    setSelectedRoom(null);
     setIsCreating(false);
   };
 
   return {
     rooms,
-    selectedRoomId,
-    isModalOpen: isCreating || selectedRoomId !== null,
+    selectedRoom,
+    isModalOpen: isCreating || !!selectedRoom,
     openCreate,
     openEdit,
     closeModal,

@@ -1,12 +1,9 @@
 export interface Room {
   id: number;
-  name: string;
-  price: number;
-  squareMeters: number;
-  maxGuests: number;
-  bedType: string;
-  sight: string;
-  image: string;
+  number: string;
+  description: string;
+  type?: RoomType;
+  image?: string;
 }
 
 export interface RoomType {
@@ -21,6 +18,10 @@ export interface Amenity {
   id: number;
   name: string;
 }
+
+export type RoomRequest = Omit<Room, "id" | "image"> & { image?: File };
+
+export type RoomUpdate = Omit<Room, "image"> & { image?: File };
 
 export type RoomTypeRequest = Omit<RoomType, "id">;
 

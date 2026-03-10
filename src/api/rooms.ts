@@ -1,8 +1,30 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { dataMockRooms } from "../mocks/dataMockRooms";
-import type { Amenity, RoomType, AmenityRequest, Room, RoomTypeRequest } from "../types/rooms";
+import type {
+  Amenity,
+  RoomType,
+  AmenityRequest,
+  Room,
+  RoomTypeRequest,
+  RoomRequest,
+  RoomUpdate,
+} from "../types/rooms";
 import { api } from "./axios";
 import { apiRoutes } from "./apiRoutes";
+
+const buildRoomToApi = (room: RoomUpdate | RoomRequest) => {
+  const formData = new FormData();
+
+  formData.append("number", room.number);
+  formData.append("description", room.description);
+  formData.append("type", String(room.type));
+
+  if (room.image) {
+    formData.append("image", room.image);
+  }
+
+  return formData;
+};
 
 const getRoomsRequest = async (): Promise<Room[]> => {
   const { data } = await api.get(apiRoutes.rooms);
@@ -60,13 +82,31 @@ export const useGetRoom = (roomId: number) => {
 };
 
 // Create
+const createRoomRequest = async (room: FormData) => {
+  return await api.post(apiRoutes.rooms, room);
+};
+
+const createRoomTypeRequest = async (roomType: AmenityRequest) => {
+  return await api.post(apiRoutes.roomsType, roomType);
+};
 
 const createAmenityRequest = async (amenity: AmenityRequest) => {
   return await api.post(apiRoutes.roomsAmenities, amenity);
 };
 
-const createRoomTypeRequest = async (roomType: AmenityRequest) => {
-  return await api.post(apiRoutes.roomsType, roomType);
+export const useCreateRoom = () => {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: (room: RoomRequest) => {
+      const formData = buildRoomToApi(room);
+
+      return createRoomRequest(formData);
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["rooms"] });
+    },
+  });
 };
 
 export const useCreateRoomType = () => {
@@ -92,22 +132,29 @@ export const useCreateAmenity = () => {
 };
 
 // Update
-
-const updateAmenityRequest = async (amenity: Amenity) => {
-  return await api.patch(`${apiRoutes.roomsAmenities}${amenity.id}/`, amenity);
+const updateRoomRequest = async (id: number, room: FormData) => {
+  return await api.patch(`${apiRoutes.rooms}${id}/`, room);
 };
 
 const updateRoomTypeRequest = async (roomType: RoomType) => {
   return await api.patch(`${apiRoutes.roomsType}${roomType.id}/`, roomType);
 };
 
-export const useUpdateAmenity = () => {
+const updateAmenityRequest = async (amenity: Amenity) => {
+  return await api.patch(`${apiRoutes.roomsAmenities}${amenity.id}/`, amenity);
+};
+
+export const useUpdateRoom = () => {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: (amenity: Amenity) => updateAmenityRequest(amenity),
+    mutationFn: (room: RoomUpdate) => {
+      const formData = buildRoomToApi(room);
+
+      return updateRoomRequest(room.id, formData);
+    },
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["amenities"] });
+      queryClient.invalidateQueries({ queryKey: ["rooms"] });
     },
   });
 };
@@ -119,6 +166,17 @@ export const useUpdateRoomType = () => {
     mutationFn: (roomType: RoomType) => updateRoomTypeRequest(roomType),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["rooms-types"] });
+    },
+  });
+};
+
+export const useUpdateAmenity = () => {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: (amenity: Amenity) => updateAmenityRequest(amenity),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["amenities"] });
     },
   });
 };
