@@ -22,6 +22,6 @@ export interface Amenity {
   name: string;
 }
 
-export interface AmenityRequest {
-  name: string;
-}
+export type RoomTypeRequest = Omit<RoomType, "id">;
+
+export type AmenityRequest = Omit<Amenity, "id">;

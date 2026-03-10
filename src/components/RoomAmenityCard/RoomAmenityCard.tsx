@@ -1,11 +1,11 @@
 import { Card, CardContent, Typography, IconButton, Grid } from "@mui/material";
-import type { Amenity } from "../../types/rooms";
+import type { RoomType } from "../../types/rooms";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
 
 type Props = {
-  amenity: Amenity;
-  onEdit: (amenity: Amenity) => void;
+  amenity: RoomType;
+  onEdit: (amenity: RoomType) => void;
 };
 
 export function AmenityCard({ amenity, onEdit }: Readonly<Props>) {

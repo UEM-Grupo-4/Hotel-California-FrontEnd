@@ -12,7 +12,7 @@ type Props = {
 export function AdminSection({ title, createLabel, isEmpty, onCreate, children }: Readonly<Props>) {
   return (
     <>
-      <Grid container justifyContent="space-between" alignItems="center">
+      <Grid container justifyContent="space-between" alignItems="center" mt={2}>
         <Typography variant="h6">{title}</Typography>
 
         {onCreate && (

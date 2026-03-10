@@ -1,11 +1,11 @@
 import { useState } from "react";
 import { useRoomsAmenities } from "../api/rooms";
-import type { Amenity } from "../types/rooms";
+import type { RoomType } from "../types/rooms";
 
 export const useAdminAmenities = () => {
   const { data: amenities = [] } = useRoomsAmenities();
 
-  const [selectedAmenity, setSelectedAmenity] = useState<Amenity | null>(null);
+  const [selectedAmenity, setSelectedAmenity] = useState<RoomType | null>(null);
   const [isCreating, setIsCreating] = useState(false);
 
   const openCreate = () => {
@@ -13,7 +13,7 @@ export const useAdminAmenities = () => {
     setIsCreating(true);
   };
 
-  const openEdit = (amenity: Amenity) => {
+  const openEdit = (amenity: RoomType) => {
     setSelectedAmenity(amenity);
     setIsCreating(false);
   };

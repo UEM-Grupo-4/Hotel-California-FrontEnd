@@ -8,65 +8,107 @@ import {
   MenuItem,
 } from "@mui/material";
 import { useState } from "react";
-import type { Amenity } from "../../types/rooms";
+import type { RoomType } from "../../types/rooms";
+import { useCreateRoomType, useRoomsAmenities, useUpdateRoomType } from "../../api/rooms";
+
+type FormState = {
+  name: string;
+  capacity: number;
+  price_per_night: number;
+  amenities: number[];
+};
 
 type Props = {
   open: boolean;
-  amenities: Amenity[];
+  roomType: RoomType | null;
   onClose: () => void;
-  onCreate: (data: {
-    name: string;
-    capacity: number;
-    price_per_night: number;
-    amenities: number[];
-  }) => void;
 };
 
-export function RoomTypeCreateModal({ open, onClose, onCreate, amenities }: Readonly<Props>) {
-  const [name, setName] = useState("");
-  const [capacity, setCapacity] = useState(1);
-  const [price, setPrice] = useState(0);
-  const [selectedAmenities, setSelectedAmenities] = useState<number[]>([]);
+export function RoomTypeCreateModal({
+  open,
+  onClose,
+  roomType: originalRoomType,
+}: Readonly<Props>) {
+  const { data: amenities = [] } = useRoomsAmenities();
+  const { mutate: createAmenity } = useCreateRoomType();
+  const { mutate: updateAmenity } = useUpdateRoomType();
 
-  const handleCreate = () => {
-    onCreate({
-      name,
-      capacity,
-      price_per_night: price,
-      amenities: selectedAmenities,
-    });
+  const isEdit = !!originalRoomType;
 
+  const [form, setForm] = useState<FormState>(
+    originalRoomType ?? {
+      name: "",
+      capacity: 1,
+      price_per_night: 0,
+      amenities: [],
+    },
+  );
+
+  const handleChange = (field: keyof FormState) => (event: React.ChangeEvent<HTMLInputElement>) => {
+    const value =
+      field === "capacity" || field === "price_per_night"
+        ? Number(event.target.value)
+        : event.target.value;
+
+    setForm((prev) => ({
+      ...prev,
+      [field]: value,
+    }));
+  };
+
+  const handleAmenitiesChange = (
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    event: any,
+  ) => {
+    const value = event?.target?.value as number[];
+
+    setForm((prev) => ({
+      ...prev,
+      amenities: value,
+    }));
+  };
+
+  const handleSubmit = () => {
+    if (isEdit && originalRoomType) {
+      updateAmenity({
+        id: originalRoomType.id,
+        ...form,
+      });
+    } else {
+      createAmenity(form);
+    }
     onClose();
   };
 
   return (
     <Dialog open={open} onClose={onClose} maxWidth="sm" fullWidth>
-      <DialogTitle>Nuevo Room Type</DialogTitle>
+      <DialogTitle>{originalRoomType ? "Editar Room Type" : "Nuevo Room Type"}</DialogTitle>
 
-      <DialogContent sx={{ display: "flex", flexDirection: "column", gap: 2, mt: 2 }}>
-        <TextField label="Nombre" value={name} onChange={(e) => setName(e.target.value)} />
+      <DialogContent
+        sx={{ display: "flex", flexDirection: "column", gap: 2, paddingTop: "12px !important" }}
+      >
+        <TextField label="Nombre" value={form.name} onChange={handleChange("name")} />
 
         <TextField
           label="Capacidad"
           type="number"
-          value={capacity}
-          onChange={(e) => setCapacity(Number(e.target.value))}
+          value={form.capacity}
+          onChange={handleChange("capacity")}
         />
 
         <TextField
           label="Precio por noche"
           type="number"
-          value={price}
-          onChange={(e) => setPrice(Number(e.target.value))}
+          value={form.price_per_night}
+          onChange={handleChange("price_per_night")}
         />
 
         <TextField
           select
-          slotProps={{ select: { multiple: true } }}
           label="Amenities"
-          value={selectedAmenities}
-          // Fix this
-          onChange={() => setSelectedAmenities([1])}
+          value={form.amenities}
+          onChange={handleAmenitiesChange}
+          slotProps={{ select: { multiple: true } }}
         >
           {amenities.map((a) => (
             <MenuItem key={a.id} value={a.id}>
@@ -78,8 +120,9 @@ export function RoomTypeCreateModal({ open, onClose, onCreate, amenities }: Read
 
       <DialogActions>
         <Button onClick={onClose}>Cancelar</Button>
-        <Button variant="contained" onClick={handleCreate}>
-          Crear
+
+        <Button variant="contained" onClick={handleSubmit} disabled={!form.name.trim()}>
+          {originalRoomType ? "Guardar" : "Crear"}
         </Button>
       </DialogActions>
     </Dialog>

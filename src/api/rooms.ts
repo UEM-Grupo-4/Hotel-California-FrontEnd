@@ -1,6 +1,6 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { dataMockRooms } from "../mocks/dataMockRooms";
-import type { Amenity, AmenityRequest, Room, RoomType } from "../types/rooms";
+import type { Amenity, RoomType, AmenityRequest, Room, RoomTypeRequest } from "../types/rooms";
 import { api } from "./axios";
 import { apiRoutes } from "./apiRoutes";
 
@@ -10,7 +10,7 @@ const getRoomsRequest = async (): Promise<Room[]> => {
   return data;
 };
 
-const getRoomsAmenitiesRequest = async (): Promise<Amenity[]> => {
+const getRoomsAmenitiesRequest = async (): Promise<RoomType[]> => {
   const { data } = await api.get(apiRoutes.roomsAmenities);
 
   return data;
@@ -52,24 +52,10 @@ const getRoomByIdRequest = async (roomId: number): Promise<Room> => {
   return room;
 };
 
-// TODO: Fix this
-const getAmenitiesForRoomType = async (roomType: number): Promise<Amenity[]> => {
-  const { data } = await api.get(`${apiRoutes.roomsAmenities}/${roomType}`);
-
-  return data;
-};
-
 export const useGetRoom = (roomId: number) => {
   return useQuery({
     queryKey: ["room", roomId],
     queryFn: () => getRoomByIdRequest(roomId),
-  });
-};
-
-export const useGetAmenitiesByRoomType = (roomTypeId: number) => {
-  return useQuery({
-    queryKey: ["room-type", roomTypeId],
-    queryFn: () => getAmenitiesForRoomType(roomTypeId),
   });
 };
 
@@ -79,8 +65,19 @@ const createAmenityRequest = async (amenity: AmenityRequest) => {
   return await api.post(apiRoutes.roomsAmenities, amenity);
 };
 
-const updateAmenityRequest = async (amenity: Amenity) => {
-  return await api.patch(`${apiRoutes.roomsAmenities}/${amenity.id}/`, amenity);
+const createRoomTypeRequest = async (roomType: AmenityRequest) => {
+  return await api.post(apiRoutes.roomsType, roomType);
+};
+
+export const useCreateRoomType = () => {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: (roomType: RoomTypeRequest) => createRoomTypeRequest(roomType),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["rooms-types"] });
+    },
+  });
 };
 
 export const useCreateAmenity = () => {
@@ -94,6 +91,16 @@ export const useCreateAmenity = () => {
   });
 };
 
+// Update
+
+const updateAmenityRequest = async (amenity: Amenity) => {
+  return await api.patch(`${apiRoutes.roomsAmenities}${amenity.id}/`, amenity);
+};
+
+const updateRoomTypeRequest = async (roomType: RoomType) => {
+  return await api.patch(`${apiRoutes.roomsType}${roomType.id}/`, roomType);
+};
+
 export const useUpdateAmenity = () => {
   const queryClient = useQueryClient();
 
@@ -101,6 +108,17 @@ export const useUpdateAmenity = () => {
     mutationFn: (amenity: Amenity) => updateAmenityRequest(amenity),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["amenities"] });
+    },
+  });
+};
+
+export const useUpdateRoomType = () => {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: (roomType: RoomType) => updateRoomTypeRequest(roomType),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["rooms-types"] });
     },
   });
 };

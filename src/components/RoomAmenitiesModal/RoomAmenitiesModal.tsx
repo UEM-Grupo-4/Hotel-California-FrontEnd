@@ -8,12 +8,12 @@ import {
 } from "@mui/material";
 import { useState } from "react";
 import { useCreateAmenity, useUpdateAmenity } from "../../api/rooms";
-import type { Amenity } from "../../types/rooms";
+import type { RoomType } from "../../types/rooms";
 
 type Props = {
   open: boolean;
   onClose: () => void;
-  amenity: Amenity | null;
+  amenity: RoomType | null;
 };
 
 export function AmenityModal({ open, onClose, amenity }: Readonly<Props>) {
