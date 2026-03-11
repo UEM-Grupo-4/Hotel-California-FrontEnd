@@ -1,5 +1,4 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { dataMockRooms } from "../mocks/dataMockRooms";
 import type {
   Amenity,
   RoomType,
@@ -11,6 +10,7 @@ import type {
 } from "../types/rooms";
 import { api } from "./axios";
 import { apiRoutes } from "./apiRoutes";
+import { showError } from "../utils/showNotification";
 
 const buildRoomToApi = (room: RoomUpdate | RoomRequest) => {
   const formData = new FormData();
@@ -27,21 +27,42 @@ const buildRoomToApi = (room: RoomUpdate | RoomRequest) => {
 };
 
 const getRoomsRequest = async (): Promise<Room[]> => {
-  const { data } = await api.get(apiRoutes.rooms);
+  try {
+    const { data } = await api.get(apiRoutes.rooms);
 
-  return data;
+    return data;
+  } catch (error) {
+    showError("Hubo un error obteniendo las habitaciones");
+    console.error(error);
+
+    throw new Error("Hubo un error obteniendo las habitaciones");
+  }
 };
 
 const getRoomsAmenitiesRequest = async (): Promise<RoomType[]> => {
-  const { data } = await api.get(apiRoutes.roomsAmenities);
+  try {
+    const { data } = await api.get(apiRoutes.roomsAmenities);
 
-  return data;
+    return data;
+  } catch (error) {
+    showError("Hubo un error obteniendo los amenities");
+    console.error(error);
+
+    throw new Error("Hubo un error obteniendo los amenities");
+  }
 };
 
 const getRoomsTypesRequest = async (): Promise<RoomType[]> => {
-  const { data } = await api.get(apiRoutes.roomsType);
+  try {
+    const { data } = await api.get(apiRoutes.roomsType);
 
-  return data;
+    return data;
+  } catch (error) {
+    showError("Hubo un error obteniendo los room type");
+    console.error(error);
+
+    throw new Error("Hubo un error obteniendo los room type");
+  }
 };
 
 export const useRooms = () => {
@@ -62,22 +83,6 @@ export const useRoomsAmenities = () => {
   return useQuery({
     queryKey: ["amenities"],
     queryFn: () => getRoomsAmenitiesRequest(),
-  });
-};
-
-// GET BY ID
-
-const getRoomByIdRequest = async (roomId: number): Promise<Room> => {
-  const room = await Promise.resolve(dataMockRooms.find((room) => room.id === roomId));
-  if (!room) return dataMockRooms[0];
-
-  return room;
-};
-
-export const useGetRoom = (roomId: number) => {
-  return useQuery({
-    queryKey: ["room", roomId],
-    queryFn: () => getRoomByIdRequest(roomId),
   });
 };
 
@@ -106,6 +111,9 @@ export const useCreateRoom = () => {
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["rooms"] });
     },
+    onError: () => {
+      showError("Hubo un error creando la habitación");
+    },
   });
 };
 
@@ -117,6 +125,9 @@ export const useCreateRoomType = () => {
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["rooms-types"] });
     },
+    onError: () => {
+      showError("Hubo un error creando el room type");
+    },
   });
 };
 
@@ -127,6 +138,9 @@ export const useCreateAmenity = () => {
     mutationFn: (amenity: AmenityRequest) => createAmenityRequest(amenity),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["amenities"] });
+    },
+    onError: () => {
+      showError("Hubo un error creando el amenity");
     },
   });
 };
@@ -156,6 +170,9 @@ export const useUpdateRoom = () => {
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["rooms"] });
     },
+    onError: () => {
+      showError("Hubo un error actualizando la habitación");
+    },
   });
 };
 
@@ -167,6 +184,9 @@ export const useUpdateRoomType = () => {
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["rooms-types"] });
     },
+    onError: () => {
+      showError("Hubo un error actualizando el room type");
+    },
   });
 };
 
@@ -177,6 +197,9 @@ export const useUpdateAmenity = () => {
     mutationFn: (amenity: Amenity) => updateAmenityRequest(amenity),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["amenities"] });
+    },
+    onError: () => {
+      showError("Hubo un error actualizando el amenity");
     },
   });
 };

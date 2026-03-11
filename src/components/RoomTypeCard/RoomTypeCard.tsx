@@ -1,9 +1,9 @@
-import { Card, CardContent, Typography, Chip, Stack, Grid, IconButton } from "@mui/material";
+import { Card, CardContent, Typography, Stack, Grid, IconButton } from "@mui/material";
 import type { RoomType } from "../../types/rooms";
-import { useRoomsAmenities } from "../../api/rooms";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
-import { useCallback } from "react";
+import { useMapAmenitiesOnRoomType } from "../../hooks/useMapAmenitiesOnRoomType";
+import AmenitiesChips from "../AmenitiesChips/AmenitiesChips";
 
 type Props = {
   roomType: RoomType;
@@ -11,13 +11,7 @@ type Props = {
 };
 
 export function RoomTypeCard({ roomType, onEdit }: Readonly<Props>) {
-  const { data: amenities = [] } = useRoomsAmenities();
-  const findAmenityById = useCallback(
-    (idToFind: number) => {
-      return amenities.find((amenity) => amenity.id === idToFind);
-    },
-    [amenities],
-  );
+  const { mapAmenitiesOnRoomType } = useMapAmenitiesOnRoomType();
 
   return (
     <Card sx={{ height: "100%" }}>
@@ -46,12 +40,10 @@ export function RoomTypeCard({ roomType, onEdit }: Readonly<Props>) {
 
           <Typography variant="body2">${roomType.price_per_night} por noche</Typography>
 
-          <Stack direction="row" spacing={1} flexWrap="wrap">
-            {roomType?.amenities?.map((amenityId) => {
-              const amenity = findAmenityById(amenityId);
-              if (amenity) return <Chip key={amenity.id} label={amenity.name} size="small" />;
-            })}
-          </Stack>
+          <AmenitiesChips
+            amenities={roomType?.amenities ?? []}
+            mapAmenitiesOnRoomType={mapAmenitiesOnRoomType}
+          />
         </Stack>
       </CardContent>
     </Card>

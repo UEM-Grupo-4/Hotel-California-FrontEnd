@@ -4,7 +4,7 @@ import { useLogin } from "../../api/auth";
 import LoginBackgroundImage from "../../assets/LoginBackground.jpeg";
 
 const Login = () => {
-  const { mutate: loginMutate, isPending } = useLogin();
+  const { mutate: loginMutate, isPending, isError } = useLogin();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
@@ -44,6 +44,9 @@ const Login = () => {
               onChange={(e) => handleChangeInputs(e.target.value, setPassword)}
               margin="normal"
             />
+            {isError && (
+              <Typography color="error">{"Hay un error en tu mail o contraseña"}</Typography>
+            )}
 
             <Button
               fullWidth
@@ -58,7 +61,6 @@ const Login = () => {
         </Box>
       </Container>
     </LoginBackground>
-
   );
 };
 
