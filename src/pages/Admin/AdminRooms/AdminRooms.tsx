@@ -9,6 +9,7 @@ import { useRooms } from "../../../api/rooms";
 
 function AdminRooms() {
   const { data: rooms = [] } = useRooms();
+  const { mapAmenitiesOnRoomType } = useMapAmenitiesOnRoomType();
 
   const {
     items: roomsList,
@@ -18,7 +19,6 @@ function AdminRooms() {
     openEdit,
     closeModal,
   } = useAdminResource(rooms);
-  const { mapAmenitiesOnRoomType } = useMapAmenitiesOnRoomType();
 
   return (
     <>
