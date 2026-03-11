@@ -4,7 +4,7 @@ import { useState } from "react";
 const INITIAL_VALUE = {
   startDate: undefined,
   endDate: undefined,
-  type: undefined,
+  type: "",
   people: 1,
 };
 

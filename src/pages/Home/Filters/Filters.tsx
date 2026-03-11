@@ -4,9 +4,12 @@ import DatePickerFilter from "../../../components/DatePickerFilter/DatePickerFil
 import FiltersTitle from "./FiltersTitle";
 import { useRoomsFilters } from "../../../hooks/useRoomsFilters";
 import BackgroundImage from "../../../assets/background.jpeg";
+import { useRoomsTypes } from "../../../api/rooms";
 
 function Filters() {
+  const { data: roomsTypes = [] } = useRoomsTypes();
   const { roomsFilters, onChangeFilters } = useRoomsFilters();
+  console.log(roomsTypes);
 
   return (
     <HomeBackground>
@@ -42,8 +45,19 @@ function Filters() {
                   onChange={(event) => onChangeFilters("type", event.target.value)}
                   fullWidth
                   size="small"
+                  slotProps={{
+                    select: {
+                      MenuProps: {
+                        disableScrollLock: true,
+                      },
+                    },
+                  }}
                 >
-                  <MenuItem value={"suit"}>Suite</MenuItem>
+                  {roomsTypes?.map((type) => (
+                    <MenuItem key={type.id} value={type.id}>
+                      {type.name}
+                    </MenuItem>
+                  ))}
                 </TextField>
               </Box>
 
