@@ -3,18 +3,28 @@ import { Grid } from "@mui/material";
 import { AdminSection } from "../AdminSection/AdminSection";
 import { RoomCard } from "../../../components/RoomCard/RoomCard";
 import { RoomCreateModal } from "../../../components/RoomModal/RoomModal";
-import { useAdminRooms } from "../../../hooks/useAdminRooms";
 import { useMapAmenitiesOnRoomType } from "../../../hooks/useMapAmenitiesOnRoomType";
+import { useAdminResource } from "../../../hooks/useAdminResource";
+import { useRooms } from "../../../api/rooms";
 
 function AdminRooms() {
-  const { rooms, selectedRoom, isModalOpen, openCreate, openEdit, closeModal } = useAdminRooms();
+  const { data: rooms = [] } = useRooms();
+
+  const {
+    items: roomsList,
+    selectedItem: selectedRoom,
+    isModalOpen,
+    openCreate,
+    openEdit,
+    closeModal,
+  } = useAdminResource(rooms);
   const { mapAmenitiesOnRoomType } = useMapAmenitiesOnRoomType();
 
   return (
     <>
       <AdminSection title="Rooms" onCreate={openCreate} isEmpty={isEmpty(rooms)}>
         <Grid container spacing={2}>
-          {rooms?.map((room) => (
+          {roomsList?.map((room) => (
             <Grid size={12} key={room.id}>
               <RoomCard
                 room={room}

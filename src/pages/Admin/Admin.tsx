@@ -5,7 +5,7 @@ import AdminRooms from "./AdminRooms/AdminRooms";
 
 const Admin = () => {
   return (
-    <Container maxWidth="md" sx={{ mt: 2, gap: 2 }}>
+    <Container maxWidth="md" sx={{ py: 2, gap: 2 }}>
       <AdminRooms />
       <AdminRoomsType />
       <AdminAmenities />
