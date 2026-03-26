@@ -1,5 +1,5 @@
-import type { PickerValue } from "@mui/x-date-pickers/internals";
 import { useState } from "react";
+import type { RoomFiltersUI } from "../types/rooms";
 
 const INITIAL_VALUE = {
   startDate: undefined,
@@ -8,17 +8,10 @@ const INITIAL_VALUE = {
   people: 1,
 };
 
-type FiltersType = {
-  startDate?: PickerValue;
-  endDate?: PickerValue;
-  type?: string;
-  people: number;
-};
-
 export const useRoomsFilters = () => {
-  const [roomsFilters, setRoomsFilters] = useState<FiltersType>(INITIAL_VALUE);
+  const [roomsFilters, setRoomsFilters] = useState<RoomFiltersUI>(INITIAL_VALUE);
 
-  const onChangeFilters = <K extends keyof FiltersType>(name: K, value: FiltersType[K]) => {
+  const onChangeFilters = <K extends keyof RoomFiltersUI>(name: K, value: RoomFiltersUI[K]) => {
     setRoomsFilters((prevState) => ({
       ...prevState,
       [name]: value,

@@ -1,5 +1,6 @@
 import {
   Box,
+  Button,
   Card,
   CardContent,
   CardMedia,
@@ -15,9 +16,10 @@ type Props = {
   room: Room;
   mapAmenitiesOnRoomType: (amenityId: number) => Amenity | undefined;
   onEdit?: (room: Room) => void;
+  isSearch?: boolean;
 };
 
-export function RoomCard({ room, mapAmenitiesOnRoomType }: Readonly<Props>) {
+export function RoomCard({ room, mapAmenitiesOnRoomType, isSearch }: Readonly<Props>) {
   return (
     <StyledCard>
       <Box sx={{ width: 300 }}>
@@ -45,6 +47,11 @@ export function RoomCard({ room, mapAmenitiesOnRoomType }: Readonly<Props>) {
             amenities={room?.type?.amenities ?? []}
             mapAmenitiesOnRoomType={mapAmenitiesOnRoomType}
           />
+          {isSearch && (
+            <Button variant="contained" sx={{ marginTop: "auto" }}>
+              Reservar
+            </Button>
+          )}
         </RoomFooter>
       </RoomContent>
     </StyledCard>
@@ -66,4 +73,5 @@ const RoomFooter = styled(Grid)`
   display: flex;
   flex-direction: column;
   margin-top: 8px;
+  height: 100%;
 `;

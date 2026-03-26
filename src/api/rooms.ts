@@ -7,6 +7,7 @@ import type {
   RoomTypeRequest,
   RoomRequest,
   RoomUpdate,
+  RoomFiltersParams,
 } from "../types/rooms";
 import { api } from "./axios";
 import { apiRoutes } from "./apiRoutes";
@@ -65,6 +66,27 @@ const getRoomsTypesRequest = async (): Promise<RoomType[]> => {
   }
 };
 
+const getRoomsByAvailability = async ({
+  startDate,
+  endDate,
+  people,
+}: RoomFiltersParams): Promise<Room[]> => {
+  try {
+    const { data } = await api.get(
+      `${apiRoutes.bookingsAvailableRooms}?fecha_inicio=${startDate}&fecha_fin=${endDate}&huespedes=${people}`,
+    );
+
+    return data;
+  } catch (error) {
+    showError("Hubo un error obteniendo los rooms");
+    console.error(error);
+
+    throw new Error("Hubo un error obteniendo los rooms");
+  }
+};
+
+// GETS
+
 export const useRooms = () => {
   return useQuery({
     queryKey: ["rooms"],
@@ -83,6 +105,17 @@ export const useRoomsAmenities = () => {
   return useQuery({
     queryKey: ["amenities"],
     queryFn: () => getRoomsAmenitiesRequest(),
+  });
+};
+
+export const useRoomsByAvailability = (
+  params: RoomFiltersParams,
+  options?: { enabled?: boolean },
+) => {
+  return useQuery({
+    queryKey: ["rooms", params],
+    queryFn: () => getRoomsByAvailability(params),
+    enabled: options?.enabled,
   });
 };
 

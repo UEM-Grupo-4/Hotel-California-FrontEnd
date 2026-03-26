@@ -1,15 +1,30 @@
-import { Box, Button, Card, Container, Grid, MenuItem, styled, TextField } from "@mui/material";
+import { Box, Button, Card, Container, Grid, styled } from "@mui/material";
 import NumberField from "../../../components/NumberField/NumberField";
 import DatePickerFilter from "../../../components/DatePickerFilter/DatePickerFilter";
 import FiltersTitle from "./FiltersTitle";
 import { useRoomsFilters } from "../../../hooks/useRoomsFilters";
 import BackgroundImage from "../../../assets/background.jpeg";
-import { useRoomsTypes } from "../../../api/rooms";
+import { useNavigate } from "react-router-dom";
+import { useMemo } from "react";
+import { mapFiltersToParams } from "../../../utils/dates";
 
 function Filters() {
-  const { data: roomsTypes = [] } = useRoomsTypes();
   const { roomsFilters, onChangeFilters } = useRoomsFilters();
-  console.log(roomsTypes);
+  const navigate = useNavigate();
+
+  const disabledSearchButton = useMemo(
+    () => !roomsFilters.startDate || !roomsFilters.endDate || !roomsFilters.people,
+    [roomsFilters],
+  );
+
+  const handleSearch = () => {
+    if (disabledSearchButton) return;
+    const mappedFilters = mapFiltersToParams(roomsFilters);
+
+    navigate(
+      `/?startDate=${mappedFilters?.startDate}&endDate=${mappedFilters?.endDate}&people=${mappedFilters?.people}`,
+    );
+  };
 
   return (
     <HomeBackground>
@@ -37,31 +52,6 @@ function Filters() {
               </Box>
 
               <Box flex={2}>
-                <TextField
-                  select
-                  label="Tipo"
-                  name="type"
-                  value={roomsFilters.type}
-                  onChange={(event) => onChangeFilters("type", event.target.value)}
-                  fullWidth
-                  size="small"
-                  slotProps={{
-                    select: {
-                      MenuProps: {
-                        disableScrollLock: true,
-                      },
-                    },
-                  }}
-                >
-                  {roomsTypes?.map((type) => (
-                    <MenuItem key={type.id} value={type.id}>
-                      {type.name}
-                    </MenuItem>
-                  ))}
-                </TextField>
-              </Box>
-
-              <Box flex={2}>
                 <NumberField
                   label="Personas"
                   size="small"
@@ -72,7 +62,9 @@ function Filters() {
                 />
               </Box>
 
-              <Button variant="contained">Buscar</Button>
+              <Button variant="contained" onClick={handleSearch} disabled={disabledSearchButton}>
+                Buscar
+              </Button>
             </Box>
           </Card>
         </Grid>

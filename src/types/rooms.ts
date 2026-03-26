@@ -1,3 +1,5 @@
+import type { PickerValue } from "@mui/x-date-pickers/internals";
+
 export interface Room {
   id: number;
   number: string;
@@ -18,6 +20,18 @@ export interface Amenity {
   id: number;
   name: string;
 }
+
+export type RoomFiltersParams = {
+  startDate: string;
+  endDate: string;
+  people: number;
+};
+
+export type RoomFiltersUI = {
+  startDate?: PickerValue;
+  endDate?: PickerValue;
+  people: number;
+};
 
 export type RoomRequest = Omit<Room, "id" | "image"> & { image?: File };
 
