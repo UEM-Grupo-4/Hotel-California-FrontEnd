@@ -7,14 +7,25 @@ import BackgroundImage from "../../../assets/background.jpeg";
 import { useNavigate } from "react-router-dom";
 import { useMemo } from "react";
 import { mapFiltersToParams } from "../../../utils/dates";
+import dayjs from "dayjs";
 
 function Filters() {
   const { roomsFilters, onChangeFilters } = useRoomsFilters();
   const navigate = useNavigate();
 
+  const isInvalidDateRange = useMemo(() => {
+    if (!roomsFilters.startDate || !roomsFilters.endDate) return false;
+
+    return dayjs(roomsFilters.endDate).isBefore(dayjs(roomsFilters.startDate));
+  }, [roomsFilters]);
+
   const disabledSearchButton = useMemo(
-    () => !roomsFilters.startDate || !roomsFilters.endDate || !roomsFilters.people,
-    [roomsFilters],
+    () =>
+      !roomsFilters.startDate ||
+      !roomsFilters.endDate ||
+      !roomsFilters.people ||
+      isInvalidDateRange,
+    [roomsFilters, isInvalidDateRange],
   );
 
   const handleSearch = () => {
@@ -46,6 +57,7 @@ function Filters() {
                 <DatePickerFilter
                   value={roomsFilters.endDate}
                   label="Salida"
+                  minDate={roomsFilters.startDate ?? undefined}
                   onChange={(value) => onChangeFilters("endDate", value)}
                   width={180}
                 />
