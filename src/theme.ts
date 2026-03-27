@@ -25,6 +25,10 @@ export const theme = createTheme({
           "&:active": {
             backgroundColor: "#B87E12",
           },
+
+          "&:disabled": {
+            border: "none",
+          },
         },
       },
     },

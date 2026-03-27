@@ -4,9 +4,13 @@ import { RoomCard } from "../../../components/RoomCard/RoomCard";
 import { noop } from "lodash";
 import { useMapAmenitiesOnRoomType } from "../../../hooks/useMapAmenitiesOnRoomType";
 import { useRoomSearchParams } from "../../../hooks/useRoomSearchParams";
+import { BookingModal } from "../../../components/BookingModal/BookingModal";
+import { useState } from "react";
+import type { Room } from "../../../types/rooms";
 
 function RoomDetails() {
   const { mapAmenitiesOnRoomType } = useMapAmenitiesOnRoomType();
+  const [roomToBeBooked, setRoomToBeBooked] = useState<Room | undefined>(undefined);
   const { startDate, endDate, people, hasFilters } = useRoomSearchParams();
 
   const generalQuery = useRooms();
@@ -36,9 +40,19 @@ function RoomDetails() {
           room={room}
           onEdit={noop}
           mapAmenitiesOnRoomType={mapAmenitiesOnRoomType}
+          onBookRoom={setRoomToBeBooked}
           isSearch={hasFilters}
         />
       ))}
+      {roomToBeBooked && (
+        <BookingModal
+          open={!!roomToBeBooked}
+          onClose={() => setRoomToBeBooked(undefined)}
+          room={roomToBeBooked}
+          startDate={startDate!}
+          endDate={endDate!}
+        />
+      )}
     </Grid>
   );
 }

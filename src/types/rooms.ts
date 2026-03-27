@@ -33,6 +33,27 @@ export type RoomFiltersUI = {
   people: number;
 };
 
+export type CreateRoomBookingForm = {
+  name: string;
+  lastName1: string;
+  lastName2?: string;
+  email: string;
+  phone: string;
+  notes?: string;
+};
+
+export type CreateRoomBookingPayload = {
+  nombre: string;
+  apellido_1: string;
+  apellido_2?: string;
+  email: string;
+  telefono: string;
+  observaciones?: string;
+  habitacion: number;
+  fecha_inicio: string;
+  fecha_fin: string;
+};
+
 export type RoomRequest = Omit<Room, "id" | "image"> & { image?: File };
 
 export type RoomUpdate = Omit<Room, "image"> & { image?: File };

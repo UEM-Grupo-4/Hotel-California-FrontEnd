@@ -6,4 +6,5 @@ export const apiRoutes = {
   roomsAmenities: "/rooms/amenities/",
 
   bookingsAvailableRooms: "/bookings/habitaciones/disponibles/",
+  bookingsReservationRoom: "/bookings/reservas-habitaciones/",
 };

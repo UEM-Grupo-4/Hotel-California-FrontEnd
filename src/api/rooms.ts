@@ -12,6 +12,7 @@ import type {
 import { api } from "./axios";
 import { apiRoutes } from "./apiRoutes";
 import { showError } from "../utils/showNotification";
+import { mapBookingToApi, type CreateRoomBookingExtra } from "../utils/roomsUtils";
 
 const buildRoomToApi = (room: RoomUpdate | RoomRequest) => {
   const formData = new FormData();
@@ -132,6 +133,18 @@ const createAmenityRequest = async (amenity: AmenityRequest) => {
   return await api.post(apiRoutes.roomsAmenities, amenity);
 };
 
+const createRoomBooking = async ({ form, roomId, startDate, endDate }: CreateRoomBookingExtra) => {
+  const payload = mapBookingToApi(form, {
+    roomId,
+    startDate,
+    endDate,
+  });
+
+  const { data } = await api.post(apiRoutes.bookingsReservationRoom, payload);
+
+  return data;
+};
+
 export const useCreateRoom = () => {
   const queryClient = useQueryClient();
 
@@ -175,6 +188,12 @@ export const useCreateAmenity = () => {
     onError: () => {
       showError("Hubo un error creando el amenity");
     },
+  });
+};
+
+export const useCreateRoomBooking = () => {
+  return useMutation({
+    mutationFn: createRoomBooking,
   });
 };
 

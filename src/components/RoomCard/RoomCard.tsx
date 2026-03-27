@@ -17,9 +17,10 @@ type Props = {
   mapAmenitiesOnRoomType: (amenityId: number) => Amenity | undefined;
   onEdit?: (room: Room) => void;
   isSearch?: boolean;
+  onBookRoom?: (room: Room) => void;
 };
 
-export function RoomCard({ room, mapAmenitiesOnRoomType, isSearch }: Readonly<Props>) {
+export function RoomCard({ room, mapAmenitiesOnRoomType, isSearch, onBookRoom }: Readonly<Props>) {
   return (
     <StyledCard>
       <Box sx={{ width: 300 }}>
@@ -48,7 +49,11 @@ export function RoomCard({ room, mapAmenitiesOnRoomType, isSearch }: Readonly<Pr
             mapAmenitiesOnRoomType={mapAmenitiesOnRoomType}
           />
           {isSearch && (
-            <Button variant="contained" sx={{ marginTop: "auto" }}>
+            <Button
+              variant="contained"
+              sx={{ marginTop: "auto" }}
+              onClick={() => onBookRoom?.(room)}
+            >
               Reservar
             </Button>
           )}
