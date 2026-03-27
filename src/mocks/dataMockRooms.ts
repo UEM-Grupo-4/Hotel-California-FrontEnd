@@ -1,5 +1,3 @@
-import type { Room } from "../types/rooms";
-
 export const EMPTY_ROOM = {
   id: undefined,
   name: "",
@@ -23,66 +21,3 @@ export const EMPTY_AMENITY = {
   id: undefined,
   name: "",
 };
-
-export const dataMockRooms: Room[] = [
-  {
-    id: 1,
-    name: "Suite Deluxe con Vista al Mar",
-    price: 120,
-    squareMeters: 50,
-    maxGuests: 4,
-    bedType: "King",
-    sight: "Mar",
-    image: "https://placehold.co/600x350?text=Suite_Deluxe",
-  },
-  {
-    id: 2,
-    name: "Habitación Doble Estándar",
-    price: 65,
-    squareMeters: 22,
-    maxGuests: 2,
-    bedType: "Doble",
-    sight: "Jardín",
-    image: "https://placehold.co/600x350?text=Doble_Estandar",
-  },
-  {
-    id: 3,
-    name: "Habitación Individual Comfort",
-    price: 50,
-    squareMeters: 18,
-    maxGuests: 1,
-    bedType: "Single",
-    sight: "Ciudad",
-    image: "https://placehold.co/600x350?text=Individual_Comfort",
-  },
-  {
-    id: 4,
-    name: "Suite Junior",
-    price: 95,
-    squareMeters: 35,
-    maxGuests: 3,
-    bedType: "Queen",
-    sight: "Piscina",
-    image: "https://placehold.co/600x350?text=Suite_Junior",
-  },
-  {
-    id: 5,
-    name: "Habitación Familiar",
-    price: 110,
-    squareMeters: 40,
-    maxGuests: 5,
-    bedType: "2 Dobles",
-    sight: "Jardín",
-    image: "https://placehold.co/600x350?text=Familiar",
-  },
-  {
-    id: 6,
-    name: "Habitación Doble Superior",
-    price: 75,
-    squareMeters: 28,
-    maxGuests: 2,
-    bedType: "Queen",
-    sight: "Ciudad",
-    image: "https://placehold.co/600x350?text=Doble_Superior",
-  },
-];

@@ -1,4 +1,3 @@
-// components/BookingModal.tsx
 import {
   Dialog,
   DialogTitle,
@@ -16,6 +15,7 @@ import type { CreateRoomBookingForm, Room } from "../../types/rooms";
 import { useCreateRoomBooking } from "../../api/rooms";
 import { showSuccess } from "../../utils/showNotification";
 import { mapApiErrors } from "../../utils/roomsUtils";
+import { useNavigate } from "react-router-dom";
 
 type Props = {
   open: boolean;
@@ -27,6 +27,7 @@ type Props = {
 
 export function BookingModal({ open, onClose, room, startDate, endDate }: Readonly<Props>) {
   const { mutate, isPending } = useCreateRoomBooking();
+  const navigate = useNavigate();
   const [errors, setErrors] = useState<Record<string, string | undefined>>({});
   const [form, setForm] = useState<CreateRoomBookingForm>({
     name: "",
@@ -38,6 +39,11 @@ export function BookingModal({ open, onClose, room, startDate, endDate }: Readon
 
   const handleChange = (key: keyof CreateRoomBookingForm, value: string) => {
     setForm((prev) => ({ ...prev, [key]: value }));
+
+    setErrors((prev) => ({
+      ...prev,
+      [key]: "",
+    }));
   };
 
   const submitButtonDisabled = useMemo(() => Object.values(form).some((value) => !value), [form]);
@@ -53,9 +59,11 @@ export function BookingModal({ open, onClose, room, startDate, endDate }: Readon
         endDate,
       },
       {
-        onSuccess: () => {
+        onSuccess: (data) => {
+          const code = data.code;
           onClose();
           showSuccess("Reserva generada con éxito");
+          navigate(`/mi-reserva?code=${code}`);
         },
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
         onError: (error: any) => {
@@ -109,6 +117,7 @@ export function BookingModal({ open, onClose, room, startDate, endDate }: Readon
           <TextField
             label="Teléfono"
             type="tel"
+            placeholder="+34123456789"
             error={!!errors.phone}
             helperText={errors.phone}
             onChange={(e) => handleChange("phone", e.target.value)}

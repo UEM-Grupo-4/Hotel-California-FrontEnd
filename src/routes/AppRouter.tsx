@@ -5,7 +5,7 @@ import Home from "../pages/Home/Home";
 import Admin from "../pages/Admin/Admin";
 import Layout from "../components/Layout/Layout";
 import Contact from "../pages/Contact/Contact";
-import Booking from "../pages/Booking/Booking";
+import MyBooking from "../pages/MyBooking/MyBooking";
 
 export const AppRouter = () => (
   <BrowserRouter>
@@ -13,7 +13,7 @@ export const AppRouter = () => (
       <Route element={<Layout />}>
         <Route path="/" element={<Home />} />
         <Route path="/login" element={<Login />} />
-        <Route path="/mi-reserva" element={<Booking />} />
+        <Route path="/mi-reserva" element={<MyBooking />} />
         <Route path="/contacto" element={<Contact />} />
         <Route element={<RequireAuth />}>
           <Route path="/admin" element={<Admin />} />

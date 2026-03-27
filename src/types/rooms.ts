@@ -41,16 +41,54 @@ export type CreateRoomBookingForm = {
   notes?: string;
 };
 
-export type CreateRoomBookingPayload = {
+export type CreateRoomBookingPayload = Omit<Customer, "id"> &
+  RoomBookingDetail & {
+    telefono: string;
+    observaciones?: string;
+  };
+
+export type MyBookReservation = {
+  code?: string;
+  email?: string;
+};
+
+export type BookingStatus = "PENDIENTE" | "CONFIRMADA" | "RECHAZADA" | "CANCELADA";
+
+export type BookingType = "HABITACION" | "SALA";
+
+export type Customer = {
+  id: number;
   nombre: string;
   apellido_1: string;
   apellido_2?: string;
   email: string;
-  telefono: string;
-  observaciones?: string;
+};
+
+export type RoomBookingDetail = {
   habitacion: number;
   fecha_inicio: string;
   fecha_fin: string;
+};
+
+export type RoomMeetingDetail = {
+  sala: number;
+  fecha: string;
+  hora_inicio: string;
+  hora_fin: string;
+};
+
+export type Booking = {
+  id: number;
+  code: string;
+  fecha_creacion: string;
+  estado: BookingStatus;
+  tipo_reserva: BookingType;
+  observaciones: string;
+
+  cliente: Customer;
+
+  reserva_habitacion: RoomBookingDetail | null;
+  reserva_sala: RoomMeetingDetail | null;
 };
 
 export type RoomRequest = Omit<Room, "id" | "image"> & { image?: File };

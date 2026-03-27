@@ -8,11 +8,14 @@ import type {
   RoomRequest,
   RoomUpdate,
   RoomFiltersParams,
+  MyBookReservation,
+  Booking,
 } from "../types/rooms";
 import { api } from "./axios";
 import { apiRoutes } from "./apiRoutes";
 import { showError } from "../utils/showNotification";
 import { mapBookingToApi, type CreateRoomBookingExtra } from "../utils/roomsUtils";
+import { sleep } from "../utils/timeout";
 
 const buildRoomToApi = (room: RoomUpdate | RoomRequest) => {
   const formData = new FormData();
@@ -86,6 +89,22 @@ const getRoomsByAvailability = async ({
   }
 };
 
+const getBookByCodeAndEmail = async ({ code, email }: MyBookReservation): Promise<Booking> => {
+  try {
+    const { data } = await api.get(`${apiRoutes.bookMyRoom}?code=${code}&email=${email}`);
+    console.log(data);
+
+    await sleep(800);
+
+    return data;
+  } catch (error) {
+    showError("Hubo un error obteniendo tu reserva");
+    console.error(error);
+
+    throw new Error("Hubo un error obteniendo tu reserva");
+  }
+};
+
 // GETS
 
 export const useRooms = () => {
@@ -117,6 +136,15 @@ export const useRoomsByAvailability = (
     queryKey: ["rooms", params],
     queryFn: () => getRoomsByAvailability(params),
     enabled: options?.enabled,
+  });
+};
+
+export const useBookingByCode = (code?: string, email?: string) => {
+  return useQuery({
+    queryKey: ["booking", code, email],
+    queryFn: () => getBookByCodeAndEmail({ code, email }),
+    retry: false,
+    enabled: false,
   });
 };
 
