@@ -15,6 +15,7 @@ import FlightTakeoffIcon from "@mui/icons-material/FlightTakeoff";
 import type { CreateRoomBookingForm, Room } from "../../types/rooms";
 import { useCreateRoomBooking } from "../../api/rooms";
 import { showSuccess } from "../../utils/showNotification";
+import { mapApiErrors } from "../../utils/roomsUtils";
 
 type Props = {
   open: boolean;
@@ -26,10 +27,10 @@ type Props = {
 
 export function BookingModal({ open, onClose, room, startDate, endDate }: Readonly<Props>) {
   const { mutate, isPending } = useCreateRoomBooking();
-
+  const [errors, setErrors] = useState<Record<string, string | undefined>>({});
   const [form, setForm] = useState<CreateRoomBookingForm>({
     name: "",
-    lastName1: "",
+    lastName: "",
     email: "",
     phone: "",
     notes: "",
@@ -56,6 +57,12 @@ export function BookingModal({ open, onClose, room, startDate, endDate }: Readon
           onClose();
           showSuccess("Reserva generada con éxito");
         },
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        onError: (error: any) => {
+          const apiErrors = error?.response?.data;
+          const mappedErrors = mapApiErrors(apiErrors);
+          setErrors(mappedErrors);
+        },
       },
     );
   };
@@ -77,27 +84,38 @@ export function BookingModal({ open, onClose, room, startDate, endDate }: Readon
             {endDate}
           </Typography>
 
-          <TextField label="First name" onChange={(e) => handleChange("name", e.target.value)} />
+          <TextField
+            label="Nombres"
+            error={!!errors.name}
+            helperText={errors.name}
+            onChange={(e) => handleChange("name", e.target.value)}
+          />
 
           <TextField
-            label="Last name"
-            onChange={(e) => handleChange("lastName1", e.target.value)}
+            label="Apellidos"
+            error={!!errors.lastName}
+            helperText={errors.lastName}
+            onChange={(e) => handleChange("lastName", e.target.value)}
           />
 
           <TextField
             type="email"
             label="Email"
+            error={!!errors.email}
+            helperText={errors.email}
             onChange={(e) => handleChange("email", e.target.value)}
           />
 
           <TextField
-            label="Phone"
+            label="Teléfono"
             type="tel"
+            error={!!errors.phone}
+            helperText={errors.phone}
             onChange={(e) => handleChange("phone", e.target.value)}
           />
 
           <TextField
-            label="Notes"
+            label="Notas"
             multiline
             rows={3}
             onChange={(e) => handleChange("notes", e.target.value)}

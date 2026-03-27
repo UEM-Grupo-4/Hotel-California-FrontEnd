@@ -35,8 +35,7 @@ export type RoomFiltersUI = {
 
 export type CreateRoomBookingForm = {
   name: string;
-  lastName1: string;
-  lastName2?: string;
+  lastName: string;
   email: string;
   phone: string;
   notes?: string;
