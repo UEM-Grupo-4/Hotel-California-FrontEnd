@@ -12,8 +12,8 @@ import { useState } from "react";
 import { useBookingSearchParams } from "../../hooks/useBookingSearchParams";
 import { useBookingByCode } from "../../api/rooms";
 import { LoadingPage } from "../../components/LoadingPage/LoadingPage";
-
-const backgroundImage = "https://placehold.co/600x350?text=Suite_Deluxe";
+import BackgroundImage from "../../assets/wallpaper_reserva.jpg";
+import { BookingDetailCard } from "./BookindDetailCard";
 
 const MyBooking = () => {
   const { code: initialCode } = useBookingSearchParams();
@@ -32,57 +32,41 @@ const MyBooking = () => {
     <BookingBackground>
       {isLoading && <LoadingPage open={isLoading} />}
       <Container maxWidth="sm">
-        <Card sx={{ backdropFilter: "blur(10px)", background: "rgba(255,255,255,0.9)" }}>
-          <CardContent>
-            <Stack spacing={3}>
-              <Typography variant="h4" textAlign="center">
-                Find your booking
-              </Typography>
+        {!data && (
+          <Card sx={{ backdropFilter: "blur(10px)", background: "rgba(255,255,255,0.9)" }}>
+            <CardContent>
+              <Stack spacing={3}>
+                <Typography variant="h4" textAlign="center">
+                  Buscar mi reserva
+                </Typography>
 
-              <TextField
-                label="Booking Code"
-                value={code}
-                onChange={(e) => setCode(e.target.value.toUpperCase())}
-              />
+                <TextField
+                  label="Código de reserva"
+                  value={code}
+                  onChange={(e) => setCode(e.target.value.toUpperCase())}
+                />
 
-              <TextField
-                label="Email"
-                type="email"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-              />
+                <TextField
+                  label="Email"
+                  type="email"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                />
 
-              <Button variant="contained" onClick={handleSearch}>
-                Search booking
-              </Button>
+                <Button variant="contained" onClick={handleSearch}>
+                  Buscar
+                </Button>
 
-              {isError && (
-                <Typography color="error">Booking not found. Check your code and email.</Typography>
-              )}
-
-              {data && (
-                <Card sx={{ mt: 2 }}>
-                  <CardContent>
-                    <Typography variant="h6">Booking #{data.code}</Typography>
-
-                    <Typography>Status: {data.estado}</Typography>
-
-                    <Typography>
-                      Guest: {data.cliente.nombre} {data.cliente.apellido_1}
-                    </Typography>
-
-                    {data.reserva_habitacion && (
-                      <>
-                        <Typography>Check-in: {data.reserva_habitacion.fecha_inicio}</Typography>
-                        <Typography>Check-out: {data.reserva_habitacion.fecha_fin}</Typography>
-                      </>
-                    )}
-                  </CardContent>
-                </Card>
-              )}
-            </Stack>
-          </CardContent>
-        </Card>
+                {isError && !data && (
+                  <Typography color="error">
+                    No encontramos tu reserva. Revisá los datos.
+                  </Typography>
+                )}
+              </Stack>
+            </CardContent>
+          </Card>
+        )}
+        {data && <BookingDetailCard booking={data} />}
       </Container>
     </BookingBackground>
   );
@@ -91,7 +75,7 @@ const MyBooking = () => {
 const BookingBackground = styled("section")({
   width: "100%",
   height: "100%",
-  backgroundImage: `url(${backgroundImage})`,
+  backgroundImage: `url(${BackgroundImage})`,
   backgroundRepeat: "no-repeat",
   backgroundPosition: "center",
   backgroundSize: "cover",

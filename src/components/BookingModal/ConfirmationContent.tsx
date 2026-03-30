@@ -59,7 +59,7 @@ export function ConfirmationContent({
 
         <Grid container gap={2}>
           <Button fullWidth variant="outlined" onClick={onClose}>
-            Back to home
+            Volver al inicio
           </Button>
 
           <Button
@@ -67,7 +67,7 @@ export function ConfirmationContent({
             variant="contained"
             onClick={() => navigate(`/mi-reserva?code=${bookingCode}`)}
           >
-            View booking
+            Mi reserva
           </Button>
         </Grid>
       </Stack>

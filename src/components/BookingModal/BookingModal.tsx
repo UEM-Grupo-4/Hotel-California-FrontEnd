@@ -5,6 +5,7 @@ import { ConfirmationContent } from "./ConfirmationContent";
 import { useBookingCreation } from "../../hooks/useBookingCreation";
 import { BookingForm } from "./BookingForm";
 import { noop } from "lodash";
+import { useNavigate } from "react-router-dom";
 
 type Props = {
   open: boolean;
@@ -24,13 +25,17 @@ export function BookingModal({ open, onClose, room, startDate, endDate }: Readon
     handleChange,
     handleSubmit,
   } = useBookingCreation({ room, startDate, endDate });
+  const navigate = useNavigate();
 
   return (
     <Dialog open={open} onClose={isSuccess ? noop : onClose} fullWidth>
       {isSuccess && bookingCode ? (
         <ConfirmationContent
           bookingCode={bookingCode}
-          onClose={onClose}
+          onClose={() => {
+            onClose();
+            navigate("/");
+          }}
           room={room}
           startDate={startDate}
           endDate={endDate}
