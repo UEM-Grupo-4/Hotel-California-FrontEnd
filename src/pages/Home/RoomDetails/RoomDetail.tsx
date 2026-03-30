@@ -1,4 +1,4 @@
-import { CircularProgress, Grid } from "@mui/material";
+import { Grid } from "@mui/material";
 import { useRooms, useRoomsByAvailability } from "../../../api/rooms";
 import { RoomCard } from "../../../components/RoomCard/RoomCard";
 import { isEmpty, noop } from "lodash";
@@ -8,6 +8,7 @@ import { BookingModal } from "../../../components/BookingModal/BookingModal";
 import { useMemo, useState } from "react";
 import type { Room } from "../../../types/rooms";
 import dayjs from "dayjs";
+import { LoadingPage } from "../../../components/LoadingPage/LoadingPage";
 
 function RoomDetails() {
   const { mapAmenitiesOnRoomType } = useMapAmenitiesOnRoomType();
@@ -35,7 +36,7 @@ function RoomDetails() {
     [startDate, endDate],
   );
 
-  if (isLoading) return <CircularProgress />;
+  if (isLoading) return <LoadingPage open={isLoading} />;
   if (isEmpty(rooms) || !rooms) return <span>No rooms</span>;
 
   return (

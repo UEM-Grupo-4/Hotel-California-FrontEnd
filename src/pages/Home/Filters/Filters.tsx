@@ -9,7 +9,11 @@ import { useMemo } from "react";
 import { mapFiltersToParams } from "../../../utils/dates";
 import dayjs from "dayjs";
 
-function Filters() {
+interface Props {
+  onSearchScroll: () => void;
+}
+
+function Filters({ onSearchScroll }: Readonly<Props>) {
   const { roomsFilters, onChangeFilters } = useRoomsFilters();
   const navigate = useNavigate();
 
@@ -35,6 +39,10 @@ function Filters() {
     navigate(
       `/?startDate=${mappedFilters?.startDate}&endDate=${mappedFilters?.endDate}&people=${mappedFilters?.people}`,
     );
+
+    setTimeout(() => {
+      onSearchScroll?.();
+    }, 100);
   };
 
   return (
