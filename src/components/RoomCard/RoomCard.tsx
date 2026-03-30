@@ -18,9 +18,19 @@ type Props = {
   onEdit?: (room: Room) => void;
   isSearch?: boolean;
   onBookRoom?: (room: Room) => void;
+  nights?: number;
 };
 
-export function RoomCard({ room, mapAmenitiesOnRoomType, isSearch, onBookRoom }: Readonly<Props>) {
+export function RoomCard({
+  room,
+  isSearch,
+  nights,
+  onBookRoom,
+  mapAmenitiesOnRoomType,
+}: Readonly<Props>) {
+  const pricePerNight = room?.type?.price_per_night ?? 0;
+  const totalPrice = (nights ?? 0) * pricePerNight;
+
   return (
     <StyledCard>
       <Box sx={{ width: 300 }}>
@@ -33,29 +43,44 @@ export function RoomCard({ room, mapAmenitiesOnRoomType, isSearch, onBookRoom }:
       </Box>
 
       <RoomContent>
-        <Typography variant="h4">
+        <Typography variant="h5">
           {room?.type?.name} - {room.number}
         </Typography>
 
         <Divider />
 
         <RoomFooter container>
-          <Typography variant="h6">{room.description}</Typography>
-          <Typography variant="h6">
-            $ {room?.type?.price_per_night} <span>por noche</span>
-          </Typography>
+          <Typography variant="body1">{room.description}</Typography>
+          {!nights && (
+            <Typography variant={"body1"}>
+              $ {pricePerNight} <span>per night</span>
+            </Typography>
+          )}
+
           <AmenitiesChips
             amenities={room?.type?.amenities ?? []}
             mapAmenitiesOnRoomType={mapAmenitiesOnRoomType}
           />
-          {isSearch && (
-            <Button
-              variant="contained"
-              sx={{ marginTop: "auto" }}
-              onClick={() => onBookRoom?.(room)}
-            >
-              Reservar
-            </Button>
+          {isSearch && nights && (
+            <Grid container justifyContent={"space-between"} sx={{ mt: "auto" }}>
+              <Box>
+                <Typography variant="body2" color="text.secondary">
+                  {nights} night{nights > 1 ? "s" : ""}, {room?.type?.capacity} persona
+                  {(room?.type?.capacity ?? 0 > 1) ? "s" : ""}
+                </Typography>
+
+                <Typography variant="h5" fontWeight="bold">
+                  Total: $ {totalPrice}
+                </Typography>
+              </Box>
+              <Button
+                variant="contained"
+                sx={{ marginTop: "auto" }}
+                onClick={() => onBookRoom?.(room)}
+              >
+                Reservar
+              </Button>
+            </Grid>
           )}
         </RoomFooter>
       </RoomContent>

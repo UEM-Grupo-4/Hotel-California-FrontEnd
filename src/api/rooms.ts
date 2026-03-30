@@ -15,7 +15,6 @@ import { api } from "./axios";
 import { apiRoutes } from "./apiRoutes";
 import { showError } from "../utils/showNotification";
 import { mapBookingToApi, type CreateRoomBookingExtra } from "../utils/roomsUtils";
-import { sleep } from "../utils/timeout";
 
 const buildRoomToApi = (room: RoomUpdate | RoomRequest) => {
   const formData = new FormData();
@@ -92,9 +91,6 @@ const getRoomsByAvailability = async ({
 const getBookByCodeAndEmail = async ({ code, email }: MyBookReservation): Promise<Booking> => {
   try {
     const { data } = await api.get(`${apiRoutes.bookMyRoom}?code=${code}&email=${email}`);
-    console.log(data);
-
-    await sleep(800);
 
     return data;
   } catch (error) {
@@ -145,6 +141,7 @@ export const useBookingByCode = (code?: string, email?: string) => {
     queryFn: () => getBookByCodeAndEmail({ code, email }),
     retry: false,
     enabled: false,
+    retryOnMount: true,
   });
 };
 

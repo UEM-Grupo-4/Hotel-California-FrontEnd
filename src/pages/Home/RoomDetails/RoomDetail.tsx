@@ -1,12 +1,13 @@
 import { CircularProgress, Grid } from "@mui/material";
 import { useRooms, useRoomsByAvailability } from "../../../api/rooms";
 import { RoomCard } from "../../../components/RoomCard/RoomCard";
-import { noop } from "lodash";
+import { isEmpty, noop } from "lodash";
 import { useMapAmenitiesOnRoomType } from "../../../hooks/useMapAmenitiesOnRoomType";
 import { useRoomSearchParams } from "../../../hooks/useRoomSearchParams";
 import { BookingModal } from "../../../components/BookingModal/BookingModal";
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import type { Room } from "../../../types/rooms";
+import dayjs from "dayjs";
 
 function RoomDetails() {
   const { mapAmenitiesOnRoomType } = useMapAmenitiesOnRoomType();
@@ -29,8 +30,13 @@ function RoomDetails() {
   const rooms = hasFilters ? availabilityQuery.data : generalQuery.data;
   const isLoading = hasFilters ? availabilityQuery.isLoading : generalQuery.isLoading;
 
+  const nights = useMemo(
+    () => (startDate && endDate ? dayjs(endDate).diff(dayjs(startDate), "day") : 0),
+    [startDate, endDate],
+  );
+
   if (isLoading) return <CircularProgress />;
-  if (!rooms) return <span>No rooms</span>;
+  if (isEmpty(rooms) || !rooms) return <span>No rooms</span>;
 
   return (
     <Grid container flexDirection={"column"} gap={3}>
@@ -42,6 +48,7 @@ function RoomDetails() {
           mapAmenitiesOnRoomType={mapAmenitiesOnRoomType}
           onBookRoom={setRoomToBeBooked}
           isSearch={hasFilters}
+          nights={nights}
         />
       ))}
       {roomToBeBooked && (
