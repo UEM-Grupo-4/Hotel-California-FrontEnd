@@ -9,11 +9,7 @@ import { useMemo } from "react";
 import { mapFiltersToParams } from "../../../utils/dates";
 import dayjs from "dayjs";
 
-interface Props {
-  onSearchScroll: () => void;
-}
-
-function Filters({ onSearchScroll }: Readonly<Props>) {
+function Filters() {
   const { roomsFilters, onChangeFilters } = useRoomsFilters();
   const navigate = useNavigate();
 
@@ -37,12 +33,8 @@ function Filters({ onSearchScroll }: Readonly<Props>) {
     const mappedFilters = mapFiltersToParams(roomsFilters);
 
     navigate(
-      `/?startDate=${mappedFilters?.startDate}&endDate=${mappedFilters?.endDate}&people=${mappedFilters?.people}`,
+      `/reservation/?startDate=${mappedFilters?.startDate}&endDate=${mappedFilters?.endDate}&people=${mappedFilters?.people}`,
     );
-
-    setTimeout(() => {
-      onSearchScroll?.();
-    }, 100);
   };
 
   return (
@@ -97,7 +89,7 @@ export default Filters;
 
 const HomeBackground = styled("section")({
   width: "100%",
-  height: "600px",
+  height: "100vh",
   backgroundImage: `url(${BackgroundImage})`,
   backgroundRepeat: "no-repeat",
   backgroundPosition: "center",

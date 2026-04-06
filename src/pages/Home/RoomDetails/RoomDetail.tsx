@@ -1,5 +1,5 @@
 import { Grid } from "@mui/material";
-import { useRooms, useRoomsByAvailability } from "../../../api/rooms";
+import { useRoomsByAvailability } from "../../../api/rooms";
 import { RoomCard } from "../../../components/RoomCard/RoomCard";
 import { isEmpty, noop } from "lodash";
 import { useMapAmenitiesOnRoomType } from "../../../hooks/useMapAmenitiesOnRoomType";
@@ -15,8 +15,6 @@ function RoomDetails() {
   const [roomToBeBooked, setRoomToBeBooked] = useState<Room | undefined>(undefined);
   const { startDate, endDate, people, hasFilters } = useRoomSearchParams();
 
-  const generalQuery = useRooms();
-
   const availabilityQuery = useRoomsByAvailability(
     {
       startDate: startDate!,
@@ -28,19 +26,19 @@ function RoomDetails() {
     },
   );
 
-  const rooms = hasFilters ? availabilityQuery.data : generalQuery.data;
-  const isLoading = hasFilters ? availabilityQuery.isLoading : generalQuery.isLoading;
+  const rooms = hasFilters ? availabilityQuery.data : [];
+  const isLoading = hasFilters ? availabilityQuery.isLoading : false;
 
   const nights = useMemo(
     () => (startDate && endDate ? dayjs(endDate).diff(dayjs(startDate), "day") : 0),
     [startDate, endDate],
   );
-
+  if (!availabilityQuery.isFetched) return <></>;
   if (isLoading) return <LoadingPage open={isLoading} />;
   if (isEmpty(rooms) || !rooms) return <span>No rooms</span>;
 
   return (
-    <Grid container flexDirection={"column"} gap={3}>
+    <Grid container flexDirection={"column"} gap={3} sx={{ p: 3 }}>
       {rooms.map((room) => (
         <RoomCard
           key={room.id}

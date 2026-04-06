@@ -6,16 +6,16 @@ import { useAuth } from "../../hooks/useAuth";
 
 const NAVBAR_BUTTONS = [
   {
-    displayName: "Buscar",
+    displayName: "Home",
     url: "/",
   },
   {
-    displayName: "Mi Reserva",
-    url: "/mi-reserva",
+    displayName: "Reservar",
+    url: "/reservation",
   },
   {
-    displayName: "Login",
-    url: "/login",
+    displayName: "Mi reserva",
+    url: "/mi-reserva",
   },
   {
     displayName: "Contacto",
@@ -43,7 +43,7 @@ function NavBar() {
   }, [isLogged]);
 
   return (
-    <Grid container justifyContent={"space-between"} alignItems={"center"}>
+    <Header>
       <Grid
         container
         size="auto"
@@ -58,7 +58,7 @@ function NavBar() {
           alt="Hotel California logo"
           sx={{ width: 35, height: 35 }}
         />
-        <Typography variant="h1" fontSize={24}>
+        <Typography variant="h1" fontSize={30} color="white">
           Hotel California
         </Typography>
       </Grid>
@@ -74,13 +74,25 @@ function NavBar() {
           })}
         </Tabs>
       </Grid>
-    </Grid>
+    </Header>
   );
 }
 
+const Header = styled("header")({
+  position: "fixed",
+  backgroundColor: "transparent",
+  display: "flex",
+  justifyContent: "space-around",
+  width: "100%",
+  zIndex: 100,
+  paddingTop: 8,
+});
+
 const NavTab = styled(Tab)({
-  color: "black",
-  textTransform: "capitalize",
+  color: "white",
+  fontSize: 18,
+  fontWeight: 600,
+  textTransform: "none",
 });
 
 export default NavBar;

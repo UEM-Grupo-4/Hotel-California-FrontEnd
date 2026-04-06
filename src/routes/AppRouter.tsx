@@ -6,12 +6,14 @@ import Admin from "../pages/Admin/Admin";
 import Layout from "../components/Layout/Layout";
 import Contact from "../pages/Contact/Contact";
 import MyBooking from "../pages/MyBooking/MyBooking";
+import Reservation from "../pages/Reservation/Reservation";
 
 export const AppRouter = () => (
   <BrowserRouter>
     <Routes>
       <Route element={<Layout />}>
         <Route path="/" element={<Home />} />
+        <Route path="/reservation" element={<Reservation />} />
         <Route path="/login" element={<Login />} />
         <Route path="/mi-reserva" element={<MyBooking />} />
         <Route path="/contacto" element={<Contact />} />
