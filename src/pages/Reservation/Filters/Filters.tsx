@@ -94,4 +94,15 @@ const HomeBackground = styled("section")({
   backgroundRepeat: "no-repeat",
   backgroundPosition: "center",
   backgroundSize: "cover",
+  "&::before": {
+    content: '""',
+    position: "absolute",
+    inset: 0,
+    backgroundColor: "rgba(0,0,0,0.6)",
+    zIndex: 1,
+  },
+  "& > *": {
+    position: "relative",
+    zIndex: 2,
+  },
 });

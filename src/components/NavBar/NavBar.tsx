@@ -1,5 +1,5 @@
 import { Box, Grid, styled, Tab, Tabs, Typography } from "@mui/material";
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import HotelCaliforniaLogo from "../../assets/favicon.png";
 import { useAuth } from "../../hooks/useAuth";
@@ -28,6 +28,24 @@ function NavBar() {
   const location = useLocation();
   const { isLogged } = useAuth();
   const [selectedTab, setSelectedTab] = useState(location.pathname);
+  const [isScrolled, setIsScrolled] = useState(false);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      setIsScrolled(window.scrollY > 50);
+    };
+
+    window.addEventListener("scroll", handleScroll);
+
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
+
+  useEffect(() => {
+    if (location.pathname != selectedTab) {
+      // eslint-disable-next-line react-hooks/set-state-in-effect
+      setSelectedTab(location.pathname);
+    }
+  }, [location.pathname, setSelectedTab, selectedTab]);
 
   const onClickTab = (_: React.SyntheticEvent, url: string) => {
     setSelectedTab(url);
@@ -43,7 +61,7 @@ function NavBar() {
   }, [isLogged]);
 
   return (
-    <Header>
+    <Header $isScrolled={isScrolled}>
       <Grid
         container
         size="auto"
@@ -78,15 +96,19 @@ function NavBar() {
   );
 }
 
-const Header = styled("header")({
+const Header = styled("header")<{ $isScrolled: boolean }>(({ $isScrolled }) => ({
   position: "fixed",
-  backgroundColor: "transparent",
   display: "flex",
   justifyContent: "space-around",
   width: "100%",
   zIndex: 100,
   paddingTop: 8,
-});
+
+  backgroundColor: $isScrolled ? "rgba(0,0,0,0.8)" : "transparent",
+  boxShadow: $isScrolled ? "0 2px 10px rgba(0,0,0,0.1)" : "none",
+  borderBottom: $isScrolled ? "1px solid rgba(0,0,0,0.1)" : "none",
+  transitionDuration: ".3s",
+}));
 
 const NavTab = styled(Tab)({
   color: "white",

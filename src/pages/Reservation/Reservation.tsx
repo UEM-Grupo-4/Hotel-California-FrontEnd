@@ -1,6 +1,6 @@
 import { Container, Grid } from "@mui/material";
 import Filters from "./Filters/Filters";
-import RoomDetails from "../Home/RoomDetails/RoomDetail";
+import RoomDetails from "./RoomDetails/RoomDetail";
 
 function Reservation() {
   return (

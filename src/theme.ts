@@ -11,6 +11,13 @@ export const theme = createTheme({
   },
 
   components: {
+    MuiTypography: {
+      styleOverrides: {
+        root: {
+          fontFamily: "Inclusive Sans",
+        },
+      },
+    },
     MuiButton: {
       styleOverrides: {
         containedPrimary: {

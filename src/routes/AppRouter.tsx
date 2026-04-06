@@ -7,6 +7,7 @@ import Layout from "../components/Layout/Layout";
 import Contact from "../pages/Contact/Contact";
 import MyBooking from "../pages/MyBooking/MyBooking";
 import Reservation from "../pages/Reservation/Reservation";
+import "react-responsive-carousel/lib/styles/carousel.min.css";
 
 export const AppRouter = () => (
   <BrowserRouter>
