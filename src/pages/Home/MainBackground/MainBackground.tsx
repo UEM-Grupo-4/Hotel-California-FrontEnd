@@ -100,6 +100,6 @@ const ScrollButton = styled(KeyboardArrowDownIcon)({
   position: "absolute",
   bottom: 20,
   fontSize: 40,
-  animation: `${scrollBounce} 1s infinite`,
+  animation: `${scrollBounce} 3s infinite`,
   cursor: "pointer",
 });

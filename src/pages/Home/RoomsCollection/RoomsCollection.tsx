@@ -22,6 +22,7 @@ function RoomsCollection() {
         alignItems={"center"}
         textAlign={"center"}
         height={"100vh"}
+        sx={{ ".carousel-slider": { overflow: "visible" } }}
       >
         <HomeSectionTitle title="ELEGANTE Y LUJOSO" subtitle="Habitaciones" />
         <Carousel
@@ -35,14 +36,14 @@ function RoomsCollection() {
           onChange={(index) => setCurrent(index)}
           renderArrowNext={(onClickHandler, hasNext) =>
             hasNext && (
-              <ArrowRight onClick={onClickHandler} sx={{ right: 16 }}>
+              <ArrowRight onClick={onClickHandler} sx={{ right: -20 }}>
                 <ArrowForwardIosIcon />
               </ArrowRight>
             )
           }
           renderArrowPrev={(onClickHandler, hasPrev) =>
             hasPrev && (
-              <ArrowLeft onClick={onClickHandler} sx={{ left: 16 }}>
+              <ArrowLeft onClick={onClickHandler} sx={{ left: -20 }}>
                 <ArrowBackIosNewIcon />
               </ArrowLeft>
             )

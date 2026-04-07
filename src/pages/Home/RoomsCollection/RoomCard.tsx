@@ -12,17 +12,21 @@ function RoomCard({ room, mapAmenitiesOnRoomType }: Readonly<Props>) {
     <StyledCard>
       <Grid container>
         <Grid width={"100%"} size={{ xs: 12, md: 6 }}>
-          <CardContent sx={{ padding: "40px" }}>
-            <Typography>{room.type?.name}</Typography>
-            <Typography>From: ${room?.type?.price_per_night}/ Night</Typography>
-            <Typography>{room.description}</Typography>
+          <StyledCardContent>
+            <Typography variant="h3" fontWeight={"bold"}>
+              {room.type?.name}
+            </Typography>
+            <Typography variant="h6">{room.description}</Typography>
             <Grid container wrap="wrap">
               <AmenitiesChips
                 amenities={room?.type?.amenities ?? []}
                 mapAmenitiesOnRoomType={mapAmenitiesOnRoomType}
               />
             </Grid>
-          </CardContent>
+            <Typography sx={{ marginTop: "auto" }} variant="h6" fontWeight={"bold"}>
+              Desde: ${room?.type?.price_per_night}/Noche
+            </Typography>
+          </StyledCardContent>
         </Grid>
         <Grid size={{ xs: 12, md: 6 }}>
           <CardMedia
@@ -51,4 +55,13 @@ const StyledCard = styled(Card)({
   display: "flex",
   flexDirection: "column",
   textAlign: "start",
+});
+
+const StyledCardContent = styled(CardContent)({
+  display: "flex",
+  flexDirection: "column",
+  margin: "auto",
+  height: "100%",
+  width: "90%",
+  paddingTop: "40px",
 });
