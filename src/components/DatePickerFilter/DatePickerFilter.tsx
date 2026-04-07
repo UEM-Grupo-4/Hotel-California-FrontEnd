@@ -8,6 +8,7 @@ const DatePickerFilter = ({ width, ...props }: Props) => {
   return (
     <DatePicker
       {...props}
+      format="DD-MM-YYYY"
       slotProps={{ textField: { fullWidth: true, size: "small", sx: { width } } }}
     />
   );

@@ -28,6 +28,7 @@ export type RoomFiltersParams = {
 };
 
 export type RoomFiltersUI = {
+  type: string;
   startDate?: PickerValue;
   endDate?: PickerValue;
   people: number;

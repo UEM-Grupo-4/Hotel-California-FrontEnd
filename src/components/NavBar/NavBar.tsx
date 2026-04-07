@@ -1,27 +1,11 @@
-import { Box, Grid, styled, Tab, Tabs, Typography } from "@mui/material";
+import { Box, Button, Grid, styled, Tab, Tabs, Typography } from "@mui/material";
 import { useEffect, useMemo, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import HotelCaliforniaLogo from "../../assets/favicon.png";
 import { useAuth } from "../../hooks/useAuth";
-
-const NAVBAR_BUTTONS = [
-  {
-    displayName: "Home",
-    url: "/",
-  },
-  {
-    displayName: "Reservar",
-    url: "/reservation",
-  },
-  {
-    displayName: "Mi reserva",
-    url: "/mi-reserva",
-  },
-  {
-    displayName: "Contacto",
-    url: "/contacto",
-  },
-];
+import CalendarMonthIcon from "@mui/icons-material/CalendarMonth";
+import { NAVBAR_BUTTONS } from "../../mocks/dataMock";
+import AccountMenu from "../NavBarLoginMenu/NavBarLoginMenu";
 
 function NavBar() {
   const navigate = useNavigate();
@@ -61,7 +45,7 @@ function NavBar() {
   }, [isLogged]);
 
   return (
-    <Header $isScrolled={isScrolled}>
+    <Header $isScrolled={isScrolled || isLogged}>
       <Grid
         container
         size="auto"
@@ -92,6 +76,18 @@ function NavBar() {
           })}
         </Tabs>
       </Grid>
+      <Grid container gap={1} size="auto" alignItems={"center"}>
+        <Button
+          variant="contained"
+          startIcon={<CalendarMonthIcon />}
+          onClick={(event) => onClickTab(event, "/reservation")}
+          size="small"
+          sx={{ height: 40 }}
+        >
+          Reservar
+        </Button>
+        <AccountMenu onClickTab={onClickTab} />
+      </Grid>
     </Header>
   );
 }
@@ -108,6 +104,7 @@ const Header = styled("header")<{ $isScrolled: boolean }>(({ $isScrolled }) => (
   boxShadow: $isScrolled ? "0 2px 10px rgba(0,0,0,0.1)" : "none",
   borderBottom: $isScrolled ? "1px solid rgba(0,0,0,0.1)" : "none",
   transitionDuration: ".3s",
+  opacity: $isScrolled ? 1 : 0.6,
 }));
 
 const NavTab = styled(Tab)({

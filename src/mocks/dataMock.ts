@@ -61,3 +61,18 @@ export const commonAmenities = [
     icon: PoolIcon,
   },
 ];
+
+export const NAVBAR_BUTTONS = [
+  {
+    displayName: "Home",
+    url: "/",
+  },
+  {
+    displayName: "Mi reserva",
+    url: "/mi-reserva",
+  },
+  {
+    displayName: "Contacto",
+    url: "/contacto",
+  },
+];

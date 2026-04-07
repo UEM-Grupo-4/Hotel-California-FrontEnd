@@ -1,5 +1,5 @@
 import { Container, Grid, Typography } from "@mui/material";
-import { commonAmenities } from "../../../mocks/dataMockRooms";
+import { commonAmenities } from "../../../mocks/dataMock";
 import HomeSectionTitle from "../../../components/HomeSectionTitle/HomeSectionTitle";
 
 function AmenitiesCollection() {
@@ -11,7 +11,7 @@ function AmenitiesCollection() {
         justifyContent={"space-evenly"}
         alignItems={"center"}
         textAlign={"center"}
-        height={"100vh"}
+        height={"80vh"}
       >
         <HomeSectionTitle title="Moderno y cómodo" subtitle="Facilidades y Aménities" />
         <Grid container gap={8} width={"100%"} alignItems={"center"} justifyContent={"center"}>

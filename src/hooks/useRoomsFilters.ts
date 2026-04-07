@@ -10,6 +10,7 @@ export const useRoomsFilters = () => {
     startDate: searchParams.get("startDate") ? dayjs(searchParams.get("startDate")) : undefined,
     endDate: searchParams.get("endDate") ? dayjs(searchParams.get("endDate")) : undefined,
     people: searchParams.get("people") ? Number(searchParams.get("people")) : 1,
+    type: searchParams.get("type") ? (searchParams.get("type") ?? "") : "room",
   };
 
   const [roomsFilters, setRoomsFilters] = useState<RoomFiltersUI>(initialState);

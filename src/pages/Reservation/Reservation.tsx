@@ -1,11 +1,11 @@
 import { Container, Grid } from "@mui/material";
-import Filters from "./Filters/Filters";
+import FiltersPage from "./FiltersPage/FiltersPage";
 import RoomDetails from "./RoomDetails/RoomDetail";
 
 function Reservation() {
   return (
     <Grid>
-      <Filters />
+      <FiltersPage />
       <Container maxWidth="md">
         <RoomDetails />
       </Container>
