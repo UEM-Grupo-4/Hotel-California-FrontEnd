@@ -8,5 +8,6 @@ export const mapFiltersToParams = (filters: RoomFiltersUI): RoomFiltersParams | 
     startDate: dayjs(filters.startDate).format("YYYY-MM-DD"),
     endDate: dayjs(filters.endDate).format("YYYY-MM-DD"),
     people: filters.people,
+    type: filters.type,
   };
 };

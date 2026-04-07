@@ -36,7 +36,9 @@ export function BookingForm({
 }: Readonly<Props>) {
   return (
     <>
-      <DialogTitle>Confirm booking</DialogTitle>
+      <DialogTitle variant={"h4"} fontWeight={"bold"}>
+        Confirm booking
+      </DialogTitle>
 
       <DialogContent>
         <Stack spacing={2}>

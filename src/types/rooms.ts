@@ -25,6 +25,7 @@ export type RoomFiltersParams = {
   startDate: string;
   endDate: string;
   people: number;
+  type?: string;
 };
 
 export type RoomFiltersUI = {

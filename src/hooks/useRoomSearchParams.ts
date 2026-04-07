@@ -6,6 +6,7 @@ export const useRoomSearchParams = () => {
   const startDate = searchParams.get("startDate");
   const endDate = searchParams.get("endDate");
   const people = searchParams.get("people");
+  const type = searchParams.get("type");
 
   const hasFilters = !!startDate && !!endDate && !!people;
 
@@ -13,6 +14,7 @@ export const useRoomSearchParams = () => {
     startDate,
     endDate,
     people: people ? Number(people) : null,
+    type,
     hasFilters,
   };
 };

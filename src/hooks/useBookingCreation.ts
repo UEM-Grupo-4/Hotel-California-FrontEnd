@@ -30,7 +30,12 @@ export function useBookingCreation({ room, startDate, endDate }: Props) {
     }));
   };
 
-  const submitButtonDisabled = useMemo(() => Object.values(form).some((value) => !value), [form]);
+  const submitButtonDisabled = useMemo(() => {
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    const { notes, ...rest } = form;
+
+    return Object.values(rest).some((value) => !value);
+  }, [form]);
 
   const handleSubmit = () => {
     if (!form.name || !form.email || !form.phone) return;

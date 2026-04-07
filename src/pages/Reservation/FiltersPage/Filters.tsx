@@ -31,7 +31,7 @@ function Filters() {
     const mappedFilters = mapFiltersToParams(roomsFilters);
 
     navigate(
-      `/reservation/?startDate=${mappedFilters?.startDate}&endDate=${mappedFilters?.endDate}&people=${mappedFilters?.people}`,
+      `/reservation/?type=${mappedFilters?.type}&startDate=${mappedFilters?.startDate}&endDate=${mappedFilters?.endDate}&people=${mappedFilters?.people}`,
     );
   };
 
