@@ -1,15 +1,23 @@
 import { Card, Grid, List, ListItemButton, Typography, Box } from "@mui/material";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Chat } from "../../UserChatPage/Chat";
 import { useConversations } from "../../../api/rooms.hooks";
+import { useAdminSocket } from "../../../hooks/useAdminSockets";
 
 function AdminChats() {
   const { data: conversations = [] } = useConversations();
   const [selectedConversationId, setSelectedConversationId] = useState<number | null>(null);
+  const { newConversation } = useAdminSocket();
+
+  useEffect(() => {
+    if (newConversation) {
+      console.log("Nueva conversación detectada:", newConversation);
+    }
+  }, [newConversation]);
 
   return (
     <Grid container height={"calc(100vh - 220px)"} gap={2}>
-      <Grid size={3}>
+      <Grid size={3} sx={{ height: "100%" }}>
         <Card sx={{ height: "100%", overflowY: "auto" }}>
           <List>
             {conversations.map((conversation) => (

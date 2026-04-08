@@ -29,6 +29,13 @@ export const Chat = ({ conversationId, sender }: Props) => {
           padding: 3,
         }}
       >
+        {sender === "admin" && (
+          <Grid textAlign={"end"}>
+            <Button variant="contained" color="error">
+              Cerrar chat
+            </Button>
+          </Grid>
+        )}
         <Grid sx={{ overflowY: "auto", mb: 2 }}>
           {messages.map((msg, index) => (
             <Box

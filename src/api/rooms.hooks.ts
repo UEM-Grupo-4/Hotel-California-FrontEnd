@@ -229,7 +229,7 @@ export const useOpenConversation = () => {
 
 export const useMessages = (conversationId: number) => {
   return useQuery({
-    queryKey: roomsKeys.messages(conversationId),
+    queryKey: roomsKeys.messagesByConversationId(conversationId),
     queryFn: () => api.getMessagesRequest(conversationId),
   });
 };
@@ -240,14 +240,16 @@ export const useSendMessage = () => {
   return useMutation({
     mutationFn: (payload: PayloadSendMessage) => api.sendMessage(payload),
     onSuccess: (_data, variables) => {
-      queryClient.invalidateQueries({ queryKey: roomsKeys.messages(variables?.conversation) });
+      queryClient.invalidateQueries({
+        queryKey: roomsKeys.messagesByConversationId(variables?.conversation),
+      });
     },
   });
 };
 
 export const useConversations = () => {
   return useQuery({
-    queryKey: roomsKeys.allMessages,
+    queryKey: roomsKeys.conversations,
     queryFn: () => api.getAllMessagesRequest(),
   });
 };
