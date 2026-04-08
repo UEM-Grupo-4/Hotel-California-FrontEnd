@@ -1,4 +1,9 @@
 import type {
+  ConversationChat,
+  PayloadCreateConversation,
+  PayloadSendMessage,
+} from "../types/messages";
+import type {
   Amenity,
   AmenityRequest,
   Booking,
@@ -116,4 +121,26 @@ export const acceptBooking = async (id: number) => {
 
 export const rejectBooking = async (id: number) => {
   return api.post(apiRoutes.rejectBooking.replace("{id}", String(id)));
+};
+
+// Chat
+
+export const openConversation = async (payload: PayloadCreateConversation) => {
+  return api.post(apiRoutes.conversations, payload);
+};
+
+export const getMessagesRequest = async (conversationId: number): Promise<ConversationChat> => {
+  const { data } = await api.get(`${apiRoutes.conversations}${conversationId}`);
+
+  return data;
+};
+
+export const getAllMessagesRequest = async (): Promise<ConversationChat[]> => {
+  const { data } = await api.get(apiRoutes.conversations);
+
+  return data;
+};
+
+export const sendMessage = async (payload: PayloadSendMessage) => {
+  return api.post(apiRoutes.messages, payload);
 };

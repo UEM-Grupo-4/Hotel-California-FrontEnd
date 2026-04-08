@@ -45,7 +45,7 @@ function NavBar() {
   }, [isLogged]);
 
   return (
-    <Header $isScrolled={isScrolled || isLogged}>
+    <Header $isScrolled={isScrolled || isLogged || location.pathname === "/chat"}>
       <Grid
         container
         size="auto"

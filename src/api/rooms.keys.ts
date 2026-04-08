@@ -7,4 +7,6 @@ export const roomsKeys = {
   amenities: ["amenities"] as const,
   booking: (code?: string, email?: string) => ["booking", code, email] as const,
   bookingsApprovals: ["bookings-approvals"] as const,
+  messages: (conversationId: number) => ["messages", conversationId],
+  allMessages: ["messages"],
 };

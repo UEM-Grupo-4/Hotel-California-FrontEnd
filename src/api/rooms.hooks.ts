@@ -13,6 +13,7 @@ import type {
   RoomUpdate,
 } from "../types/rooms";
 import { showError } from "../utils/showNotification";
+import type { PayloadCreateConversation, PayloadSendMessage } from "../types/messages";
 
 // GETS
 export const useRooms = () => {
@@ -210,5 +211,43 @@ export const useRejectBooking = () => {
     onError: () => {
       showError("Error rechazando solicitud");
     },
+  });
+};
+
+// Chat
+
+export const useOpenConversation = () => {
+  //const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: (payload: PayloadCreateConversation) => api.openConversation(payload),
+    onError: () => {
+      showError("Hubo un error en tu petición");
+    },
+  });
+};
+
+export const useMessages = (conversationId: number) => {
+  return useQuery({
+    queryKey: roomsKeys.messages(conversationId),
+    queryFn: () => api.getMessagesRequest(conversationId),
+  });
+};
+
+export const useSendMessage = () => {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: (payload: PayloadSendMessage) => api.sendMessage(payload),
+    onSuccess: (_data, variables) => {
+      queryClient.invalidateQueries({ queryKey: roomsKeys.messages(variables?.conversation) });
+    },
+  });
+};
+
+export const useConversations = () => {
+  return useQuery({
+    queryKey: roomsKeys.allMessages,
+    queryFn: () => api.getAllMessagesRequest(),
   });
 };

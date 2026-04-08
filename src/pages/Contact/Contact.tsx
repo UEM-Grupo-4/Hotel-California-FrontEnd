@@ -13,7 +13,10 @@ import {
 } from "@mui/material";
 import SendIcon from "@mui/icons-material/Send";
 
-import Background from "../../assets/umbrella-deck-chair-around-outdoor-swimming-pool-hotel-resort-with-sea-ocean-beach-coconut-palm-tree.jpg";
+import Background from "../../assets/swimming-background.jpg";
+import { useOpenConversation } from "../../api/rooms.hooks";
+import { useNavigate } from "react-router-dom";
+import type { ConversationChat } from "../../types/messages";
 
 interface ContactFormData {
   firstName: string;
@@ -44,9 +47,11 @@ const subjectOptions = [
 ];
 
 export default function ContactForm() {
+  const navigate = useNavigate();
   const [formData, setFormData] = useState<ContactFormData>(initialFormData);
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [errors, setErrors] = useState<Partial<ContactFormData>>({});
+  const { mutate: openConversationMutation } = useOpenConversation();
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -79,11 +84,20 @@ export default function ContactForm() {
     return Object.keys(newErrors).length === 0;
   };
 
-  const handleSubmit = () => {
+  const handleSubmit = (e: React.SubmitEvent) => {
+    e.preventDefault();
     if (!validate()) return;
 
-    setIsSubmitted(true);
-    setFormData(initialFormData);
+    openConversationMutation(
+      { user_email: formData.email, initial_message: formData.message },
+      {
+        onSuccess: (response) => {
+          const data = response?.data as ConversationChat;
+
+          navigate(`/chat?email=${formData.email}&conversationId=${data?.id}`);
+        },
+      },
+    );
   };
 
   const isDisabled =
