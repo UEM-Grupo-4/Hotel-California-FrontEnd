@@ -175,3 +175,33 @@ export const useDeleteAmenity = () => {
     },
   });
 };
+
+// ACCEPT / REJECT BOOKING
+
+export const useAcceptBooking = () => {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: (id: number) => api.acceptBooking(id),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: roomsKeys.bookingsApprovals });
+    },
+    onError: () => {
+      showError("Error aceptando solicitud");
+    },
+  });
+};
+
+export const useRejectBooking = () => {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: (id: number) => api.rejectBooking(id),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: roomsKeys.bookingsApprovals });
+    },
+    onError: () => {
+      showError("Error rechazando solicitud");
+    },
+  });
+};

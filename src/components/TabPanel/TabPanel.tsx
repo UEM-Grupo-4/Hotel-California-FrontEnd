@@ -1,4 +1,4 @@
-import { Box, Typography } from "@mui/material";
+import { Box } from "@mui/material";
 
 interface TabPanelProps {
   children?: React.ReactNode;
@@ -18,11 +18,7 @@ export function TabPanel(props: Readonly<TabPanelProps>) {
       aria-labelledby={`full-width-tab-${value}`}
       {...other}
     >
-      {tabSelected === value && (
-        <Box sx={{ p: 3 }}>
-          <Typography>{children}</Typography>
-        </Box>
-      )}
+      {tabSelected === value && <Box sx={{ p: 3 }}>{children}</Box>}
     </div>
   );
 }

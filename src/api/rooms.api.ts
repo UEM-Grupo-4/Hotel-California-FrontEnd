@@ -107,3 +107,13 @@ export const deleteRoomType = async (id: number) => {
 export const deleteAmenity = async (id: number) => {
   return api.delete(`${apiRoutes.roomsAmenities}${id}/`);
 };
+
+// ACCEPT / REJECT BOOKING
+
+export const acceptBooking = async (id: number) => {
+  return api.post(apiRoutes.acceptBooking.replace("{id}", String(id)));
+};
+
+export const rejectBooking = async (id: number) => {
+  return api.post(apiRoutes.rejectBooking.replace("{id}", String(id)));
+};

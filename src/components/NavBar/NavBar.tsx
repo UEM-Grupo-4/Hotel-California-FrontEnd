@@ -66,7 +66,7 @@ function NavBar() {
       </Grid>
       <Grid container gap={3} size="auto">
         <Tabs
-          value={selectedTab}
+          value={ALL_TABS.some((tab) => tab.url === selectedTab) ? selectedTab : false}
           textColor="inherit"
           indicatorColor="primary"
           onChange={onClickTab}

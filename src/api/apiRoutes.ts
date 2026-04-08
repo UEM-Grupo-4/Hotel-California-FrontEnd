@@ -10,4 +10,7 @@ export const apiRoutes = {
   bookingsList: "/bookings/reservas/",
 
   bookMyRoom: "/bookings/reservas/search",
+
+  acceptBooking: "/bookings/reservas/{id}/confirmar/",
+  rejectBooking: "/bookings/reservas/{id}/rechazar/",
 };

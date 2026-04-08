@@ -1,16 +1,18 @@
 import { Box, Container, Tab, Tabs } from "@mui/material";
-import AdminAmenities from "./AdminAmenities/AdminAmenities";
-import AdminRoomsType from "./AdminRoomsType/AdminRoomsType";
-import AdminRooms from "./AdminRooms/AdminRooms";
 import { useAdminTabs } from "../../hooks/useAdminTabs";
 import { TabPanel } from "../../components/TabPanel/TabPanel";
-import AdminBookings from "./AdminBookings/AdminBookings";
+import { lazy } from "react";
+
+const AdminRooms = lazy(() => import("./AdminRooms/AdminRooms"));
+const AdminAmenities = lazy(() => import("./AdminAmenities/AdminAmenities"));
+const AdminRoomsType = lazy(() => import("./AdminRoomsType/AdminRoomsType"));
+const AdminBookings = lazy(() => import("./AdminBookings/AdminBookings"));
 
 const Admin = () => {
   const { handleTabChange, tabSelected } = useAdminTabs();
 
   return (
-    <Container maxWidth="lg" sx={{ py: 2, gap: 2 }}>
+    <Container maxWidth="xl" sx={{ py: 2, gap: 2 }}>
       <Box sx={{ width: "100%", typography: "body1", marginTop: 10 }}>
         <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
           <Tabs value={tabSelected} onChange={handleTabChange} aria-label="lab API tabs example">
