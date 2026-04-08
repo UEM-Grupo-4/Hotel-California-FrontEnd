@@ -5,6 +5,7 @@ import { buildRoomToApi } from "./rooms.mappers";
 import type {
   Amenity,
   AmenityRequest,
+  Booking,
   RoomFiltersParams,
   RoomRequest,
   RoomType,
@@ -182,9 +183,12 @@ export const useAcceptBooking = () => {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: (id: number) => api.acceptBooking(id),
-    onSuccess: () => {
+    mutationFn: (booking: Booking) => api.acceptBooking(booking.id),
+    onSuccess: (_data, variable) => {
       queryClient.invalidateQueries({ queryKey: roomsKeys.bookingsApprovals });
+      queryClient.invalidateQueries({
+        queryKey: roomsKeys.booking(variable.code, variable.cliente?.email),
+      });
     },
     onError: () => {
       showError("Error aceptando solicitud");
@@ -196,9 +200,12 @@ export const useRejectBooking = () => {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: (id: number) => api.rejectBooking(id),
-    onSuccess: () => {
+    mutationFn: (booking: Booking) => api.rejectBooking(booking.id),
+    onSuccess: (_data, variable) => {
       queryClient.invalidateQueries({ queryKey: roomsKeys.bookingsApprovals });
+      queryClient.invalidateQueries({
+        queryKey: roomsKeys.booking(variable.code, variable.cliente?.email),
+      });
     },
     onError: () => {
       showError("Error rechazando solicitud");

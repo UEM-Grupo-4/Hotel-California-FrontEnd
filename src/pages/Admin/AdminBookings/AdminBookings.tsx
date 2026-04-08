@@ -40,9 +40,9 @@ export default function AdminBookings() {
     if (!selectedBooking || !actionType) return;
 
     if (actionType === "accept") {
-      acceptBookingMutation(selectedBooking.id);
+      acceptBookingMutation(selectedBooking);
     } else {
-      rejectBookingMutation(selectedBooking.id);
+      rejectBookingMutation(selectedBooking);
     }
 
     closeConfirm();
