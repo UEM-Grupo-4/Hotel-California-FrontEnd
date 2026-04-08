@@ -1,5 +1,4 @@
 import { Grid } from "@mui/material";
-import { useRoomsByAvailability } from "../../../api/rooms";
 import { RoomCard } from "../../../components/RoomCard/RoomCard";
 import { isEmpty, noop } from "lodash";
 import { useMapAmenitiesOnRoomType } from "../../../hooks/useMapAmenitiesOnRoomType";
@@ -9,6 +8,7 @@ import { useMemo, useState } from "react";
 import type { Room } from "../../../types/rooms";
 import dayjs from "dayjs";
 import { LoadingPage } from "../../../components/LoadingPage/LoadingPage";
+import { useRoomsByAvailability } from "../../../api/rooms.hooks";
 
 function RoomDetails() {
   const { mapAmenitiesOnRoomType } = useMapAmenitiesOnRoomType();

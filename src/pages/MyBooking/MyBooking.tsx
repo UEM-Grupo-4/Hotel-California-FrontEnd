@@ -10,10 +10,10 @@ import {
 } from "@mui/material";
 import { useState } from "react";
 import { useBookingSearchParams } from "../../hooks/useBookingSearchParams";
-import { useBookingByCode } from "../../api/rooms";
 import { LoadingPage } from "../../components/LoadingPage/LoadingPage";
 import BackgroundImage from "../../assets/wallpaper_reserva.jpg";
 import { BookingDetailCard } from "./BookindDetailCard";
+import { useBookingByCode } from "../../api/rooms.hooks";
 
 const MyBooking = () => {
   const { code: initialCode } = useBookingSearchParams();

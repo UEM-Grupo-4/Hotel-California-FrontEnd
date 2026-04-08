@@ -1,8 +1,8 @@
-import { useCreateRoomBooking } from "../api/rooms";
 import { useMemo, useState } from "react";
 import type { CreateRoomBookingForm, Room } from "../types/rooms";
 import { mapApiErrors } from "../utils/roomsUtils";
 import { showSuccess } from "../utils/showNotification";
+import { useCreateRoomBooking } from "../api/rooms.hooks";
 interface Props {
   room: Room;
   startDate: string;

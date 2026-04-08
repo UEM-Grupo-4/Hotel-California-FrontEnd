@@ -9,7 +9,7 @@ import {
 } from "@mui/material";
 import { useState } from "react";
 import type { RoomType } from "../../types/rooms";
-import { useCreateRoomType, useRoomsAmenities, useUpdateRoomType } from "../../api/rooms";
+import { useCreateRoomType, useRoomsAmenities, useUpdateRoomType } from "../../api/rooms.hooks";
 
 type FormState = {
   name: string;

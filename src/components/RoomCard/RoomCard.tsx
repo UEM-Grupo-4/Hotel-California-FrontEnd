@@ -11,11 +11,14 @@ import {
 } from "@mui/material";
 import type { Amenity, Room } from "../../types/rooms";
 import AmenitiesChips from "../AmenitiesChips/AmenitiesChips";
+import EditIcon from "@mui/icons-material/Edit";
+import DeleteIcon from "@mui/icons-material/Delete";
 
 type Props = {
   room: Room;
   mapAmenitiesOnRoomType: (amenityId: number) => Amenity | undefined;
   onEdit?: (room: Room) => void;
+  onDelete?: (room: Room) => void;
   isSearch?: boolean;
   onBookRoom?: (room: Room) => void;
   nights?: number;
@@ -26,6 +29,8 @@ export function RoomCard({
   isSearch,
   nights,
   onBookRoom,
+  onEdit,
+  onDelete,
   mapAmenitiesOnRoomType,
 }: Readonly<Props>) {
   const pricePerNight = room?.type?.price_per_night ?? 0;
@@ -61,6 +66,33 @@ export function RoomCard({
             amenities={room?.type?.amenities ?? []}
             mapAmenitiesOnRoomType={mapAmenitiesOnRoomType}
           />
+
+          {onEdit && onDelete && (
+            <Grid container gap={2} mt="auto">
+              <Grid size={5}>
+                <Button
+                  fullWidth
+                  startIcon={<EditIcon />}
+                  variant="contained"
+                  color="primary"
+                  onClick={() => onEdit(room)}
+                >
+                  Editar
+                </Button>
+              </Grid>
+              <Grid size={5}>
+                <Button
+                  fullWidth
+                  startIcon={<DeleteIcon />}
+                  variant="contained"
+                  color="error"
+                  onClick={() => onDelete(room)}
+                >
+                  Eliminar
+                </Button>
+              </Grid>
+            </Grid>
+          )}
           {isSearch && nights && (
             <Grid container justifyContent={"space-between"} sx={{ mt: "auto" }}>
               <Box>

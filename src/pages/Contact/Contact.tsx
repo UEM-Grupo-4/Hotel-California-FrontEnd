@@ -15,25 +15,27 @@ import SendIcon from "@mui/icons-material/Send";
 
 import Background from "../../assets/umbrella-deck-chair-around-outdoor-swimming-pool-hotel-resort-with-sea-ocean-beach-coconut-palm-tree.jpg";
 
-interface FormData {
-  nombre: string;
-  apellido: string;
+interface ContactFormData {
+  firstName: string;
+  lastName: string;
   email: string;
-  telefono: string;
-  asunto: string;
-  mensaje: string;
+  phone: string;
+  subject: string;
+  message: string;
+  reservationCode?: string;
 }
 
-const initialFormData: FormData = {
-  nombre: "",
-  apellido: "",
+const initialFormData: ContactFormData = {
+  firstName: "",
+  lastName: "",
   email: "",
-  telefono: "",
-  asunto: "",
-  mensaje: "",
+  phone: "",
+  subject: "",
+  message: "",
+  reservationCode: "",
 };
 
-const opcionesAsunto = [
+const subjectOptions = [
   "Consulta sobre reserva",
   "Disponibilidad de habitaciones",
   "Modificación de reserva",
@@ -41,54 +43,51 @@ const opcionesAsunto = [
   "Otro",
 ];
 
-export default function FormularioContacto() {
-  const [formData, setFormData] = useState<FormData>(initialFormData);
-  const [enviado, setEnviado] = useState(false);
-  const [errores, setErrores] = useState<Partial<FormData>>({});
+export default function ContactForm() {
+  const [formData, setFormData] = useState<ContactFormData>(initialFormData);
+  const [isSubmitted, setIsSubmitted] = useState(false);
+  const [errors, setErrors] = useState<Partial<ContactFormData>>({});
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
+
     setFormData((prev) => ({ ...prev, [name]: value }));
-    setErrores((prev) => ({ ...prev, [name]: "" }));
+    setErrors((prev) => ({ ...prev, [name]: "" }));
   };
 
-  const validar = (): boolean => {
-    const nuevosErrores: Partial<FormData> = {};
+  const validate = (): boolean => {
+    const newErrors: Partial<ContactFormData> = {};
 
-    if (!formData.nombre.trim()) nuevosErrores.nombre = "El nombre es obligatorio";
-    if (!formData.apellido.trim()) nuevosErrores.apellido = "El apellido es obligatorio";
+    if (!formData.firstName.trim()) newErrors.firstName = "El nombre es obligatorio";
+    if (!formData.lastName.trim()) newErrors.lastName = "El apellido es obligatorio";
 
-    // ✅ REGEX CORREGIDO
     if (!formData.email.trim()) {
-      nuevosErrores.email = "El email es obligatorio";
+      newErrors.email = "El email es obligatorio";
     } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email)) {
-      nuevosErrores.email = "Introduce un email válido";
+      newErrors.email = "Introduce un email válido";
     }
 
-    // ✅ REGEX CORREGIDO
-    if (formData.telefono && !/^\+?[\d\s\-().]{7,15}$/.test(formData.telefono)) {
-      nuevosErrores.telefono = "Número inválido";
+    if (formData.phone && !/^\+?[\d\s\-().]{7,15}$/.test(formData.phone)) {
+      newErrors.phone = "Número inválido";
     }
 
-    if (!formData.asunto) nuevosErrores.asunto = "Selecciona un asunto";
-    if (!formData.mensaje.trim()) nuevosErrores.mensaje = "El mensaje es obligatorio";
+    if (!formData.subject) newErrors.subject = "Selecciona un motivo";
+    if (!formData.message.trim()) newErrors.message = "El mensaje es obligatorio";
 
-    setErrores(nuevosErrores);
-    return Object.keys(nuevosErrores).length === 0;
+    setErrors(newErrors);
+
+    return Object.keys(newErrors).length === 0;
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!validar()) return;
+  const handleSubmit = () => {
+    if (!validate()) return;
 
-    console.log("Formulario enviado:", formData);
-
-    setEnviado(true);
+    setIsSubmitted(true);
     setFormData(initialFormData);
   };
 
   const isDisabled =
-    !formData.nombre || !formData.apellido || !formData.email || !formData.mensaje;
+    !formData.firstName || !formData.lastName || !formData.email || !formData.message;
 
   return (
     <Box
@@ -102,7 +101,7 @@ export default function FormularioContacto() {
         position: "relative",
       }}
     >
-      {/* overlay moderno */}
+      {/* overlay */}
       <Box
         sx={{
           position: "absolute",
@@ -131,110 +130,118 @@ export default function FormularioContacto() {
 
           <Divider sx={{ mb: 4 }} />
 
-          {enviado && (
-            <Alert
-              severity="success"
-              sx={{ mb: 3 }}
-              onClose={() => setEnviado(false)}
-            >
-              ¡Solicitud enviada! Nuestro equipo te responderá pronto.
+          {isSubmitted && (
+            <Alert severity="success" sx={{ mb: 3 }} onClose={() => setIsSubmitted(false)}>
+              ¡Solicitud iniciada! Te responderemos por chat en breve.
             </Alert>
           )}
 
           <Box component="form" onSubmit={handleSubmit} noValidate>
             <Grid container spacing={3}>
-              <Grid item xs={12} sm={6}>
+              {/* Nombre + Apellido */}
+              <Grid size={{ xs: 12, md: 6 }}>
                 <TextField
                   fullWidth
                   required
                   label="Nombre"
-                  name="nombre"
-                  autoComplete="given-name"
-                  value={formData.nombre}
+                  name="firstName"
+                  value={formData.firstName}
                   onChange={handleChange}
-                  error={Boolean(errores.nombre)}
-                  helperText={errores.nombre}
+                  error={Boolean(errors.firstName)}
+                  helperText={errors.firstName}
                 />
               </Grid>
 
-              <Grid item xs={12} sm={6}>
+              <Grid size={{ xs: 12, md: 6 }}>
                 <TextField
                   fullWidth
                   required
                   label="Apellido"
-                  name="apellido"
-                  autoComplete="family-name"
-                  value={formData.apellido}
+                  name="lastName"
+                  value={formData.lastName}
                   onChange={handleChange}
-                  error={Boolean(errores.apellido)}
-                  helperText={errores.apellido}
+                  error={Boolean(errors.lastName)}
+                  helperText={errors.lastName}
                 />
               </Grid>
 
-              <Grid item xs={12} sm={6}>
+              {/* Email + Teléfono */}
+              <Grid size={{ xs: 12, md: 6 }}>
                 <TextField
                   fullWidth
                   required
                   label="Correo electrónico"
                   name="email"
                   type="email"
-                  autoComplete="email"
                   value={formData.email}
                   onChange={handleChange}
-                  error={Boolean(errores.email)}
-                  helperText={errores.email}
+                  error={Boolean(errors.email)}
+                  helperText={errors.email}
                 />
               </Grid>
 
-              <Grid item xs={12} sm={6}>
+              <Grid size={{ xs: 12, md: 6 }}>
                 <TextField
                   fullWidth
                   label="Teléfono"
-                  name="telefono"
-                  type="tel"
-                  value={formData.telefono}
+                  name="phone"
+                  value={formData.phone}
                   onChange={handleChange}
-                  error={Boolean(errores.telefono)}
-                  helperText={errores.telefono || "Ej: +34 600 123 456"}
+                  error={Boolean(errors.phone)}
+                  helperText={errors.phone || "Ej: +34 600 123 456"}
                 />
               </Grid>
 
-              <Grid item xs={12}>
+              {/* Código de reserva */}
+              <Grid size={12}>
+                <TextField
+                  fullWidth
+                  label="Código de reserva (opcional)"
+                  name="reservationCode"
+                  value={formData.reservationCode}
+                  onChange={handleChange}
+                />
+              </Grid>
+
+              {/* Motivo */}
+              <Grid size={12}>
                 <TextField
                   fullWidth
                   required
                   select
                   label="Motivo"
-                  name="asunto"
-                  value={formData.asunto}
+                  name="subject"
+                  value={formData.subject}
                   onChange={handleChange}
-                  error={Boolean(errores.asunto)}
-                  helperText={errores.asunto}
+                  error={Boolean(errors.subject)}
+                  helperText={errors.subject}
                 >
-                  {opcionesAsunto.map((opcion) => (
-                    <MenuItem key={opcion} value={opcion}>
-                      {opcion}
+                  {subjectOptions.map((option) => (
+                    <MenuItem key={option} value={option}>
+                      {option}
                     </MenuItem>
                   ))}
                 </TextField>
               </Grid>
 
-              <Grid item xs={12}>
+              {/* Mensaje */}
+              <Grid size={12}>
                 <TextField
                   fullWidth
                   required
                   multiline
                   rows={5}
                   label="Mensaje"
-                  name="mensaje"
-                  value={formData.mensaje}
+                  name="message"
+                  value={formData.message}
                   onChange={handleChange}
-                  error={Boolean(errores.mensaje)}
-                  helperText={errores.mensaje}
+                  error={Boolean(errors.message)}
+                  helperText={errors.message}
                 />
               </Grid>
 
-              <Grid item xs={12}>
+              {/* CTA */}
+              <Grid size={12}>
                 <Button
                   type="submit"
                   fullWidth
@@ -242,20 +249,9 @@ export default function FormularioContacto() {
                   size="large"
                   disabled={isDisabled}
                   endIcon={<SendIcon />}
-                  sx={{
-                    py: 1.6,
-                    fontWeight: 700,
-                    borderRadius: 3,
-                    backgroundColor: "#E3A72F",
-                    transition: "all 0.3s ease",
-                    "&:hover": {
-                      backgroundColor: "#cf9528",
-                      transform: "translateY(-2px)",
-                      boxShadow: 6,
-                    },
-                  }}
+                  color="primary"
                 >
-                  Enviar solicitud
+                  Iniciar solicitud
                 </Button>
               </Grid>
             </Grid>
