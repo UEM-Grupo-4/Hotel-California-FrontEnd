@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, type SubmitEvent } from "react";
 import { Box, Button, Card, Grid, TextField } from "@mui/material";
 import { useChat } from "../../hooks/useChat";
 
@@ -11,7 +11,8 @@ export const Chat = ({ conversationId, sender }: Props) => {
   const { messages, sendMessage } = useChat(conversationId);
   const [input, setInput] = useState("");
 
-  const handleSend = () => {
+  const handleSend = (event: SubmitEvent) => {
+    event?.preventDefault();
     if (!input.trim()) return;
 
     sendMessage(input, sender);
@@ -29,14 +30,14 @@ export const Chat = ({ conversationId, sender }: Props) => {
           padding: 3,
         }}
       >
-        {sender === "admin" && (
-          <Grid textAlign={"end"}>
-            <Button variant="contained" color="error">
-              Cerrar chat
-            </Button>
-          </Grid>
-        )}
         <Grid sx={{ overflowY: "auto", mb: 2 }}>
+          {sender === "admin" && (
+            <Grid textAlign={"end"}>
+              <Button variant="contained" color="error">
+                Cerrar chat
+              </Button>
+            </Grid>
+          )}
           {messages.map((msg, index) => (
             <Box
               key={index}
@@ -61,17 +62,19 @@ export const Chat = ({ conversationId, sender }: Props) => {
         </Grid>
 
         {/* input */}
-        <Grid sx={{ display: "flex", gap: 1 }}>
-          <TextField
-            fullWidth
-            size="small"
-            value={input}
-            onChange={(e) => setInput(e.target.value)}
-          />
-          <Button onClick={handleSend} variant="contained">
-            Enviar
-          </Button>
-        </Grid>
+        <form onSubmit={handleSend}>
+          <Grid sx={{ display: "flex", gap: 1 }}>
+            <TextField
+              fullWidth
+              size="small"
+              value={input}
+              onChange={(e) => setInput(e.target.value)}
+            />
+            <Button type="submit" variant="contained">
+              Enviar
+            </Button>
+          </Grid>
+        </form>
       </Grid>
     </Card>
   );
