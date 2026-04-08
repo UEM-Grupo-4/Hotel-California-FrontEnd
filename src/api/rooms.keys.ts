@@ -6,4 +6,5 @@ export const roomsKeys = {
   types: ["rooms-types"] as const,
   amenities: ["amenities"] as const,
   booking: (code?: string, email?: string) => ["booking", code, email] as const,
+  bookingsApprovals: ["bookings-approvals"],
 };

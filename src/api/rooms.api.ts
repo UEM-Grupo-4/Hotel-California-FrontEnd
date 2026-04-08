@@ -48,6 +48,12 @@ export const getBookingByCode = async ({ code, email }: MyBookReservation): Prom
   return data;
 };
 
+export const getBookingReservations = async (): Promise<Booking[]> => {
+  const { data } = await api.get(apiRoutes.bookingsList);
+
+  return data;
+};
+
 export const createRoom = async (formData: FormData) => {
   return api.post(apiRoutes.rooms, formData);
 };

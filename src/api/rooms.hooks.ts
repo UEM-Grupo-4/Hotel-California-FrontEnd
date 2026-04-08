@@ -55,6 +55,13 @@ export const useBookingByCode = (code?: string, email?: string) => {
   });
 };
 
+export const useBookings = () => {
+  return useQuery({
+    queryKey: roomsKeys.bookingsApprovals,
+    queryFn: () => api.getBookingReservations(),
+  });
+};
+
 // CREATE
 export const useCreateRoom = () => {
   const queryClient = useQueryClient();

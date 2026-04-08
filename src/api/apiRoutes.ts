@@ -7,6 +7,7 @@ export const apiRoutes = {
 
   bookingsAvailableRooms: "/bookings/habitaciones/disponibles/",
   bookingsReservationRoom: "/bookings/reservas-habitaciones/",
+  bookingsList: "/bookings/reservas/",
 
   bookMyRoom: "/bookings/reservas/search",
 };
