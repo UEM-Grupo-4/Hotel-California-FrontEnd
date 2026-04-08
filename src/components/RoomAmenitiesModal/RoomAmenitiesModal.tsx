@@ -7,13 +7,13 @@ import {
   DialogActions,
 } from "@mui/material";
 import { useState } from "react";
-import { useCreateAmenity, useUpdateAmenity } from "../../api/rooms";
-import type { RoomType } from "../../types/rooms";
+import type { Amenity } from "../../types/rooms";
+import { useCreateAmenity, useUpdateAmenity } from "../../api/rooms.hooks";
 
 type Props = {
   open: boolean;
   onClose: () => void;
-  amenity: RoomType | null;
+  amenity: Amenity | null;
 };
 
 export function AmenityModal({ open, onClose, amenity }: Readonly<Props>) {

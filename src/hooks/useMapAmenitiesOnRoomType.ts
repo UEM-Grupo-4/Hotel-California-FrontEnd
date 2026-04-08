@@ -1,6 +1,6 @@
 import { useCallback } from "react";
 import type { Amenity } from "../types/rooms";
-import { useRoomsAmenities } from "../api/rooms";
+import { useRoomsAmenities } from "../api/rooms.hooks";
 
 const findAmenityForRoomType = (roomTypeId: number, amenities: Amenity[]) => {
   return amenities.find((amenity) => amenity.id === roomTypeId);

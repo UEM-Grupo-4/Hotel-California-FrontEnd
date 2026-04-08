@@ -100,3 +100,5 @@ export type RoomUpdate = Omit<Room, "image"> & { image?: File };
 export type RoomTypeRequest = Omit<RoomType, "id">;
 
 export type AmenityRequest = Omit<Amenity, "id">;
+
+export type RoomWithRoomTypeIdNumber = Omit<Room, "type"> & { type: number };

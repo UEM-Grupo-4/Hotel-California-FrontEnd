@@ -1,14 +1,15 @@
 import { Card, CardContent, Typography, IconButton, Grid } from "@mui/material";
-import type { RoomType } from "../../types/rooms";
+import type { Amenity } from "../../types/rooms";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
 
 type Props = {
-  amenity: RoomType;
-  onEdit: (amenity: RoomType) => void;
+  amenity: Amenity;
+  onEdit: (amenity: Amenity) => void;
+  onDelete: (amenity: Amenity) => void;
 };
 
-export function AmenityCard({ amenity, onEdit }: Readonly<Props>) {
+export function AmenityCard({ amenity, onEdit, onDelete }: Readonly<Props>) {
   return (
     <Card>
       <CardContent
@@ -29,7 +30,7 @@ export function AmenityCard({ amenity, onEdit }: Readonly<Props>) {
             <EditIcon />
           </IconButton>
 
-          <IconButton size="small" color="error">
+          <IconButton size="small" color="error" onClick={() => onDelete(amenity)}>
             <DeleteIcon />
           </IconButton>
         </Grid>

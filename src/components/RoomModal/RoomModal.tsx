@@ -10,7 +10,7 @@ import {
 } from "@mui/material";
 import { useState } from "react";
 import type { Room, RoomRequest } from "../../types/rooms";
-import { useCreateRoom, useUpdateRoom, useRoomsTypes } from "../../api/rooms";
+import { useCreateRoom, useRoomsTypes, useUpdateRoom } from "../../api/rooms.hooks";
 
 type Props = {
   open: boolean;
@@ -79,7 +79,7 @@ export function RoomCreateModal({ open, onClose, room: originalRoom }: Readonly<
           onChange={handleChange("description")}
         />
 
-        <TextField select label="Room Type" value={form.type} onChange={handleChange("type")}>
+        <TextField select label="Room Type" value={form?.type} onChange={handleChange("type")}>
           {roomTypes.map((type) => (
             <MenuItem key={type.id} value={type.id}>
               {type.name}

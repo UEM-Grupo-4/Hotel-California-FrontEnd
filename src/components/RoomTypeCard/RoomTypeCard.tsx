@@ -8,9 +8,10 @@ import AmenitiesChips from "../AmenitiesChips/AmenitiesChips";
 type Props = {
   roomType: RoomType;
   onEdit: (type: RoomType) => void;
+  openDelete: (type: RoomType) => void;
 };
 
-export function RoomTypeCard({ roomType, onEdit }: Readonly<Props>) {
+export function RoomTypeCard({ roomType, onEdit, openDelete }: Readonly<Props>) {
   const { mapAmenitiesOnRoomType } = useMapAmenitiesOnRoomType();
 
   return (
@@ -30,7 +31,7 @@ export function RoomTypeCard({ roomType, onEdit }: Readonly<Props>) {
                 <EditIcon />
               </IconButton>
 
-              <IconButton size="small" color="error">
+              <IconButton size="small" color="error" onClick={() => openDelete(roomType)}>
                 <DeleteIcon />
               </IconButton>
             </Grid>

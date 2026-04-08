@@ -1,5 +1,4 @@
 import { Container, Grid, styled } from "@mui/material";
-import { useRooms } from "../../../api/rooms";
 import { Carousel } from "react-responsive-carousel";
 import ArrowBackIosNewIcon from "@mui/icons-material/ArrowBackIosNew";
 import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
@@ -7,6 +6,7 @@ import { useState } from "react";
 import HomeSectionTitle from "../../../components/HomeSectionTitle/HomeSectionTitle";
 import RoomCard from "./RoomCard";
 import { useMapAmenitiesOnRoomType } from "../../../hooks/useMapAmenitiesOnRoomType";
+import { useRooms } from "../../../api/rooms.hooks";
 
 function RoomsCollection() {
   const { mapAmenitiesOnRoomType } = useMapAmenitiesOnRoomType();
