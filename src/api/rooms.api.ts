@@ -144,3 +144,7 @@ export const getAllMessagesRequest = async (): Promise<ConversationChat[]> => {
 export const sendMessage = async (payload: PayloadSendMessage) => {
   return api.post(apiRoutes.messages, payload);
 };
+
+export const closeConversation = async (conversationId: number) => {
+  return api.patch(`${apiRoutes.chat}${conversationId}/close/`);
+};

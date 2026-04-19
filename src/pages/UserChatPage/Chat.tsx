@@ -8,7 +8,7 @@ type Props = {
 };
 
 export const Chat = ({ conversationId, sender }: Props) => {
-  const { messages, sendMessage } = useChat(conversationId);
+  const { messages, sendMessage, closeChat } = useChat(conversationId);
   const [input, setInput] = useState("");
 
   const handleSend = (event: SubmitEvent) => {
@@ -33,7 +33,7 @@ export const Chat = ({ conversationId, sender }: Props) => {
         <Grid sx={{ overflowY: "auto", mb: 2 }}>
           {sender === "admin" && (
             <Grid textAlign={"end"}>
-              <Button variant="contained" color="error">
+              <Button variant="contained" color="error" onClick={closeChat}>
                 Cerrar chat
               </Button>
             </Grid>
@@ -67,6 +67,7 @@ export const Chat = ({ conversationId, sender }: Props) => {
             <TextField
               fullWidth
               size="small"
+              placeholder="Se amable con el cliente"
               value={input}
               onChange={(e) => setInput(e.target.value)}
             />

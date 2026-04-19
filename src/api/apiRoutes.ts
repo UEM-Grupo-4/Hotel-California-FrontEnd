@@ -16,4 +16,5 @@ export const apiRoutes = {
 
   conversations: "/chat/conversations/",
   messages: "/chat/messages/",
+  chat: "/chat/",
 };

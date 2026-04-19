@@ -253,3 +253,9 @@ export const useConversations = () => {
     queryFn: () => api.getAllMessagesRequest(),
   });
 };
+
+export const useCloseChat = () => {
+  return useMutation({
+    mutationFn: (conversationId: number) => api.closeConversation(conversationId),
+  });
+};

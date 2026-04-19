@@ -30,4 +30,16 @@ body {
 
   height: 100vh;
   width: 100%;
+  -ms-overflow-style: none;
+  /* IE y Edge */
+  scrollbar-width: none;
+  /* Firefox */
+}
+
+body::-webkit-scrollbar {
+  display: none;
+}
+
+.carousel-root {
+  width: 100%;
 }

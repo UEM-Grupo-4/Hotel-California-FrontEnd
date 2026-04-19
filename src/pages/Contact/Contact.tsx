@@ -46,6 +46,12 @@ const subjectOptions = [
   "Otro",
 ];
 
+const formatMessage = (message: string, code?: string) => {
+  if (!code) return message;
+
+  return `Este es mi código de reserva: ${code}. ${message}`;
+};
+
 export default function ContactForm() {
   const navigate = useNavigate();
   const [formData, setFormData] = useState<ContactFormData>(initialFormData);
@@ -89,7 +95,10 @@ export default function ContactForm() {
     if (!validate()) return;
 
     openConversationMutation(
-      { user_email: formData.email, initial_message: formData.message },
+      {
+        user_email: formData.email,
+        initial_message: formatMessage(formData.message, formData.reservationCode),
+      },
       {
         onSuccess: (response) => {
           const data = response?.data as ConversationChat;

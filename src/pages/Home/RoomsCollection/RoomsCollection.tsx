@@ -33,6 +33,7 @@ function RoomsCollection() {
           autoPlay
           selectedItem={current}
           interval={10000}
+          width={"100%"}
           onChange={(index) => setCurrent(index)}
           renderArrowNext={(onClickHandler, hasNext) =>
             hasNext && (

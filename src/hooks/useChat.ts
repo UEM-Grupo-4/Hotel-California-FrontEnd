@@ -1,9 +1,14 @@
 import { useEffect, useRef } from "react";
-import { useMessages } from "../api/rooms.hooks";
+import { useCloseChat, useMessages } from "../api/rooms.hooks";
 
 export const useChat = (conversationId: number) => {
   const { data, refetch } = useMessages(conversationId);
+  const { mutate: closeChatMutation } = useCloseChat();
   const socketRef = useRef<WebSocket | null>(null);
+
+  const closeChat = () => {
+    closeChatMutation(conversationId);
+  };
 
   useEffect(() => {
     const socket = new WebSocket(`ws://localhost:8000/ws/chat/${conversationId}/`);
@@ -28,6 +33,7 @@ export const useChat = (conversationId: number) => {
 
   return {
     messages: data?.messages ?? [],
+    closeChat,
     sendMessage,
   };
 };
