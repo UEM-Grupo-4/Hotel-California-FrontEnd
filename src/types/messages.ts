@@ -3,7 +3,7 @@ export type ConversationChat = {
   messages: Message[];
   user_email: string;
   created_at: string;
-  status: string;
+  is_closed: boolean;
 };
 
 export type Message = {

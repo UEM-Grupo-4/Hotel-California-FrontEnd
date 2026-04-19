@@ -1,4 +1,4 @@
-import { Card, Grid, List, ListItemButton, Typography, Box } from "@mui/material";
+import { Card, Grid, List, ListItemButton, Typography, Box, Chip } from "@mui/material";
 import { useEffect, useState } from "react";
 import { Chat } from "../../UserChatPage/Chat";
 import { useConversations } from "../../../api/rooms.hooks";
@@ -15,23 +15,44 @@ function AdminChats() {
     }
   }, [newConversation]);
 
+  const sortedConversations = [...conversations].sort((a, b) => {
+    return Number(a.is_closed) - Number(b.is_closed);
+  });
+
   return (
     <Grid container height={"calc(100vh - 220px)"} gap={2}>
       <Grid size={3} sx={{ height: "100%" }}>
         <Card sx={{ height: "100%", overflowY: "auto" }}>
           <List>
-            {conversations.map((conversation) => (
-              <ListItemButton
-                key={conversation.id}
-                selected={conversation.id === selectedConversationId}
-                onClick={() => setSelectedConversationId(conversation.id)}
-              >
-                <Box>
-                  <Typography fontWeight={600}>{conversation.user_email}</Typography>
-                  <Typography variant="caption">Chat #{conversation.id}</Typography>
-                </Box>
-              </ListItemButton>
-            ))}
+            {sortedConversations.map((conversation) => {
+              const isClosed = conversation.is_closed;
+
+              return (
+                <ListItemButton
+                  key={conversation.id}
+                  selected={conversation.id === selectedConversationId}
+                  onClick={() => setSelectedConversationId(conversation.id)}
+                  sx={{
+                    opacity: isClosed ? 0.5 : 1,
+                    textDecoration: isClosed ? "line-through" : "none",
+                  }}
+                >
+                  <Box>
+                    <Typography fontWeight={600}>
+                      {conversation.user_email}
+
+                      {isClosed && (
+                        <Chip label="Cerrado" size="small" color="error" sx={{ ml: 1 }} />
+                      )}
+                    </Typography>
+
+                    <Typography variant="caption" color={isClosed ? "error" : "text.secondary"}>
+                      Chat #{conversation.id} {isClosed ? "(cerrado)" : ""}
+                    </Typography>
+                  </Box>
+                </ListItemButton>
+              );
+            })}
           </List>
         </Card>
       </Grid>

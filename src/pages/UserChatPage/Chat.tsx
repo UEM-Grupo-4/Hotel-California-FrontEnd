@@ -1,4 +1,4 @@
-import { useState, type SubmitEvent } from "react";
+import { useMemo, useState, type SubmitEvent } from "react";
 import { Box, Button, Card, Grid, TextField } from "@mui/material";
 import { useChat } from "../../hooks/useChat";
 
@@ -8,7 +8,7 @@ type Props = {
 };
 
 export const Chat = ({ conversationId, sender }: Props) => {
-  const { messages, sendMessage, closeChat } = useChat(conversationId);
+  const { messages, sendMessage, closeChat, isClosed } = useChat(conversationId);
   const [input, setInput] = useState("");
 
   const handleSend = (event: SubmitEvent) => {
@@ -18,6 +18,7 @@ export const Chat = ({ conversationId, sender }: Props) => {
     sendMessage(input, sender);
     setInput("");
   };
+  const isAdmin = useMemo(() => sender === "admin", [sender]);
 
   return (
     <Card sx={{ height: "100%" }}>
@@ -28,10 +29,11 @@ export const Chat = ({ conversationId, sender }: Props) => {
         sx={{
           height: "100%",
           padding: 3,
+          position: "relative",
         }}
       >
         <Grid sx={{ overflowY: "auto", mb: 2 }}>
-          {sender === "admin" && (
+          {isAdmin && (
             <Grid textAlign={"end"}>
               <Button variant="contained" color="error" onClick={closeChat}>
                 Cerrar chat
@@ -61,17 +63,42 @@ export const Chat = ({ conversationId, sender }: Props) => {
           ))}
         </Grid>
 
-        {/* input */}
+        {isClosed && (
+          <Box
+            sx={{
+              position: "absolute",
+              top: 0,
+              left: 0,
+              width: "100%",
+              height: "100%",
+              backgroundColor: "rgba(0,0,0,0.3)",
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              zIndex: 10,
+              color: "white",
+              fontSize: 18,
+              textAlign: "center",
+              padding: 2,
+            }}
+          >
+            Este chat fue cerrado por el administrador.
+            <br />
+            No puedes enviar más mensajes.
+          </Box>
+        )}
+
         <form onSubmit={handleSend}>
           <Grid sx={{ display: "flex", gap: 1 }}>
             <TextField
               fullWidth
               size="small"
-              placeholder="Se amable con el cliente"
+              placeholder={isAdmin ? "Se amable con el cliente" : "Mandar mensaje"}
               value={input}
               onChange={(e) => setInput(e.target.value)}
+              disabled={isClosed}
             />
-            <Button type="submit" variant="contained">
+            <Button type="submit" variant="contained" disabled={isClosed}>
               Enviar
             </Button>
           </Grid>
