@@ -14,6 +14,8 @@ export const apiRoutes = {
   acceptBooking: "/bookings/reservas/{id}/confirmar/",
   rejectBooking: "/bookings/reservas/{id}/rechazar/",
 
+  bookingsAvailableEvents: "/bookings/salas/disponibles/",
+
   conversations: "/chat/conversations/",
   messages: "/chat/messages/",
   chat: "/chat/",

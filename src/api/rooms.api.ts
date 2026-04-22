@@ -8,10 +8,12 @@ import type {
   AmenityRequest,
   Booking,
   MyBookReservation,
+  EventFilterParams,
   Room,
   RoomFiltersParams,
   RoomType,
   RoomTypeRequest,
+  EventMapped,
 } from "../types/rooms";
 import { mapBookingToApi, type CreateRoomBookingExtra } from "../utils/roomsUtils";
 import { apiRoutes } from "./apiRoutes";
@@ -42,6 +44,19 @@ export const getRoomsByAvailability = async ({
 }: RoomFiltersParams): Promise<Room[]> => {
   const { data } = await api.get(
     `${apiRoutes.bookingsAvailableRooms}?fecha_inicio=${startDate}&fecha_fin=${endDate}&huespedes=${people}`,
+  );
+
+  return data;
+};
+
+export const getEventsByAvailability = async ({
+  start,
+  startFrom,
+  durationHours,
+  people,
+}: EventFilterParams): Promise<EventMapped[]> => {
+  const { data } = await api.get(
+    `${apiRoutes.bookingsAvailableEvents}?fecha=${start}&hora_inicio=${startFrom}&numero_horas=${durationHours}&personas=${people}`,
   );
 
   return data;

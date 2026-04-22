@@ -1,4 +1,4 @@
-import type { RoomFiltersParams } from "../types/rooms";
+import type { EventFilterParams, RoomFiltersParams } from "../types/rooms";
 
 export const roomsKeys = {
   all: ["rooms"] as const,
@@ -9,4 +9,8 @@ export const roomsKeys = {
   bookingsApprovals: ["bookings-approvals"] as const,
   messagesByConversationId: (conversationId: number) => ["messages", conversationId] as const,
   conversations: ["messages"] as const,
+};
+
+export const eventKeys = {
+  byAvailability: (params: EventFilterParams) => ["events", "availability", params] as const,
 };

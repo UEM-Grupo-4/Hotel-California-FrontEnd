@@ -1,43 +1,30 @@
 import { useNavigate } from "react-router-dom";
 import { useRoomsFilters } from "../../../hooks/useRoomsFilters";
-import { useMemo } from "react";
 import dayjs from "dayjs";
-import { mapFiltersToParams } from "../../../utils/dates";
 import { Box, Button, Card, MenuItem, TextField } from "@mui/material";
 import DatePickerFilter from "../../../components/DatePickerFilter/DatePickerFilter";
 import NumberField from "../../../components/NumberField/NumberField";
+import { DateTimePicker } from "@mui/x-date-pickers/DateTimePicker";
 
 function Filters() {
-  const { roomsFilters, onChangeFilters } = useRoomsFilters();
+  const { roomsFilters, onChangeFilters, onChangeType, isSearchDisabled, getQueryParams } =
+    useRoomsFilters();
+
   const navigate = useNavigate();
 
-  const isInvalidDateRange = useMemo(() => {
-    if (!roomsFilters.startDate || !roomsFilters.endDate) return false;
-
-    return dayjs(roomsFilters.endDate).isBefore(dayjs(roomsFilters.startDate));
-  }, [roomsFilters]);
-
-  const disabledSearchButton = useMemo(
-    () =>
-      !roomsFilters.startDate ||
-      !roomsFilters.endDate ||
-      !roomsFilters.people ||
-      isInvalidDateRange,
-    [roomsFilters, isInvalidDateRange],
-  );
-
   const handleSearch = () => {
-    if (disabledSearchButton) return;
-    const mappedFilters = mapFiltersToParams(roomsFilters);
+    if (isSearchDisabled) return;
 
-    navigate(
-      `/reservation/?type=${mappedFilters?.type}&startDate=${mappedFilters?.startDate}&endDate=${mappedFilters?.endDate}&people=${mappedFilters?.people}`,
-    );
+    const params = getQueryParams();
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const query = new URLSearchParams(params as any).toString();
+
+    navigate(`/reservation/?${query}`);
   };
 
   return (
     <Card sx={{ p: 2, marginTop: 10 }}>
-      <Box display="flex" gap={2} alignItems="center" flexWrap="wrap">
+      <Box display="flex" gap={2} alignItems="center">
         <Box width={140}>
           <TextField
             id="type-of-reservation"
@@ -46,7 +33,7 @@ function Filters() {
             defaultValue="room"
             fullWidth
             value={roomsFilters.type}
-            onChange={(event) => onChangeFilters("type", event.target.value)}
+            onChange={(e) => onChangeType(e.target.value as "room" | "event")}
             size="small"
           >
             <MenuItem key={"room"} value={"room"}>
@@ -57,27 +44,48 @@ function Filters() {
             </MenuItem>
           </TextField>
         </Box>
+        {roomsFilters.type === "event" ? (
+          <>
+            <DateTimePicker
+              label="Día y hora"
+              value={roomsFilters.eventStart}
+              minDate={dayjs()}
+              onChange={(value) => onChangeFilters("eventStart", value)}
+              views={["year", "month", "day", "hours"]}
+              slotProps={{ textField: { size: "small" } }}
+            />
+            <Box>
+              <NumberField
+                label="Horas"
+                size="small"
+                min={1}
+                max={8}
+                value={roomsFilters.durationHours}
+                onValueChange={(value) => onChangeFilters("durationHours", value!)}
+              />
+            </Box>
+          </>
+        ) : (
+          <>
+            <DatePickerFilter
+              label="Entrada"
+              value={roomsFilters.startDate}
+              minDate={dayjs()}
+              onChange={(value) => onChangeFilters("startDate", value)}
+              width={180}
+            />
 
-        <Box flex={1}>
-          <DatePickerFilter
-            label="Entrada"
-            value={roomsFilters.startDate}
-            onChange={(value) => onChangeFilters("startDate", value)}
-            width={180}
-          />
-        </Box>
+            <DatePickerFilter
+              value={roomsFilters.endDate}
+              label="Salida"
+              minDate={roomsFilters.startDate ?? undefined}
+              onChange={(value) => onChangeFilters("endDate", value)}
+              width={180}
+            />
+          </>
+        )}
 
-        <Box flex={1}>
-          <DatePickerFilter
-            value={roomsFilters.endDate}
-            label="Salida"
-            minDate={roomsFilters.startDate ?? undefined}
-            onChange={(value) => onChangeFilters("endDate", value)}
-            width={180}
-          />
-        </Box>
-
-        <Box flex={2}>
+        <Box flex={1} minWidth={150}>
           <NumberField
             label="Personas"
             size="small"
@@ -88,7 +96,7 @@ function Filters() {
           />
         </Box>
 
-        <Button variant="contained" onClick={handleSearch} disabled={disabledSearchButton}>
+        <Button variant="contained" onClick={handleSearch} disabled={isSearchDisabled}>
           Buscar
         </Button>
       </Box>

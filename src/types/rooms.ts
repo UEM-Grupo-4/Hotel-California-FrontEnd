@@ -28,11 +28,31 @@ export type RoomFiltersParams = {
   type?: string;
 };
 
+export type EventFilterParams = {
+  start?: string;
+  startFrom?: string;
+  durationHours?: number;
+  people?: number;
+};
+
+export type EventMapped = {
+  id: number;
+  name: string;
+  capacity: number;
+  description: string;
+  pricePerHour: number;
+  status: "AVAILABLE" | "UNAVAILABLE";
+  image?: string;
+};
+
 export type RoomFiltersUI = {
   type: string;
   startDate?: PickerValue;
   endDate?: PickerValue;
   people: number;
+
+  eventStart?: PickerValue;
+  durationHours?: number;
 };
 
 export type CreateRoomBookingForm = {

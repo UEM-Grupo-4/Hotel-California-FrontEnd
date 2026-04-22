@@ -1,11 +1,12 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import * as api from "./rooms.api";
-import { roomsKeys } from "./rooms.keys";
+import { eventKeys, roomsKeys } from "./rooms.keys";
 import { buildRoomToApi } from "./rooms.mappers";
 import type {
   Amenity,
   AmenityRequest,
   Booking,
+  EventFilterParams,
   RoomFiltersParams,
   RoomRequest,
   RoomType,
@@ -44,6 +45,17 @@ export const useRoomsByAvailability = (
   return useQuery({
     queryKey: roomsKeys.byAvailability(params),
     queryFn: () => api.getRoomsByAvailability(params),
+    enabled: options?.enabled,
+  });
+};
+
+export const useEventByAvailability = (
+  params: EventFilterParams,
+  options?: { enabled?: boolean },
+) => {
+  return useQuery({
+    queryKey: eventKeys.byAvailability(params),
+    queryFn: () => api.getEventsByAvailability(params),
     enabled: options?.enabled,
   });
 };

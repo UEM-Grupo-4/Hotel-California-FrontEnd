@@ -1,8 +1,16 @@
 import dayjs from "dayjs";
-import type { RoomFiltersParams, RoomFiltersUI } from "../types/rooms";
+import type { RoomFiltersUI } from "../types/rooms";
 
-export const mapFiltersToParams = (filters: RoomFiltersUI): RoomFiltersParams | null => {
-  if (!filters.startDate || !filters.endDate) return null;
+export const mapFiltersToParams = (filters: RoomFiltersUI) => {
+  if (filters.type === "event") {
+    return {
+      type: filters.type,
+      start: dayjs(filters.eventStart).format("YYYY-MM-DD"),
+      startFrom: dayjs(filters.eventStart).format("HH:mm"),
+      durationHours: filters.durationHours,
+      people: filters.people,
+    };
+  }
 
   return {
     startDate: dayjs(filters.startDate).format("YYYY-MM-DD"),
