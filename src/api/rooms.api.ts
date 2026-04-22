@@ -16,6 +16,7 @@ import type {
   EventMapped,
   EventSchedule,
   EventRequest,
+  EventUpdate,
 } from "../types/rooms";
 import { mapBookingToApi, type CreateRoomBookingExtra } from "../utils/roomsUtils";
 import { apiRoutes } from "./apiRoutes";
@@ -193,4 +194,8 @@ export const createEvent = async (event: EventRequest) => {
 
 export const createEventSchedule = async (eventSchedule: EventSchedule[]) => {
   return api.post(apiRoutes.eventsSchedule, eventSchedule);
+};
+
+export const updateEvent = async (event: EventUpdate): Promise<EventUpdate> => {
+  return api.patch(`${apiRoutes.events}${event.id}/`, buildEventToApi(event));
 };

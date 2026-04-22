@@ -22,7 +22,6 @@ export const buildEventToApi = (event: EventRequest) => {
   formData.append("descripcion", event.description);
   formData.append("precio_hora", String(event.pricePerHour));
   formData.append("estado", event.status);
-  formData.append("horarios", JSON.stringify(event.horarios));
 
   if (event.image) {
     formData.append("image", event.image);

@@ -132,5 +132,6 @@ export type RoomWithRoomTypeIdNumber = Omit<Room, "type"> & { type: number };
 
 export type EventRequest = Omit<EventMapped, "id" | "image"> & {
   image?: File;
-  horarios: EventSchedule[];
 };
+
+export type EventUpdate = Omit<EventMapped, "image"> & { image?: File };

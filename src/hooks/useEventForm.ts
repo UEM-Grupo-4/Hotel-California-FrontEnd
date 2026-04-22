@@ -1,5 +1,5 @@
 import { useMemo, useState } from "react";
-import { useCreateEvent } from "../api/rooms.hooks";
+import { useCreateEvent, useCreateEventSchedule, useUpdateEvent } from "../api/rooms.hooks";
 import type { EventMapped, EventRequest, EventSchedule } from "../types/rooms";
 
 const days = [
@@ -16,7 +16,9 @@ export const useEventForm = (original: EventMapped | null, onClose: () => void) 
   const isEdit = !!original;
 
   const { mutateAsync: createEvent } = useCreateEvent();
-  //const { mutateAsync: createSchedule } = useCreateEventSchedule();
+  const { mutateAsync: createSchedule } = useCreateEventSchedule();
+
+  const { mutate: editEvent } = useUpdateEvent();
 
   const [form, setForm] = useState<Omit<EventRequest, "horarios">>({
     name: original?.name ?? "",
@@ -27,7 +29,7 @@ export const useEventForm = (original: EventMapped | null, onClose: () => void) 
     image: undefined,
   });
 
-  const [sameSchedule, setSameSchedule] = useState(true);
+  const [sameSchedule, setSameSchedule] = useState(false);
 
   const [commonSchedule, setCommonSchedule] = useState({
     startTime: "",
@@ -73,11 +75,12 @@ export const useEventForm = (original: EventMapped | null, onClose: () => void) 
     ? isTimeValid(commonSchedule.startTime, commonSchedule.endTime)
     : schedules.length > 0 && schedules.every((s) => isTimeValid(s.startTime, s.endTime));
 
-  const isDisabled = !isValidEvent || !isValidSchedule;
+  const isDisabled = !isValidEvent || (!isEdit && !isValidSchedule);
 
-  const buildSchedules = (): EventSchedule[] => {
+  const buildSchedules = (eventId: number): EventSchedule[] => {
     if (sameSchedule) {
       return days.map((d) => ({
+        sala: eventId,
         dia_semana: d.value,
         hora_inicio: `${commonSchedule.startTime}:00`,
         hora_fin: `${commonSchedule.endTime}:00`,
@@ -85,6 +88,7 @@ export const useEventForm = (original: EventMapped | null, onClose: () => void) 
     }
 
     return schedules.map((s) => ({
+      sala: eventId,
       dia_semana: s.dayOfWeek,
       hora_inicio: `${s.startTime}:00`,
       hora_fin: `${s.endTime}:00`,
@@ -95,14 +99,24 @@ export const useEventForm = (original: EventMapped | null, onClose: () => void) 
     if (isDisabled) return;
 
     try {
-      return await createEvent(
-        { ...form, horarios: buildSchedules() },
-        {
-          onSuccess: () => {
-            onClose();
-          },
-        },
-      );
+      if (isEdit && original) {
+        editEvent({
+          id: original.id,
+          ...form,
+        });
+
+        onClose();
+
+        return;
+      }
+
+      const response = await createEvent(form);
+      const eventId = response.data.id;
+
+      const mappedSchedules = buildSchedules(eventId);
+      await createSchedule(mappedSchedules);
+
+      onClose();
     } catch (e) {
       console.error(e);
     }

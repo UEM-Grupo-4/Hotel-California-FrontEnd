@@ -21,5 +21,5 @@ export const apiRoutes = {
   chat: "/chat/",
 
   events: "/meetings/salas/",
-  eventsSchedule: "/meetings/horarios",
+  eventsSchedule: "/meetings/horarios/",
 };

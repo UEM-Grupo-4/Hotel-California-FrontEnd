@@ -84,14 +84,20 @@ export function EventCreateModal({ open, onClose, event }: Readonly<Props>) {
             control={
               <Checkbox
                 checked={sameSchedule}
+                disabled={isEdit}
                 onChange={(e) => setSameSchedule(e.target.checked)}
               />
             }
             label="Mismo horario todos los días"
           />
+          {isEdit && (
+            <Typography color="error">
+              Para modificar horarios hay que eliminar el evento
+            </Typography>
+          )}
 
           {sameSchedule ? (
-            <Box sx={{ display: "flex", gap: 2 }}>
+            <Box sx={{ display: "flex", gap: 2 }} mt={2}>
               <TextField
                 type="time"
                 label="Inicio"
@@ -119,9 +125,9 @@ export function EventCreateModal({ open, onClose, event }: Readonly<Props>) {
               />
             </Box>
           ) : (
-            <Box sx={{ display: "flex", flexDirection: "column", gap: 2 }}>
+            <Box sx={{ display: "flex", flexDirection: "column", gap: 3 }}>
               {schedules.map((schedule, index) => (
-                <Box key={index} display="flex" gap={1}>
+                <Box key={index} display="flex" mt={2} gap={1}>
                   <TextField
                     select
                     label="Día"
@@ -155,7 +161,16 @@ export function EventCreateModal({ open, onClose, event }: Readonly<Props>) {
                 </Box>
               ))}
 
-              <Button onClick={handleAddSchedule}>Agregar horario</Button>
+              {!isEdit && (
+                <Button
+                  onClick={handleAddSchedule}
+                  variant="contained"
+                  sx={{ width: 200 }}
+                  disabled={isEdit}
+                >
+                  Agregar horario
+                </Button>
+              )}
             </Box>
           )}
         </Box>

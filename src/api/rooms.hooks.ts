@@ -9,6 +9,7 @@ import type {
   EventFilterParams,
   EventRequest,
   EventSchedule,
+  EventUpdate,
   RoomFiltersParams,
   RoomRequest,
   RoomType,
@@ -184,6 +185,17 @@ export const useUpdateAmenity = () => {
       queryClient.invalidateQueries({ queryKey: roomsKeys.amenities });
     },
     onError: () => showError("Error actualizando amenity"),
+  });
+};
+
+export const useUpdateEvent = () => {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: (event: EventUpdate) => api.updateEvent(event),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: eventKeys.events });
+    },
   });
 };
 
