@@ -21,7 +21,7 @@ import type {
 import { mapBookingToApi, type CreateRoomBookingExtra } from "../utils/roomsUtils";
 import { apiRoutes } from "./apiRoutes";
 import { api } from "./axios";
-import { buildEventToApi } from "./rooms.mappers";
+import { buildEventToApi, buildEventToApp } from "./rooms.mappers";
 
 export const getRooms = async (): Promise<Room[]> => {
   const { data } = await api.get(apiRoutes.rooms);
@@ -63,7 +63,7 @@ export const getEventsByAvailability = async ({
     `${apiRoutes.bookingsAvailableEvents}?fecha=${start}&hora_inicio=${startFrom}&numero_horas=${durationHours}&personas=${people}`,
   );
 
-  return data;
+  return buildEventToApp(data);
 };
 
 export const getBookingByCode = async ({ code, email }: MyBookReservation): Promise<Booking> => {
@@ -180,6 +180,7 @@ export const getEvents = async (): Promise<EventMapped[]> => {
   return data?.map((event: any) => ({
     id: event.id,
     name: event.nombre,
+    times: event.horarios,
     capacity: event.capacidad,
     description: event.descripcion,
     pricePerHour: event.precio_hora,

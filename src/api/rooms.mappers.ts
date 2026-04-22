@@ -29,3 +29,18 @@ export const buildEventToApi = (event: EventRequest) => {
 
   return formData;
 };
+
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export const buildEventToApp = (data: any) => {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  return data?.map((event: any) => ({
+    id: event.id,
+    name: event.nombre,
+    capacity: event.capacidad,
+    description: event.descripcion,
+    pricePerHour: event.precio_hora,
+    status: event.estado,
+    times: event.horarios,
+    image: event.image,
+  }));
+};

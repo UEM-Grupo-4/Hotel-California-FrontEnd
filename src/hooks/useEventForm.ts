@@ -2,7 +2,7 @@ import { useMemo, useState } from "react";
 import { useCreateEvent, useCreateEventSchedule, useUpdateEvent } from "../api/rooms.hooks";
 import type { EventMapped, EventRequest, EventSchedule } from "../types/rooms";
 
-const days = [
+export const weekDaysEvents = [
   { label: "Lunes", value: 0 },
   { label: "Martes", value: 1 },
   { label: "Miércoles", value: 2 },
@@ -43,7 +43,9 @@ export const useEventForm = (original: EventMapped | null, onClose: () => void) 
   const selectedDays = useMemo(() => schedules.map((s) => s.dayOfWeek), [schedules]);
 
   const getAvailableDays = (index: number) =>
-    days.filter((d) => !selectedDays.includes(d.value) || schedules[index]?.dayOfWeek === d.value);
+    weekDaysEvents.filter(
+      (d) => !selectedDays.includes(d.value) || schedules[index]?.dayOfWeek === d.value,
+    );
 
   const handleChange = (field: keyof EventRequest) => (e: React.ChangeEvent<HTMLInputElement>) => {
     setForm((prev) => ({
@@ -79,7 +81,7 @@ export const useEventForm = (original: EventMapped | null, onClose: () => void) 
 
   const buildSchedules = (eventId: number): EventSchedule[] => {
     if (sameSchedule) {
-      return days.map((d) => ({
+      return weekDaysEvents.map((d) => ({
         sala: eventId,
         dia_semana: d.value,
         hora_inicio: `${commonSchedule.startTime}:00`,

@@ -43,6 +43,7 @@ export type EventMapped = {
   pricePerHour: number;
   status: "DISPONIBLE" | "MANTENIMIENTO" | "FUERA_DE_SERVICIO";
   image?: string;
+  times?: EventSchedule[];
 };
 
 export type EventSchedule = {

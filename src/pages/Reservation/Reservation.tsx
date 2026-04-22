@@ -12,7 +12,7 @@ function Reservation() {
   return (
     <Grid>
       <FiltersPage />
-      <Container maxWidth="md">{type === "room" ? <RoomDetails /> : <EventDetails />}</Container>
+      <Container maxWidth="lg">{type === "room" ? <RoomDetails /> : <EventDetails />}</Container>
     </Grid>
   );
 }

@@ -12,6 +12,8 @@ import {
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
 import type { EventMapped } from "../../../types/rooms";
+import { weekDaysEvents } from "../../../hooks/useEventForm";
+import { find } from "lodash";
 
 type Props = {
   event: EventMapped;
@@ -30,7 +32,7 @@ export function EventCard({
   onEdit,
   onDelete,
 }: Readonly<Props>) {
-  const totalPrice = (durationHours ?? 0) * event.pricePerHour;
+  const totalPrice = (durationHours ?? 1) * Number(event.pricePerHour);
 
   return (
     <StyledCard>
@@ -51,6 +53,19 @@ export function EventCard({
         <EventFooter container>
           <Typography variant="body1">{event.description}</Typography>
 
+          <Grid container gap={1}>
+            {event?.times?.map((time, index) => {
+              const weekDay = find(weekDaysEvents, (day) => day.value === time?.dia_semana);
+
+              return (
+                <Grid size={5} key={index}>
+                  <Typography>
+                    <b>{weekDay?.label}:</b> {time.hora_inicio} a {time.hora_fin}
+                  </Typography>
+                </Grid>
+              );
+            })}
+          </Grid>
           {!durationHours && (
             <Typography variant={"body1"}>
               $ {event.pricePerHour} <span>per hour</span>
