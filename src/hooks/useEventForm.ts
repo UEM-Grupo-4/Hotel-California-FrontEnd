@@ -1,5 +1,5 @@
 import { useMemo, useState } from "react";
-import { useCreateEvent, useCreateEventSchedule } from "../api/rooms.hooks";
+import { useCreateEvent } from "../api/rooms.hooks";
 import type { EventMapped, EventRequest, EventSchedule } from "../types/rooms";
 
 const days = [
@@ -16,9 +16,9 @@ export const useEventForm = (original: EventMapped | null, onClose: () => void) 
   const isEdit = !!original;
 
   const { mutateAsync: createEvent } = useCreateEvent();
-  const { mutateAsync: createSchedule } = useCreateEventSchedule();
+  //const { mutateAsync: createSchedule } = useCreateEventSchedule();
 
-  const [form, setForm] = useState<EventRequest>({
+  const [form, setForm] = useState<Omit<EventRequest, "horarios">>({
     name: original?.name ?? "",
     description: original?.description ?? "",
     capacity: original?.capacity ?? 1,
@@ -75,10 +75,9 @@ export const useEventForm = (original: EventMapped | null, onClose: () => void) 
 
   const isDisabled = !isValidEvent || !isValidSchedule;
 
-  const buildSchedules = (eventId: number): EventSchedule[] => {
+  const buildSchedules = (): EventSchedule[] => {
     if (sameSchedule) {
       return days.map((d) => ({
-        sala: eventId,
         dia_semana: d.value,
         hora_inicio: `${commonSchedule.startTime}:00`,
         hora_fin: `${commonSchedule.endTime}:00`,
@@ -86,7 +85,6 @@ export const useEventForm = (original: EventMapped | null, onClose: () => void) 
     }
 
     return schedules.map((s) => ({
-      sala: eventId,
       dia_semana: s.dayOfWeek,
       hora_inicio: `${s.startTime}:00`,
       hora_fin: `${s.endTime}:00`,
@@ -97,17 +95,14 @@ export const useEventForm = (original: EventMapped | null, onClose: () => void) 
     if (isDisabled) return;
 
     try {
-      return await createEvent(form, {
-        onSuccess: async (response) => {
-          const eventId = response?.data?.id;
-
-          const schedulesToCreate = buildSchedules(eventId);
-
-          await createSchedule(schedulesToCreate);
-
-          onClose();
+      return await createEvent(
+        { ...form, horarios: buildSchedules() },
+        {
+          onSuccess: () => {
+            onClose();
+          },
         },
-      });
+      );
     } catch (e) {
       console.error(e);
     }

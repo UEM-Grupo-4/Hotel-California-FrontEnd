@@ -46,7 +46,7 @@ export type EventMapped = {
 };
 
 export type EventSchedule = {
-  sala: number;
+  sala?: number;
   dia_semana: number;
   hora_inicio: string;
   hora_fin: string;
@@ -130,4 +130,7 @@ export type AmenityRequest = Omit<Amenity, "id">;
 
 export type RoomWithRoomTypeIdNumber = Omit<Room, "type"> & { type: number };
 
-export type EventRequest = Omit<EventMapped, "id" | "image"> & { image?: File };
+export type EventRequest = Omit<EventMapped, "id" | "image"> & {
+  image?: File;
+  horarios: EventSchedule[];
+};

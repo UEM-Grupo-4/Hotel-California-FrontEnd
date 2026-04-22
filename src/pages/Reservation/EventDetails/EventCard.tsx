@@ -31,7 +31,6 @@ export function EventCard({
   onDelete,
 }: Readonly<Props>) {
   const totalPrice = (durationHours ?? 0) * event.pricePerHour;
-  console.log(event);
 
   return (
     <StyledCard>
