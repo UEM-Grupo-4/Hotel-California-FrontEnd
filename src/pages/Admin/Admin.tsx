@@ -8,6 +8,7 @@ const AdminAmenities = lazy(() => import("./AdminAmenities/AdminAmenities"));
 const AdminRoomsType = lazy(() => import("./AdminRoomsType/AdminRoomsType"));
 const AdminBookings = lazy(() => import("./AdminBookings/AdminBookings"));
 const AdminChats = lazy(() => import("./AdminChats/AdminChats"));
+const AdminEvents = lazy(() => import("./AdminEvents/AdminEvents"));
 
 const Admin = () => {
   const { handleTabChange, tabSelected } = useAdminTabs();
@@ -20,6 +21,7 @@ const Admin = () => {
             <Tab label="Rooms" value="rooms" />
             <Tab label="Rooms Types" value="rooms-types" />
             <Tab label="Amenities" value="amenities" />
+            <Tab label="Eventos" value="events" />
             <Tab label="Reservas" value="bookings" />
             <Tab label="Chats" value="chats" />
           </Tabs>
@@ -32,6 +34,9 @@ const Admin = () => {
         </TabPanel>
         <TabPanel value={"amenities"} tabSelected={tabSelected}>
           <AdminAmenities />
+        </TabPanel>
+        <TabPanel value={"events"} tabSelected={tabSelected}>
+          <AdminEvents />
         </TabPanel>
         <TabPanel value={"bookings"} tabSelected={tabSelected}>
           <AdminBookings />

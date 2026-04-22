@@ -7,6 +7,8 @@ import type {
   AmenityRequest,
   Booking,
   EventFilterParams,
+  EventRequest,
+  EventSchedule,
   RoomFiltersParams,
   RoomRequest,
   RoomType,
@@ -76,6 +78,13 @@ export const useBookings = () => {
   });
 };
 
+export const useEvents = () => {
+  return useQuery({
+    queryKey: eventKeys.events,
+    queryFn: api.getEvents,
+  });
+};
+
 // CREATE
 export const useCreateRoom = () => {
   const queryClient = useQueryClient();
@@ -116,6 +125,28 @@ export const useCreateAmenity = () => {
 export const useCreateRoomBooking = () => {
   return useMutation({
     mutationFn: api.createRoomBooking,
+  });
+};
+
+export const useCreateEvent = () => {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: (event: EventRequest) => api.createEvent(event),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: eventKeys.events });
+    },
+  });
+};
+
+export const useCreateEventSchedule = () => {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: (time: EventSchedule[]) => api.createEventSchedule(time),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: eventKeys.events });
+    },
   });
 };
 
@@ -186,6 +217,17 @@ export const useDeleteAmenity = () => {
     mutationFn: api.deleteAmenity,
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: roomsKeys.amenities });
+    },
+  });
+};
+
+export const useDeleteEvent = () => {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: api.deleteEvent,
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: eventKeys.events });
     },
   });
 };

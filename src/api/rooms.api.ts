@@ -14,10 +14,13 @@ import type {
   RoomType,
   RoomTypeRequest,
   EventMapped,
+  EventSchedule,
+  EventRequest,
 } from "../types/rooms";
 import { mapBookingToApi, type CreateRoomBookingExtra } from "../utils/roomsUtils";
 import { apiRoutes } from "./apiRoutes";
 import { api } from "./axios";
+import { buildEventToApi } from "./rooms.mappers";
 
 export const getRooms = async (): Promise<Room[]> => {
   const { data } = await api.get(apiRoutes.rooms);
@@ -128,6 +131,10 @@ export const deleteAmenity = async (id: number) => {
   return api.delete(`${apiRoutes.roomsAmenities}${id}/`);
 };
 
+export const deleteEvent = async (id: number) => {
+  return api.delete(`${apiRoutes.events}${id}/`);
+};
+
 // ACCEPT / REJECT BOOKING
 
 export const acceptBooking = async (id: number) => {
@@ -162,4 +169,27 @@ export const sendMessage = async (payload: PayloadSendMessage) => {
 
 export const closeConversation = async (conversationId: number) => {
   return api.patch(`${apiRoutes.chat}${conversationId}/close/`);
+};
+
+// Events
+export const getEvents = async (): Promise<EventMapped[]> => {
+  const { data } = await api.get(`${apiRoutes.events}`);
+
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  return data?.map((event: any) => ({
+    name: event.nombre,
+    capacity: event.capacidad,
+    description: event.descripcion,
+    pricePerHour: event.precio_hora,
+    status: event.estado,
+    image: event.image,
+  }));
+};
+
+export const createEvent = async (event: EventRequest) => {
+  return api.post(apiRoutes.events, buildEventToApi(event));
+};
+
+export const createEventSchedule = async (eventSchedule: EventSchedule[]) => {
+  return api.post(apiRoutes.eventsSchedule, eventSchedule);
 };

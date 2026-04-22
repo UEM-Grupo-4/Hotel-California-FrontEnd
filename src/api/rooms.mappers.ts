@@ -1,4 +1,4 @@
-import type { RoomRequest, RoomUpdate } from "../types/rooms";
+import type { EventRequest, RoomRequest, RoomUpdate } from "../types/rooms";
 
 export const buildRoomToApi = (room: RoomUpdate | RoomRequest) => {
   const formData = new FormData();
@@ -9,6 +9,22 @@ export const buildRoomToApi = (room: RoomUpdate | RoomRequest) => {
 
   if (room.image) {
     formData.append("image", room.image);
+  }
+
+  return formData;
+};
+
+export const buildEventToApi = (event: EventRequest) => {
+  const formData = new FormData();
+
+  formData.append("nombre", event.name);
+  formData.append("capacidad", String(event.capacity));
+  formData.append("descripcion", event.description);
+  formData.append("precio_hora", String(event.pricePerHour));
+  formData.append("estado", event.status);
+
+  if (event.image) {
+    formData.append("image", event.image);
   }
 
   return formData;

@@ -36,13 +36,20 @@ export type EventFilterParams = {
 };
 
 export type EventMapped = {
-  id: number;
+  id?: number;
   name: string;
   capacity: number;
   description: string;
   pricePerHour: number;
-  status: "AVAILABLE" | "UNAVAILABLE";
+  status: "DISPONIBLE" | "MANTENIMIENTO" | "FUERA_DE_SERVICIO";
   image?: string;
+};
+
+export type EventSchedule = {
+  sala: number;
+  dia_semana: number;
+  hora_inicio: string;
+  hora_fin: string;
 };
 
 export type RoomFiltersUI = {
@@ -122,3 +129,5 @@ export type RoomTypeRequest = Omit<RoomType, "id">;
 export type AmenityRequest = Omit<Amenity, "id">;
 
 export type RoomWithRoomTypeIdNumber = Omit<Room, "type"> & { type: number };
+
+export type EventRequest = Omit<EventMapped, "id" | "image"> & { image?: File };

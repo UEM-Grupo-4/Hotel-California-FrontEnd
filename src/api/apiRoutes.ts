@@ -19,4 +19,7 @@ export const apiRoutes = {
   conversations: "/chat/conversations/",
   messages: "/chat/messages/",
   chat: "/chat/",
+
+  events: "/meetings/salas/",
+  eventsSchedule: "/meetings/horarios",
 };

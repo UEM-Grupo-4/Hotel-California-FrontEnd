@@ -29,7 +29,7 @@ function MainBackground({ onScroll }: Readonly<Props>) {
           ))}
         </Grid>
         <Typography className="hc-title" variant="h1">
-          Lujoso Hotel California
+          Hotel California
         </Typography>
         <Typography className="hc-description" variant="h2">
           La personificación del lujo y el servicio impecable en el corazón <br /> de la capital de

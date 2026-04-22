@@ -12,5 +12,6 @@ export const roomsKeys = {
 };
 
 export const eventKeys = {
+  events: ["events"] as const,
   byAvailability: (params: EventFilterParams) => ["events", "availability", params] as const,
 };
