@@ -9,7 +9,7 @@ import { DeleteConfirmModal } from "../../../components/DeleteConfirmationModal/
 
 function AdminEvents() {
   const { data: eventsList = [] } = useEvents();
-  const deleteRoomMutation = useDeleteEvent();
+  const deleteEventMutation = useDeleteEvent();
 
   const {
     items: events,
@@ -27,7 +27,7 @@ function AdminEvents() {
   const handleDelete = () => {
     if (!itemToDelete?.id) return;
 
-    deleteRoomMutation.mutate(itemToDelete.id, {
+    deleteEventMutation.mutate(itemToDelete.id, {
       onSuccess: () => {
         closeDelete();
       },

@@ -177,6 +177,7 @@ export const getEvents = async (): Promise<EventMapped[]> => {
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   return data?.map((event: any) => ({
+    id: event.id,
     name: event.nombre,
     capacity: event.capacidad,
     description: event.descripcion,
