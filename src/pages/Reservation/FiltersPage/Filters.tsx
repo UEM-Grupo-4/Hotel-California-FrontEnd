@@ -5,6 +5,7 @@ import { Box, Button, Card, MenuItem, TextField } from "@mui/material";
 import DatePickerFilter from "../../../components/DatePickerFilter/DatePickerFilter";
 import NumberField from "../../../components/NumberField/NumberField";
 import { DateTimePicker } from "@mui/x-date-pickers/DateTimePicker";
+import { useMemo } from "react";
 
 function Filters() {
   const { roomsFilters, onChangeFilters, onChangeType, isSearchDisabled, getQueryParams } =
@@ -21,6 +22,10 @@ function Filters() {
 
     navigate(`/reservation/?${query}`);
   };
+
+  const isTypeEvent = useMemo(() => {
+    return roomsFilters.type === "event";
+  }, [roomsFilters.type]);
 
   return (
     <Card sx={{ p: 2, marginTop: 10 }}>
@@ -44,7 +49,7 @@ function Filters() {
             </MenuItem>
           </TextField>
         </Box>
-        {roomsFilters.type === "event" ? (
+        {isTypeEvent ? (
           <>
             <DateTimePicker
               label="Día y hora"
@@ -89,7 +94,7 @@ function Filters() {
           <NumberField
             label="Personas"
             size="small"
-            max={5}
+            max={isTypeEvent ? 100 : 5}
             min={1}
             onValueChange={(value) => onChangeFilters("people", value!)}
             value={roomsFilters.people}

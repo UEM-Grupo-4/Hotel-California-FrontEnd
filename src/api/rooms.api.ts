@@ -18,7 +18,12 @@ import type {
   EventRequest,
   EventUpdate,
 } from "../types/rooms";
-import { mapBookingToApi, type CreateRoomBookingExtra } from "../utils/roomsUtils";
+import {
+  mapBookingEventToApi,
+  mapBookingRoomToApi,
+  type CreateEventBookingExtra,
+  type CreateRoomBookingExtra,
+} from "../utils/roomsUtils";
 import { apiRoutes } from "./apiRoutes";
 import { api } from "./axios";
 import { buildEventToApi, buildEventToApp } from "./rooms.mappers";
@@ -92,12 +97,12 @@ export const createAmenity = async (amenity: AmenityRequest) => {
 
 export const createRoomBooking = async ({
   form,
-  roomId,
+  eventId,
   startDate,
   endDate,
 }: CreateRoomBookingExtra) => {
-  const payload = mapBookingToApi(form, {
-    roomId,
+  const payload = mapBookingRoomToApi(form, {
+    eventId,
     startDate,
     endDate,
   });
@@ -199,4 +204,24 @@ export const createEventSchedule = async (eventSchedule: EventSchedule[]) => {
 
 export const updateEvent = async (event: EventUpdate): Promise<EventUpdate> => {
   return api.patch(`${apiRoutes.events}${event.id}/`, buildEventToApi(event));
+};
+
+export const createEventBooking = async ({
+  form,
+  eventId,
+  startDate,
+  startFrom,
+  durationHours,
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+}: CreateEventBookingExtra): Promise<any> => {
+  const payload = mapBookingEventToApi(form, {
+    eventId,
+    startDate,
+    startFrom,
+    durationHours,
+  });
+
+  const { data } = await api.post(apiRoutes.bookingsReservationEvent, payload);
+
+  return data;
 };

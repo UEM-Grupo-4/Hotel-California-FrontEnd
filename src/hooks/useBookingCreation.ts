@@ -43,7 +43,7 @@ export function useBookingCreation({ room, startDate, endDate }: Props) {
     mutate(
       {
         form,
-        roomId: room.id,
+        eventId: room.id,
         startDate,
         endDate,
       },

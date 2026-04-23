@@ -6,10 +6,10 @@ import type { EventMapped } from "../../../types/rooms";
 import { EventCard } from "./EventCard";
 import { useEventSearchParams } from "../../../hooks/useEventSearchParams";
 import { useEventByAvailability } from "../../../api/rooms.hooks";
+import { EventBookingModal } from "../../../components/EventBookingModal/EventBookingModal";
 
 function EventDetails() {
   const [eventToBeBooked, setEventToBeBooked] = useState<EventMapped | undefined>();
-  console.log(eventToBeBooked);
 
   const { durationHours, startDate, startFrom, people, hasFilters } = useEventSearchParams();
 
@@ -44,6 +44,16 @@ function EventDetails() {
           onBookEvent={setEventToBeBooked}
         />
       ))}
+      {eventToBeBooked && (
+        <EventBookingModal
+          open={!!eventToBeBooked}
+          onClose={() => setEventToBeBooked(undefined)}
+          event={eventToBeBooked}
+          startDate={startDate!}
+          startFrom={startFrom!}
+          durationHours={Number(durationHours)}
+        />
+      )}
     </Grid>
   );
 }

@@ -126,6 +126,18 @@ export const useCreateAmenity = () => {
 export const useCreateRoomBooking = () => {
   return useMutation({
     mutationFn: api.createRoomBooking,
+    onError: () => {
+      showError("Hubo un error haciendo un booking de la habitación");
+    },
+  });
+};
+
+export const useCreateEventBooking = () => {
+  return useMutation({
+    mutationFn: api.createEventBooking,
+    onError: () => {
+      showError("Hubo un error haciendo un booking del evento");
+    },
   });
 };
 
