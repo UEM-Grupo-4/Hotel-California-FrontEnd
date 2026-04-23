@@ -39,10 +39,10 @@ export function EventConfirmation({
         </Box>
 
         <Typography variant="h5" fontWeight="bold">
-          Reserva de evento confirmada
+          Reserva de salón de eventos confirmada
         </Typography>
 
-        <Typography color="text.secondary">Tu evento fue reservado correctamente.</Typography>
+        <Typography color="text.secondary">Tu salón fue reservado correctamente.</Typography>
 
         <Box sx={{ p: 2, bgcolor: "rgba(0,0,0,0.05)", borderRadius: 1, width: "90%" }}>
           <Typography>Code: {bookingCode}</Typography>
@@ -60,7 +60,7 @@ export function EventConfirmation({
           <Button
             fullWidth
             variant="contained"
-            onClick={() => navigate(`/mi-reserva?code=${bookingCode}`)}
+            onClick={() => navigate(`/mi-reserva?code=${bookingCode}`, { state: { eventName: event.name } })}
           >
             Mi reserva
           </Button>

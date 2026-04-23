@@ -30,7 +30,7 @@ function EventDetails() {
 
   if (!hasFilters) return <></>;
   if (isLoading) return <LoadingPage open={isLoading} />;
-  if (isEmpty(events) || !events) return <span>No events</span>;
+  if (isEmpty(events) || !events) return <span>No events hall</span>;
 
   return (
     <Grid container flexDirection={"column"} gap={3} sx={{ p: 3 }}>

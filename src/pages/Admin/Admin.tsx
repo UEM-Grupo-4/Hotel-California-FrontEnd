@@ -21,7 +21,7 @@ const Admin = () => {
             <Tab label="Rooms" value="rooms" />
             <Tab label="Rooms Types" value="rooms-types" />
             <Tab label="Amenities" value="amenities" />
-            <Tab label="Eventos" value="events" />
+            <Tab label="Salones" value="events" />
             <Tab label="Reservas" value="bookings" />
             <Tab label="Chats" value="chats" />
           </Tabs>

@@ -96,12 +96,17 @@ export type Customer = {
 
 export type RoomBookingDetail = {
   habitacion: number;
+  nombre_habitacion?: string;
+  numero_habitacion?: string;
   fecha_inicio: string;
   fecha_fin: string;
 };
 
 export type RoomMeetingDetail = {
-  sala: number;
+  sala: number | { id: number; nombre?: string; name?: string };
+  nombre?: string;
+  nombre_sala?: string;
+  sala_nombre?: string;
   fecha: string;
   hora_inicio: string;
   hora_fin: string;

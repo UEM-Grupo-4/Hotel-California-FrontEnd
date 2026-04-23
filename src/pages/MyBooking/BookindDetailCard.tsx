@@ -13,6 +13,7 @@ import type { Booking } from "../../types/rooms";
 
 type Props = {
   booking: Booking;
+  eventName?: string;
 };
 
 const getStatusColor = (status: string) => {
@@ -30,8 +31,15 @@ const getStatusColor = (status: string) => {
   }
 };
 
-export function BookingDetailCard({ booking }: Readonly<Props>) {
+export function BookingDetailCard({ booking, eventName }: Readonly<Props>) {
   const isPending = booking.estado === "PENDIENTE";
+  const salaName =
+    eventName ??
+    booking.reserva_sala?.nombre ??
+    booking.reserva_sala?.sala_nombre ??
+    (typeof booking.reserva_sala?.sala === "object"
+      ? booking.reserva_sala.sala.nombre ?? booking.reserva_sala.sala.name ?? booking.reserva_sala.sala.id
+      : booking.reserva_sala?.sala);
 
   return (
     <Card sx={{ mt: 2, borderRadius: 3 }}>
@@ -80,13 +88,30 @@ export function BookingDetailCard({ booking }: Readonly<Props>) {
           </Stack>
 
           <Divider />
+          {booking.reserva_sala && (
+            <Stack spacing={1}>
+              <Typography variant="h6">Detalle de la sala</Typography>
+
+              <Typography>
+                <strong>Salón:</strong> {salaName}
+              </Typography>
+
+              <Typography>
+                <strong>Fecha:</strong> {booking.reserva_sala.fecha}
+              </Typography>
+
+              <Typography>
+                <strong>Horario:</strong> {booking.reserva_sala.hora_inicio} - {booking.reserva_sala.hora_fin}
+              </Typography>
+            </Stack>
+          )}
 
           {booking.reserva_habitacion && (
             <Stack spacing={1}>
               <Typography variant="h6">Detalle de la habitación</Typography>
 
               <Typography>
-                <strong>Habitación ID:</strong> {booking.reserva_habitacion.habitacion}
+                <strong>Habitación:</strong> {booking.reserva_habitacion.numero_habitacion} - {booking.reserva_habitacion.nombre_habitacion}
               </Typography>
 
               <Typography>
