@@ -13,6 +13,7 @@ function FiltersTitleWrapper({ collapsed }: Readonly<Props>) {
         display: collapsed ? "none" : "block",
         transform: collapsed ? "translateY(-20px)" : "translateY(0)",
         pointerEvents: collapsed ? "none" : "auto",
+        width: "100%",
       }}
     >
       <FiltersTitle />

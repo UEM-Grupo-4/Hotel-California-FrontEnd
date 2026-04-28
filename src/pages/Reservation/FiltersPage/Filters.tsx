@@ -29,7 +29,7 @@ function Filters() {
 
   return (
     <Card sx={{ p: 2, marginTop: 10 }}>
-      <Box display="flex" gap={2} alignItems="center">
+      <Box display="flex" gap={2} alignItems="center" flexWrap={"wrap"}>
         <Box width={140}>
           <TextField
             id="type-of-reservation"

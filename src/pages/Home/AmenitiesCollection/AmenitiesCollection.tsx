@@ -11,7 +11,8 @@ function AmenitiesCollection() {
         justifyContent={"space-evenly"}
         alignItems={"center"}
         textAlign={"center"}
-        height={"80vh"}
+        minHeight={"80vh"}
+        gap={3}
       >
         <HomeSectionTitle title="Moderno y cómodo" subtitle="Facilidades y Aménities" />
         <Grid container gap={8} width={"100%"} alignItems={"center"} justifyContent={"center"}>

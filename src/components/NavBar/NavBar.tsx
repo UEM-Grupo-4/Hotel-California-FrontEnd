@@ -53,6 +53,7 @@ function NavBar() {
         gap={1}
         onClick={(event) => onClickTab(event, "/")}
         sx={{ cursor: "pointer" }}
+        display={{ xs: "none", lg: "flex" }}
       >
         <Box
           component={"img"}

@@ -14,7 +14,7 @@ function FiltersPage() {
           container
           flexDirection={"column"}
           height={"100%"}
-          justifyContent={collapsed ? "flex-end" : "center"} // 👈 importante
+          justifyContent={collapsed ? "flex-end" : "center"}
           pb={collapsed ? 4 : 0}
         >
           <FiltersTitleWrapper collapsed={collapsed} />
