@@ -141,3 +141,8 @@ export type EventRequest = Omit<EventMapped, "id" | "image"> & {
 };
 
 export type EventUpdate = Omit<EventMapped, "image"> & { image?: File };
+
+export type BookingUpdate = Omit<
+  Booking,
+  "reserva_habitacion" | "reserva_sala" | "fecha_creacion" | "observaciones"
+>;

@@ -14,7 +14,7 @@ import { useBookingSearchParams } from "../../hooks/useBookingSearchParams";
 import { LoadingPage } from "../../components/LoadingPage/LoadingPage";
 import BackgroundImage from "../../assets/wallpaper_reserva.jpg";
 import { BookingDetailCard } from "./BookindDetailCard";
-import { useBookingByCode } from "../../api/rooms.hooks";
+import { useBookingByCode, useCancelBooking } from "../../api/rooms.hooks";
 
 const MyBooking = () => {
   const location = useLocation();
@@ -25,10 +25,17 @@ const MyBooking = () => {
   const [email, setEmail] = useState("");
 
   const { data, isLoading, isError, refetch } = useBookingByCode(code, email);
+  const { mutate: cancelBookingMutation } = useCancelBooking();
 
   const handleSearch = () => {
     if (!code || !email) return;
     refetch();
+  };
+
+  const onCancelBooking = () => {
+    if (!data) return;
+
+    cancelBookingMutation(data);
   };
 
   return (
@@ -69,7 +76,13 @@ const MyBooking = () => {
             </CardContent>
           </Card>
         )}
-        {data && <BookingDetailCard booking={data} eventName={eventName} />}
+        {data && (
+          <BookingDetailCard
+            booking={data}
+            eventName={eventName}
+            onCancelBooking={onCancelBooking}
+          />
+        )}
       </Container>
     </BookingBackground>
   );

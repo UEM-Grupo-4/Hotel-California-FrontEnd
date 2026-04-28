@@ -14,6 +14,7 @@ import type { Booking } from "../../types/rooms";
 type Props = {
   booking: Booking;
   eventName?: string;
+  onCancelBooking: () => void;
 };
 
 const getStatusColor = (status: string) => {
@@ -31,14 +32,16 @@ const getStatusColor = (status: string) => {
   }
 };
 
-export function BookingDetailCard({ booking, eventName }: Readonly<Props>) {
+export function BookingDetailCard({ booking, eventName, onCancelBooking }: Readonly<Props>) {
   const isPending = booking.estado === "PENDIENTE";
   const salaName =
     eventName ??
     booking.reserva_sala?.nombre ??
     booking.reserva_sala?.sala_nombre ??
     (typeof booking.reserva_sala?.sala === "object"
-      ? booking.reserva_sala.sala.nombre ?? booking.reserva_sala.sala.name ?? booking.reserva_sala.sala.id
+      ? (booking.reserva_sala.sala.nombre ??
+        booking.reserva_sala.sala.name ??
+        booking.reserva_sala.sala.id)
       : booking.reserva_sala?.sala);
 
   return (
@@ -101,7 +104,8 @@ export function BookingDetailCard({ booking, eventName }: Readonly<Props>) {
               </Typography>
 
               <Typography>
-                <strong>Horario:</strong> {booking.reserva_sala.hora_inicio} - {booking.reserva_sala.hora_fin}
+                <strong>Horario:</strong> {booking.reserva_sala.hora_inicio} -{" "}
+                {booking.reserva_sala.hora_fin}
               </Typography>
             </Stack>
           )}
@@ -111,7 +115,8 @@ export function BookingDetailCard({ booking, eventName }: Readonly<Props>) {
               <Typography variant="h6">Detalle de la habitación</Typography>
 
               <Typography>
-                <strong>Habitación:</strong> {booking.reserva_habitacion.numero_habitacion} - {booking.reserva_habitacion.nombre_habitacion}
+                <strong>Habitación:</strong> {booking.reserva_habitacion.numero_habitacion} -{" "}
+                {booking.reserva_habitacion.nombre_habitacion}
               </Typography>
 
               <Typography>
@@ -125,7 +130,7 @@ export function BookingDetailCard({ booking, eventName }: Readonly<Props>) {
           )}
 
           {isPending && (
-            <Button variant="outlined" color="error">
+            <Button variant="outlined" color="error" onClick={onCancelBooking}>
               Cancelar reserva
             </Button>
           )}

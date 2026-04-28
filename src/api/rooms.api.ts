@@ -125,6 +125,17 @@ export const updateAmenity = async (amenity: Amenity) => {
   return api.patch(`${apiRoutes.roomsAmenities}${amenity.id}/`, amenity);
 };
 
+export const cancelBooking = async (booking: Booking) => {
+  const mappedData = {
+    id: booking.id,
+    code: booking.code,
+    tipo_reserva: booking.tipo_reserva,
+    estado: "CANCELADA",
+  };
+
+  return api.patch(`${apiRoutes.bookingsList}${booking.id}/`, mappedData);
+};
+
 export const deleteRoom = async (id: number) => {
   return api.delete(`${apiRoutes.rooms}${id}/`);
 };

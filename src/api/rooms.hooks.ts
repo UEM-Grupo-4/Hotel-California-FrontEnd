@@ -67,7 +67,7 @@ export const useBookingByCode = (code?: string, email?: string) => {
   return useQuery({
     queryKey: roomsKeys.booking(code, email),
     queryFn: () => api.getBookingByCode({ code, email }),
-    enabled: false,
+    enabled: !!code && !!email,
     retry: false,
   });
 };
@@ -207,6 +207,21 @@ export const useUpdateEvent = () => {
     mutationFn: (event: EventUpdate) => api.updateEvent(event),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: eventKeys.events });
+    },
+  });
+};
+
+export const useCancelBooking = () => {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: (booking: Booking) => api.cancelBooking(booking),
+    onSuccess: (_data, variable) => {
+      console.log(variable.code, variable.cliente?.email);
+
+      queryClient.invalidateQueries({
+        queryKey: roomsKeys.booking(variable.code, variable.cliente?.email),
+      });
     },
   });
 };
