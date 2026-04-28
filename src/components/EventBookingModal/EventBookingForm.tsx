@@ -37,7 +37,7 @@ export function EventBookingForm({
   return (
     <>
       <DialogTitle variant="h4" fontWeight="bold">
-        Confirm event hall booking
+        Confirmar reserva del evento
       </DialogTitle>
 
       <DialogContent>
@@ -80,7 +80,7 @@ export function EventBookingForm({
               loading={isPending}
               fullWidth
             >
-              Confirm event hall booking
+              Confirmar evento
             </Button>
           </Grid>
         </Stack>
