@@ -36,7 +36,7 @@ function AdminEvents() {
 
   return (
     <>
-      <AdminSection title="Eventos" onCreate={openCreate} isEmpty={isEmpty(eventsList)}>
+      <AdminSection title="Salones" onCreate={openCreate} isEmpty={isEmpty(eventsList)}>
         <Grid container spacing={2}>
           {events?.map((event) => (
             <Grid size={12} key={event.id}>

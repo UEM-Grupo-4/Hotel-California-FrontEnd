@@ -3,7 +3,6 @@ import Box from "@mui/material/Box";
 import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
 import ListItemIcon from "@mui/material/ListItemIcon";
-import Divider from "@mui/material/Divider";
 import IconButton from "@mui/material/IconButton";
 import PersonIcon from "@mui/icons-material/Person";
 import Tooltip from "@mui/material/Tooltip";
@@ -37,6 +36,8 @@ export default function AccountMenu({ onClickTab }: Readonly<Props>) {
     logout();
     handleClose();
   };
+
+  const { isLogged } = useAuth();
 
   return (
     <React.Fragment>
@@ -91,19 +92,21 @@ export default function AccountMenu({ onClickTab }: Readonly<Props>) {
         transformOrigin={{ horizontal: "right", vertical: "top" }}
         anchorOrigin={{ horizontal: "right", vertical: "bottom" }}
       >
-        <MenuItem onClick={onClickLogin}>
-          <ListItemIcon>
-            <LoginIcon fontSize="small" />
-          </ListItemIcon>
-          Log In
-        </MenuItem>
-        <Divider />
-        <MenuItem onClick={onClickLogout}>
+        {isLogged ? (
+      <MenuItem onClick={onClickLogout}>
           <ListItemIcon>
             <Logout fontSize="small" />
           </ListItemIcon>
           Logout
         </MenuItem>
+    ) : (
+      <MenuItem onClick={onClickLogin}>
+          <ListItemIcon>
+            <LoginIcon fontSize="small" />
+          </ListItemIcon>
+          Log In
+        </MenuItem>
+    )}
       </Menu>
     </React.Fragment>
   );

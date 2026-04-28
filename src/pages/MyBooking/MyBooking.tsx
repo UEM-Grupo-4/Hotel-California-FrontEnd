@@ -9,6 +9,7 @@ import {
   styled,
 } from "@mui/material";
 import { useState } from "react";
+import { useLocation } from "react-router-dom";
 import { useBookingSearchParams } from "../../hooks/useBookingSearchParams";
 import { LoadingPage } from "../../components/LoadingPage/LoadingPage";
 import BackgroundImage from "../../assets/wallpaper_reserva.jpg";
@@ -16,7 +17,9 @@ import { BookingDetailCard } from "./BookindDetailCard";
 import { useBookingByCode } from "../../api/rooms.hooks";
 
 const MyBooking = () => {
+  const location = useLocation();
   const { code: initialCode } = useBookingSearchParams();
+  const eventName = (location.state as { eventName?: string } | null)?.eventName;
 
   const [code, setCode] = useState(initialCode);
   const [email, setEmail] = useState("");
@@ -66,7 +69,7 @@ const MyBooking = () => {
             </CardContent>
           </Card>
         )}
-        {data && <BookingDetailCard booking={data} />}
+        {data && <BookingDetailCard booking={data} eventName={eventName} />}
       </Container>
     </BookingBackground>
   );

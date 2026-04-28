@@ -40,7 +40,7 @@ export function EventCreateModal({ open, onClose, event }: Readonly<Props>) {
 
   return (
     <Dialog open={open} onClose={onClose} maxWidth="md" fullWidth>
-      <DialogTitle>{isEdit ? "Editar Evento" : "Nuevo Evento"}</DialogTitle>
+      <DialogTitle>{isEdit ? "Editar Salón de evento" : "Nuevo Salón de evento"}</DialogTitle>
 
       <DialogContent sx={{ display: "flex", flexDirection: "column", gap: 2 }}>
         <TextField label="Nombre" value={form.name} onChange={handleChange("name")} />
