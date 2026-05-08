@@ -35,7 +35,11 @@ const MyBooking = () => {
   const onCancelBooking = () => {
     if (!data) return;
 
-    cancelBookingMutation(data);
+    cancelBookingMutation(data, {
+      onSuccess: () => {
+        refetch();
+      },
+    });
   };
 
   return (

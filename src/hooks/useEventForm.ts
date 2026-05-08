@@ -116,9 +116,11 @@ export const useEventForm = (original: EventMapped | null, onClose: () => void) 
       const eventId = response.data.id;
 
       const mappedSchedules = buildSchedules(eventId);
-      await createSchedule(mappedSchedules);
-
-      onClose();
+      createSchedule(mappedSchedules, {
+        onSuccess: () => {
+          onClose();
+        },
+      });
     } catch (e) {
       console.error(e);
     }
