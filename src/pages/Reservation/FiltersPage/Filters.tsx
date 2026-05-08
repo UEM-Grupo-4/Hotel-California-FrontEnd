@@ -1,7 +1,7 @@
 import { useNavigate } from "react-router-dom";
 import { useRoomsFilters } from "../../../hooks/useRoomsFilters";
 import dayjs from "dayjs";
-import { Box, Button, Card, MenuItem, TextField } from "@mui/material";
+import { Box, Button, Card, MenuItem, TextField, useMediaQuery } from "@mui/material";
 import DatePickerFilter from "../../../components/DatePickerFilter/DatePickerFilter";
 import NumberField from "../../../components/NumberField/NumberField";
 import { DateTimePicker } from "@mui/x-date-pickers/DateTimePicker";
@@ -10,7 +10,7 @@ import { useMemo } from "react";
 function Filters() {
   const { roomsFilters, onChangeFilters, onChangeType, isSearchDisabled, getQueryParams } =
     useRoomsFilters();
-
+  const matches = useMediaQuery("(min-width:1000px)");
   const navigate = useNavigate();
 
   const handleSearch = () => {
@@ -29,7 +29,7 @@ function Filters() {
 
   return (
     <Card sx={{ p: 2, marginTop: 10 }}>
-      <Box display="flex" gap={2} alignItems="center" flexWrap={"wrap"}>
+      <Box display="flex" gap={2} alignItems="center" flexWrap={matches ? "nowrap" : "wrap"}>
         <Box width={140}>
           <TextField
             id="type-of-reservation"
